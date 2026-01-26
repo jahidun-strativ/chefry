@@ -1,0 +1,28 @@
+{
+  "name": "@startracker/db",
+  "version": "0.1.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "db:generate": "pnpm with-env prisma generate",
+    "db:push": "pnpm with-env prisma db push --skip-generate",
+    "db:studio": "pnpm with-env prisma studio",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.6.0",
+    "@prisma/adapter-neon": "^5.6.0",
+    "@prisma/client": "5.7.1",
+    "bufferutil": "^4.0.8",
+    "prisma": "5.7.1",
+    "utf-8-validate": "^6.0.3",
+    "ws": "^8.15.1"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.10",
+    "dotenv-cli": "^7.2.1",
+    "typescript": "catalog:"
+  }
+}

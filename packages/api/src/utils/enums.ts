@@ -1,0 +1,1 @@
+export const INTERESTS = ["FASHION", "FESTIVALS", "FOOD", "GAMING", "LIFESTYLE", "MUSIC", "SPORTS", "TRAVEL", "CREATORS"] as const;

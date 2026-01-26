@@ -1,0 +1,231 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters", "jsonProtocol"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum CONTENT_FLAG_TYPE {
+  SPAM
+  NUDE_CONTENT
+  HATE_SPEECH
+  DISINFORMATION
+  VIOLENCE
+}
+
+model ContentFlag {
+  id        String            @id @default(cuid())
+  caseId    String            @unique
+  createdAt DateTime          @default(now())
+  createdBy User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      CONTENT_FLAG_TYPE
+  userId    String
+  post      Post?             @relation(fields: [postId], references: [id], onDelete: Cascade)
+  story     Story?            @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  postId    String?
+  storyId   String?
+}
+
+model EventPackage {
+  id              String   @id @default(cuid())
+  archived        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  name            String
+  description     String
+  createdBy       User     @relation("EventPackageOwner", fields: [createdById], references: [id])
+  posts           Post[]
+  price           Float
+  stripeProductId String   @unique
+  stripePriceId   String   @unique
+  createdById     String
+  boughtBy        User[]   @relation("EventPackageBoughtBy")
+}
+
+enum MEDIA_TYPE {
+  IMAGE
+  VIDEO
+}
+
+model Media {
+  id          String     @id @default(cuid())
+  createdAt   DateTime   @default(now())
+  type        MEDIA_TYPE
+  url         String
+  duration    Int?
+  width       Int?
+  height      Int?
+  name        String
+  size        Int
+  thumbhash   String?
+  thumbnail   Media?     @relation("MediaThumbnail", fields: [thumbnailId], references: [id])
+  post        Post?      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId      String?
+  user        User?      @relation("UserProfileImage")
+  parent      Media?     @relation("MediaThumbnail")
+  thumbnailId String?    @unique
+  story       Story?
+  cropX       Int?
+  cropY       Int?
+  cropWidth   Int?
+  cropHeight  Int?
+  owner       User?      @relation(fields: [ownerId], references: [id])
+  ownerId     String?
+}
+
+model Post {
+  id             String         @id @default(cuid())
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  removed        Boolean        @default(false)
+  starPost       Boolean        @default(false)
+  caption        String?
+  media          Media[]
+  createdBy      User           @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdById    String
+  postReactions  PostReaction[]
+  hiddenBy       User[]         @relation("HiddenPosts")
+  flags          ContentFlag[]
+  eventPackage   EventPackage?  @relation(fields: [eventPackageId], references: [id])
+  eventPackageId String?
+}
+
+enum POST_REACTION_TYPE {
+  HEART
+  SMILE
+  STAR
+}
+
+model PostReaction {
+  id        String             @id @default(cuid())
+  createdAt DateTime           @default(now())
+  type      POST_REACTION_TYPE
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post               @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  userId    String
+}
+
+model Story {
+  id          String        @id @default(cuid())
+  createdAt   DateTime      @default(now())
+  removed     Boolean       @default(false)
+  starPost    Boolean       @default(false)
+  media       Media         @relation(fields: [mediaId], references: [id])
+  caption     String?
+  createdBy   User          @relation("StoryCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
+  mediaId     String        @unique
+  createdById String
+  views       StoryView[]
+  hiddenBy    User[]        @relation("HiddenStories")
+  flags       ContentFlag[]
+}
+
+model StoryView {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  viewedBy   User     @relation(fields: [viewedById], references: [id], onDelete: Cascade)
+  story      Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  viewedById String
+  storyId    String
+}
+
+enum INTEREST {
+  ART
+  ACING
+  MOVIES
+  FASHION
+  FESTIVALS
+  FOOD
+  GAMING
+  LIFESTYLE
+  MUSIC
+  SPORTS
+  TRAVEL
+  CREATORS
+}
+
+enum USER_PRIVILEGE_LEVEL {
+  SUPER_ADMIN
+  ADMIN
+  USER
+}
+
+enum USER_TYPE {
+  STAR
+  STAR_TRACKER
+}
+
+model User {
+  id                          String               @id @default(cuid())
+  clerkId                     String               @unique
+  expoPushToken               String?              @unique
+  createdAt                   DateTime             @default(now())
+  privilegeLevel              USER_PRIVILEGE_LEVEL @default(USER)
+  verified                    Boolean              @default(false)
+  verificationReferenceNumber String               @unique
+  requestedVerification       Boolean              @default(false)
+  image                       Media?               @relation("UserProfileImage", fields: [imageId], references: [id])
+  username                    String               @unique
+  email                       String?              @unique
+  name                        String?
+  bio                         String?
+  type                        USER_TYPE?
+  interests                   INTEREST[]
+  tags                        INTEREST[]
+  interestsSet                Boolean              @default(false)
+  wizardCompleted             Boolean              @default(false)
+  posts                       Post[]
+  imageId                     String?              @unique
+  followers                   UserFollow[]         @relation("UserFollowers")
+  following                   UserFollow[]         @relation("UserFollowing")
+  postReactions               PostReaction[]
+  createdStories              Story[]              @relation("StoryCreatedBy")
+  viewedStories               StoryView[]
+  hiddenStories               Story[]              @relation("HiddenStories")
+  hiddenPosts                 Post[]               @relation("HiddenPosts")
+  blockedUsers                User[]               @relation("BlockedUsers")
+  blockedByUsers              User[]               @relation("BlockedUsers")
+  contentFlags                ContentFlag[]
+  medias                      Media[]
+  stripeConnectedAccountId    String?              @unique
+  stripeProductId             String?              @unique
+  stripePriceId               String?              @unique
+  stripeSubscriptionId        String?              @unique
+  stripeCustomerId            String?              @unique
+  eventPackages               EventPackage[]       @relation("EventPackageOwner")
+  boughtEventPackages         EventPackage[]       @relation("EventPackageBoughtBy")
+  errors                      Error[]
+}
+
+enum USER_FOLLOW_TYPE {
+  DEFAULT
+  STAR_TRACKER
+}
+
+model UserFollow {
+  id              String           @id @default(cuid())
+  createdAt       DateTime         @default(now())
+  type            USER_FOLLOW_TYPE @default(DEFAULT)
+  paidUntil       DateTime?
+  subscriptionId  String?          @unique
+  followedUser    User             @relation("UserFollowers", fields: [followedUserId], references: [id], onDelete: Cascade)
+  followingUser   User             @relation("UserFollowing", fields: [followingUserId], references: [id], onDelete: Cascade)
+  followedUserId  String
+  followingUserId String
+}
+
+enum ERROR_TYPE {
+  STRIPE_TRANSFER
+}
+
+model Error {
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  type      ERROR_TYPE
+  message   String
+  user      User?      @relation(fields: [userId], references: [id])
+  userId    String?
+}

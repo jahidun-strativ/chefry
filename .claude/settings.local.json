@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm add -D @prisma/nextjs-monorepo-workaround-plugin --filter nextjs)",
+      "WebSearch",
+      "Read(//Users/philipsmacbook16/Downloads/**)",
+      "Bash(npm run typecheck:*)",
+      "WebFetch(domain:clerk.com)",
+      "WebFetch(domain:github.com)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/philipsmacbook16/Projects/startracker/**)",
+      "Bash(pnpm install)",
+      "Bash(npx expo run:ios:*)",
+      "Bash(xcrun xcodebuild:*)",
+      "Bash(xcrun simctl:*)",
+      "Bash(pod install)",
+      "Bash(killall:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

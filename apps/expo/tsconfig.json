@@ -1,0 +1,38 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-native",
+    "checkJs": false,
+    "moduleSuffixes": [
+      ".ios",
+      ".android",
+      ".native",
+      ""
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "types": [
+      "nativewind/types",
+      "webpack-env",
+      "nativewind-env.d.ts"
+    ]
+  },
+  "include": [
+    "expo-plugins",
+    "src",
+    "*.ts",
+    "**/*.js",
+    "index.tsx",
+    "../nextjs/src/app/icon.tsx",
+    "nativewind-env.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "*.config.js",
+    "node_modules/react-native-anchor-point/index.ts"
+  ]
+}
