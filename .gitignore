@@ -43,3 +43,19 @@ yarn-error.log*
 
 # turbo
 .turbo
+
+# credentials and secrets
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!tsconfig.*.json
+!components.json
+!eas.json
+!app.config.ts
+!**/public/manifest.json
+!**/public/*.json
+!**/assets/**/*.json
+startracker-*.json
+*-*.json
+!google-services.json
