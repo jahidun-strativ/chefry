@@ -1,7 +1,11 @@
 // const fs = require("fs");
 // const path = require("path");
-import fs from 'fs';
-import path from 'path'
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const indexPath = path.join(__dirname, "../dist/index.html");
 
@@ -33,7 +37,7 @@ const updateViewport = (html) => {
   // Replace existing viewport meta tag with one that includes viewport-fit=cover
   return html.replace(
     /<meta\s+name="viewport"\s+content="[^"]*"\s*\/?>/i,
-    '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />'
+    '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />',
   );
 };
 

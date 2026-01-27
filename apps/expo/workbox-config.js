@@ -1,13 +1,7 @@
 module.exports = {
   globDirectory: "dist/",
-  globPatterns: [
-    "**/*.{js,html,css,png,jpg,jpeg,gif,svg,woff,woff2,ttf,eot,ico,json}",
-  ],
-  globIgnores: [
-    "**/node_modules/**/*",
-    "sw.js",
-    "workbox-*.js",
-  ],
+  globPatterns: ["**/*.{js,html,css,png,jpg,jpeg,gif,svg,woff,woff2,ttf,eot,ico,json}"],
+  globIgnores: ["**/node_modules/**/*", "sw.js", "workbox-*.js"],
   swDest: "dist/sw.js",
   clientsClaim: true,
   skipWaiting: true,
@@ -39,7 +33,7 @@ module.exports = {
     },
     {
       // Cache API requests
-      urlPattern: /^https:\/\/chefry-nextjs-rust\.vercel\.app\/api\//,
+      urlPattern: /^https:\/\/startracker\.vercel\.app\/api\//,
       handler: "NetworkFirst",
       options: {
         cacheName: "api-cache",

@@ -24,5 +24,7 @@
   "orientation": "portrait",
   "scope": "/",
   "prefer_related_applications": false,
-  "categories": ["social", "entertainment"]
+  "categories": ["social", "entertainment"],
+  "lang": "en",
+  "dir": "ltr"
 }
