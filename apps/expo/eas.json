@@ -23,7 +23,11 @@
     },
     "production": {
       "channel": "production",
-      "extends": "base"
+      "extends": "base",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://chefry-nextjs-rust.vercel.app",
+        "EXPO_PUBLIC_ENV": "production"
+      }
     }
   },
   "submit": {

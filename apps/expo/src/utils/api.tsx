@@ -41,7 +41,7 @@ export const getBaseUrl = (): string => {
   
   if (!isDevelopment) {
     console.log("[getBaseUrl] Production mode, using production URL");
-    return "https://startracker.vercel.app";
+    return "https://chefry-nextjs-rust.vercel.app";
   }
 
   try {
