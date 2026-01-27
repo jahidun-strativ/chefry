@@ -45,17 +45,9 @@ yarn-error.log*
 .turbo
 
 # credentials and secrets
-*.json
-!package.json
-!package-lock.json
-!tsconfig.json
-!tsconfig.*.json
-!components.json
-!eas.json
-!app.config.ts
-!**/public/manifest.json
-!**/public/*.json
-!**/assets/**/*.json
-startracker-*.json
+# Google Cloud/Firebase service account keys
 *-*.json
+startracker-*.json
+**/startracker-*.json
+# But allow google-services.json (Firebase config, not credentials)
 !google-services.json
