@@ -41,8 +41,9 @@ This guide covers deploying both the Next.js backend and the Expo app.
    POSTGRES_PRISMA_URL=your_prisma_url
    POSTGRES_URL_NON_POOLING=your_non_pooling_url
    
-   # Clerk
+   # Clerk (IMPORTANT: Both are required)
    CLERK_SECRET_KEY=your_clerk_secret
+   CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
    
    # Stripe
