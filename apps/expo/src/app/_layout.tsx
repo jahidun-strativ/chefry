@@ -153,6 +153,7 @@ const RootLayout = () => {
   // if (!fontsLoaded) {
   //   return null;
   // }
+// console.log({checking:'handled'});
 
   return (
     <ClickOutsideProvider>
@@ -173,6 +174,8 @@ const RootLayout = () => {
 };
 
 const RootLayoutWrapper = () => {
+  // console.log({keyyyyyy: process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY as string});
+  
   return (
     <ClerkProvider
       publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}

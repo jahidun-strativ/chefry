@@ -1,8 +1,9 @@
-import { auth } from "@clerk/nextjs";
+import { getAuth } from "@clerk/nextjs/server";
 import type { SignedInAuthObject, SignedOutAuthObject } from "@clerk/nextjs/api";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import type { NextRequest } from "next/server";
 
 import { prisma } from "@startracker/db";
 
@@ -19,9 +20,9 @@ const createInnerTRPCContext = ({ auth, ip }: CreateContextOptions) => {
   };
 };
 
-export const createTRPCContext = (ip: string) => {
+export const createTRPCContext = async (ip: string, req: NextRequest) => {
   return createInnerTRPCContext({
-    auth: auth(),
+    auth: getAuth(req),
     ip,
   });
 };

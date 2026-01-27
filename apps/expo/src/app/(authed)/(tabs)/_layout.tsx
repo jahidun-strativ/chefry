@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { useCallback } from "react";
 import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Tabs, usePathname } from "expo-router";
+import { Tabs } from "expo-router";
 import Icon from "@expo/vector-icons/Feather";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { MotiView } from "moti";
@@ -40,16 +40,9 @@ const TabsLayout: FC = () => {
                 canPreventDefault: true,
               });
 
-              if (Platform.OS === "android") {
-                if (!isFocused && !event.defaultPrevented) {
-                  // @ts-ignore
-                  navigation.navigate({ name: route.name, merge: true });
-                }
-              } else {
-                if (!isFocused && !event.defaultPrevented) {
-                  // @ts-ignore
-                  navigation.navigate({ name: route.name, merge: true });
-                }
+              if (!isFocused && !event.defaultPrevented) {
+                // @ts-expect-error - expo-router navigation types
+                navigation.navigate({ name: route.name, merge: true });
               }
             };
 
@@ -61,6 +54,11 @@ const TabsLayout: FC = () => {
             };
 
             if (route.name === "new-post") {
+              // On web, don't show the CreatePostButton (it uses native modules)
+              // On native, show it only if user is verified
+              if (Platform.OS === "web") {
+                return null;
+              }
               if (me?.verified) return <CreatePostButton key={routeIndex} />;
               else return null;
             } else {
