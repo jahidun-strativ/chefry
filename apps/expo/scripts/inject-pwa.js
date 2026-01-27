@@ -1,5 +1,7 @@
-const fs = require("fs");
-const path = require("path");
+// const fs = require("fs");
+// const path = require("path");
+import fs from 'fs';
+import path from 'path'
 
 const indexPath = path.join(__dirname, "../dist/index.html");
 
@@ -22,6 +24,19 @@ const pwaHead = `
     <meta name="description" content="Track your favorite stars and connect with them" />
 `;
 
+// Update viewport to include viewport-fit=cover for iOS PWA
+/**
+ * @param {string} html - The HTML string to update
+ * @returns {string} The updated HTML string with viewport-fit=cover
+ */
+const updateViewport = (html) => {
+  // Replace existing viewport meta tag with one that includes viewport-fit=cover
+  return html.replace(
+    /<meta\s+name="viewport"\s+content="[^"]*"\s*\/?>/i,
+    '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />'
+  );
+};
+
 // Service worker registration script
 const swScript = `
     <script>
@@ -42,6 +57,9 @@ if (html.includes('rel="manifest"')) {
   console.log("PWA links already present in index.html");
   process.exit(0);
 }
+
+// Update viewport meta tag
+html = updateViewport(html);
 
 // Inject PWA head before </head>
 html = html.replace("</head>", pwaHead + "</head>");

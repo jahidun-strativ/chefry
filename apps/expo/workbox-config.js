@@ -11,6 +11,7 @@ module.exports = {
   swDest: "dist/sw.js",
   clientsClaim: true,
   skipWaiting: true,
+  maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB (to cache the main JS bundle)
   runtimeCaching: [
     {
       // Cache images
@@ -38,7 +39,7 @@ module.exports = {
     },
     {
       // Cache API requests
-      urlPattern: /^https:\/\/.*\.vercel\.app\/api\//,
+      urlPattern: /^https:\/\/chefry-nextjs-rust\.vercel\.app\/api\//,
       handler: "NetworkFirst",
       options: {
         cacheName: "api-cache",

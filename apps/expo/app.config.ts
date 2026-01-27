@@ -46,6 +46,7 @@ const defineConfig = (): ExpoConfig => ({
     bundler: "metro",
     output: "single",
     favicon: "./public/favicon.png",
+    manifest: "./public/manifest.json",
   },
   runtimeVersion: {
     policy: "sdkVersion",
