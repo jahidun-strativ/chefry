@@ -40,7 +40,7 @@
     "lucide-react": "^0.261.0",
     "micro-cors": "^0.1.1",
     "nanoid": "^4.0.2",
-    "next": "^15.5.5",
+    "next": "^15.5.10",
     "node-fetch": "^3.3.2",
     "postmark": "^3.1.1",
     "rc-pagination": "^3.6.1",
