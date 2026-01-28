@@ -35,6 +35,11 @@ export default function Root({ children }: PropsWithChildren) {
 
         {/* iOS Splash Screens - using theme color */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
+        
+        {/* OAuth and popup handling for iOS */}
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
 
         {/*
           Disable body scrolling on web. This makes ScrollView components work closer to
