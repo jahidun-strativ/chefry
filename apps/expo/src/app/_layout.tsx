@@ -33,6 +33,7 @@ import { PortalProvider } from "@gorhom/portal";
 import { RegisterPushNotifications } from "@/components/register-push-notifications";
 import { StripeWrapper } from "@/components/stripe-wrapper";
 import PWAInstallPrompt from "@/components/pwa-install-prompt";
+// import OAuthDebug from "@/components/oauth-debug";
 import { api, TRPCProvider } from "../utils/api";
 
 void SplashScreen.preventAutoHideAsync();
@@ -165,6 +166,7 @@ const RootLayout = () => {
               <BottomSheetModalProvider>
                 <RegisterPushNotifications />
                 <PWAInstallPrompt />
+                {/* <OAuthDebug /> */}
                 <Slot />
               </BottomSheetModalProvider>
             </PortalProvider>

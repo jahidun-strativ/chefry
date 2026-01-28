@@ -26,8 +26,19 @@ export default function Root({ children }: PropsWithChildren) {
         <meta name="apple-mobile-web-app-title" content="Star Tracker" />
 
         {/* Favicon and Icons */}
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" href="/favicon.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/icon-192.png" />
+        
+        {/* Apple Touch Icons */}
+        <link rel="apple-touch-icon" sizes="152x152" href="/icon-152.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
+        <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
+        <link rel="apple-touch-icon" href="/icon-180.png" />
+        
+        {/* Additional icon sizes for various devices */}
+        <link rel="icon" type="image/png" sizes="96x96" href="/icon-96.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
 
         {/* App Description for SEO */}
         <meta name="description" content="Track your favorite stars and connect with them" />

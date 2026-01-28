@@ -1,25 +1,54 @@
 import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import { useRouter } from "expo-router";
+import { useClerk } from "@clerk/clerk-expo";
 import * as WebBrowser from "expo-web-browser";
 
 import GradientBackground from "@/components/gradient-background";
 import { Logo } from "@/components/logo";
+import createToast from "@/utils/createToast";
 
 const OauthCallbackPage = () => {
   const router = useRouter();
+  const clerk = useClerk();
 
   useEffect(() => {
-    // Complete the OAuth session
-    WebBrowser.maybeCompleteAuthSession();
-    
-    // Redirect to home after a short delay
-    const timer = setTimeout(() => {
-      router.replace("/");
-    }, 1500);
+    const handleOAuthCallback = async () => {
+      try {
+        // Complete the OAuth session
+        WebBrowser.maybeCompleteAuthSession();
+        
+        // Handle the redirect callback with current URL
+        if (typeof window !== "undefined") {
+          const currentUrl = window.location.href;
+          await clerk.handleRedirectCallback({
+            redirectUrl: currentUrl,
+          });
+        }
+        
+        console.log("OAuth callback handled successfully");
+        
+        // Redirect to home after successful authentication
+        setTimeout(() => {
+          router.replace("/");
+        }, 1500);
+        
+      } catch (error) {
+        console.error("OAuth callback error:", error);
+        createToast({
+          message: "Authentication failed. Please try again.",
+          type: "error",
+        });
+        
+        // Redirect back to sign-in on error
+        setTimeout(() => {
+          router.replace("/sign-in");
+        }, 2000);
+      }
+    };
 
-    return () => clearTimeout(timer);
-  }, [router]);
+    void handleOAuthCallback();
+  }, [router, clerk]);
 
   return (
     <GradientBackground>

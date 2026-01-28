@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Platform } from "react-native";
 import * as WebBrowser from "expo-web-browser";
-import { isClerkAPIResponseError, useOAuth } from "@clerk/clerk-expo";
+import { isClerkAPIResponseError, useSignIn } from "@clerk/clerk-expo";
 import type { OAuthStrategy } from "@clerk/types";
 
 import createToast from "@/utils/createToast";
@@ -12,55 +12,82 @@ WebBrowser.maybeCompleteAuthSession();
 const useOAuthSignIn = (strategy: OAuthStrategy) => {
   useWarmUpBrowser();
 
-  const { startOAuthFlow } = useOAuth({ strategy });
-
+  const { signIn, isLoaded } = useSignIn();
   const [authActive, setAuthActive] = useState(false);
   
-  const signIn = async () => {
+  const handleSignIn = async () => {
+    if (!isLoaded || !signIn) return;
+    
     setAuthActive(true);
     try {
-      let oAuthResult;
-      
-      // For web platforms, especially iOS, we need special handling
+      // For web platforms, we need to handle different browsers and environments
       if (Platform.OS === "web" && typeof window !== "undefined") {
         const userAgent = window.navigator.userAgent.toLowerCase();
         const isIOSWeb = /iphone|ipad|ipod/.test(userAgent);
         const isSafari = /safari/.test(userAgent) && !/chrome/.test(userAgent);
+        const isChrome = /chrome/.test(userAgent);
         
+        // Determine the correct redirect URL based on environment
+        const getRedirectUrl = () => {
+          const origin = window.location.origin;
+          const pathname = "/oauth-native-callback";
+          return `${origin}${pathname}`;
+        };
+
+        const redirectUrl = getRedirectUrl();
+        console.log("OAuth redirect URL:", redirectUrl);
+
+        // For iOS Safari, always use redirect flow
         if (isIOSWeb || isSafari) {
-          // For iOS Safari and other Safari browsers, use redirect flow
-          // This avoids popup blocking issues
-          oAuthResult = await startOAuthFlow({
-            redirectUrl: window.location.origin + "/oauth-native-callback",
+          console.log("Using redirect flow for iOS/Safari");
+          await signIn.authenticateWithRedirect({
+            strategy,
+            redirectUrl,
+            redirectUrlComplete: redirectUrl,
           });
-        } else {
-          // For other web browsers (Chrome, Firefox, etc.), try popup first
+          
+          // The redirect will handle the rest - this code won't be reached
+          return;
+        } 
+        // For Chrome and other browsers, use redirect flow
+        else {
           try {
-            oAuthResult = await startOAuthFlow();
-          } catch (popupError) {
-            console.warn("Popup blocked, falling back to redirect:", popupError);
-            // Fallback to redirect if popup is blocked
-            oAuthResult = await startOAuthFlow({
-              redirectUrl: window.location.origin + "/oauth-native-callback",
+            console.log("Using redirect flow for Chrome/other browsers");
+            await signIn.authenticateWithRedirect({
+              strategy,
+              redirectUrl,
+              redirectUrlComplete: redirectUrl,
             });
+            
+            // The redirect will handle the rest - this code won't be reached
+            return;
+          } catch (redirectError) {
+            console.warn("Redirect failed, trying alternative approach:", redirectError);
+            
+            // Alternative approach: direct redirect
+            try {
+              await signIn.authenticateWithRedirect({
+                strategy,
+                redirectUrl,
+                redirectUrlComplete: redirectUrl,
+              });
+              return;
+            } catch (fallbackError) {
+              console.error("All OAuth methods failed:", fallbackError);
+              throw fallbackError;
+            }
           }
         }
       } else {
         // For native platforms, use the standard flow
-        oAuthResult = await startOAuthFlow();
-      }
-
-      const { createdSessionId, setActive } = oAuthResult;
-
-      if (createdSessionId) {
-        await setActive?.({ session: createdSessionId });
-      } else {
-        console.error("Could not create session");
-        createToast({
-          message: "Something went wrong",
-          type: "error",
+        console.log("Using native OAuth flow");
+        await signIn.authenticateWithRedirect({
+          strategy,
+          redirectUrl: "exp://localhost:8081/oauth-native-callback", // Expo development URL
+          redirectUrlComplete: "exp://localhost:8081/oauth-native-callback",
         });
-        return;
+        
+        // The redirect will handle the rest - this code won't be reached
       }
 
       setAuthActive(false);
@@ -68,12 +95,12 @@ const useOAuthSignIn = (strategy: OAuthStrategy) => {
       console.error("OAuth sign-in error:", e);
       if (isClerkAPIResponseError(e)) {
         createToast({
-          message: e.errors[0]?.longMessage ?? "Something went wrong",
+          message: e.errors[0]?.longMessage ?? "Authentication failed. Please try again.",
           type: "error",
         });
       } else {
         createToast({
-          message: "Something went wrong",
+          message: "Authentication failed. Please try again.",
           type: "error",
         });
       }
@@ -82,7 +109,7 @@ const useOAuthSignIn = (strategy: OAuthStrategy) => {
   };
 
   return {
-    signIn,
+    signIn: handleSignIn,
     isLoading: authActive,
   };
 };

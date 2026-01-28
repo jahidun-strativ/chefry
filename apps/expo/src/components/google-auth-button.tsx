@@ -4,11 +4,11 @@ import { Text } from "react-native";
 import { maxFontSizeMultiplier } from "@/utils/constants";
 import { Image } from "@/components/image";
 import googleLogo from "@/assets/google_logo.png";
-import useOAuthSignIn from "@/hooks/useOAuthSignIn";
+import useOAuthSignInV2 from "@/hooks/useOAuthSignInV2";
 import { Button } from "./ui/button";
 
 const GoogleAuthButton: FC = () => {
-  const { signIn, isLoading } = useOAuthSignIn("oauth_google");
+  const { signIn, isLoading } = useOAuthSignInV2("oauth_google");
 
   return (
     <Button disabled={isLoading} onPress={signIn} cls="mt-4" variant="white">
