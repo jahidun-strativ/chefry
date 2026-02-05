@@ -35,21 +35,21 @@ const TagsEditor: FC<Props> = ({ onChange, tag }) => {
   };
 
   return (
-    <View className="mt-6 flex flex-col items-center justify-center pb-32">
+    <View className="mt-6 md:mt-8 lg:mt-10 flex flex-col items-center justify-center pb-32 max-w-2xl lg:max-w-3xl mx-auto w-full">
       <Typography cls="text-center" variant="h3">
         Tags
       </Typography>
-      <View className="flex flex-row flex-wrap items-center justify-center gap-2 px-4 pt-6">
+      <View className="flex flex-row flex-wrap items-center justify-center gap-2 md:gap-3 lg:gap-4 px-4 md:px-6 lg:px-8 pt-6 md:pt-8 lg:pt-10">
         {interests.map((interest) => {
           const isSelected = tag === interest.id;
           return (
             <ButtonBase
               onPress={handleSelectInterest(interest.id as INTEREST)}
               key={interest.id}
-              cls={cn("ml-2 flex flex-row items-center rounded-full border border-white px-4 py-1", isSelected && "bg-white")}
+              cls={cn("ml-2 md:ml-3 lg:ml-4 flex flex-row items-center rounded-full border border-white px-4 md:px-5 lg:px-6 py-1 md:py-1.5 lg:py-2", isSelected && "bg-white")}
             >
               <MaterialIcon name="heart" size={16} color={isSelected ? "black" : "white"} />
-              <Typography cls={cn("text-2xl ml-2 text-base", isSelected ? "!text-black" : "!text-white")}>{interest.name}</Typography>
+              <Typography cls={cn("text-2xl ml-2 md:ml-3 lg:ml-4 text-base md:text-lg lg:text-xl", isSelected ? "!text-black" : "!text-white")}>{interest.name}</Typography>
             </ButtonBase>
           );
         })}

@@ -147,10 +147,10 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
             href={(linkPrefix || "") + "/view-profile/" + post.createdBy.username}
           >
             <ButtonBase className="flex flex-row items-center">
-              <Typography cls="text-base" variant="h3">
+              <Typography cls="text-base md:text-lg lg:text-xl" variant="h3">
                 {post.createdBy.username}
               </Typography>
-              {post.createdBy.verified && <VerifiedTick cls="ml-2" />}
+              {post.createdBy.verified && <VerifiedTick cls="ml-2 md:ml-3 lg:ml-4" />}
             </ButtonBase>
           </Link>
 
@@ -160,35 +160,47 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
         <View className="relative flex-1">
           {/* <TapGestureHandler onHandlerStateChange={handleSingleTapEvent} numberOfTaps={1} waitFor={doubleTapRef}>
             <TapGestureHandler onHandlerStateChange={handleDoubleTapEvent} numberOfTaps={2} ref={doubleTapRef}> */}
-          <LinearGradient
-            colors={
-              post.starPost
-                ? ["#938DFB", "#9589F6", "#9B7FEA", "#A56ED5", "#B457B8", "#C73993", "#DD1465", "#EB004C"]
-                : ["#FFFFFF", "#FFFFFF"]
-            }
-            start={[0.0, 0.5]}
-            end={[1.0, 0.5]}
-            className="rounded-[50px] p-px"
+          <View 
+            className="w-full mx-auto" 
+            style={{ 
+              maxWidth: isMobile ? "100%" : isTablet ? 600 : 800,
+            }}
           >
-            {media?.type === "IMAGE" && (
-              <Image
-                source={{
-                  uri: getImageUrl(media.url, [{ width: "1024" }]),
-                }}
-                placeholder={Platform.OS === "ios" ? media.thumbhash : undefined}
-                placeholderContentFit="cover"
-                className="w-full rounded-[50px]"
-                style={{ aspectRatio: Math.max(aspectRatio, 0.7) }}
-                contentFit="cover"
-                transition={200}
-                recyclingKey={media.id}
-              />
-            )}
+            <LinearGradient
+              colors={
+                post.starPost
+                  ? ["#938DFB", "#9589F6", "#9B7FEA", "#A56ED5", "#B457B8", "#C73993", "#DD1465", "#EB004C"]
+                  : ["#FFFFFF", "#FFFFFF"]
+              }
+              start={[0.0, 0.5]}
+              end={[1.0, 0.5]}
+              className="rounded-[50px] p-px"
+            >
+              {media?.type === "IMAGE" && (
+                <Image
+                  source={{
+                    uri: getImageUrl(media.url, [{ width: isMobile ? "1024" : isTablet ? "1280" : "1600" }]),
+                  }}
+                  placeholder={Platform.OS === "ios" ? media.thumbhash : undefined}
+                  placeholderContentFit="cover"
+                  className="w-full rounded-[50px]"
+                  style={{ 
+                    aspectRatio: Math.max(aspectRatio, 0.7),
+                    maxHeight: isMobile ? undefined : isTablet ? 600 : 700,
+                  }}
+                  contentFit="cover"
+                  transition={200}
+                  recyclingKey={media.id}
+                />
+              )}
 
-            {media?.type === "VIDEO" && (
-              <PostVideoPlayer ref={postVideoPlayerHandleRef} isVisible={isVisible} media={media} aspectRatio={aspectRatio} />
-            )}
-          </LinearGradient>
+              {media?.type === "VIDEO" && (
+                <View style={{ maxHeight: isMobile ? undefined : isTablet ? 600 : 700 }}>
+                  <PostVideoPlayer ref={postVideoPlayerHandleRef} isVisible={isVisible} media={media} aspectRatio={aspectRatio} />
+                </View>
+              )}
+            </LinearGradient>
+          </View>
           {/* </TapGestureHandler>
           </TapGestureHandler> */}
 
@@ -284,7 +296,7 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
 
           {!profileImage && (
             <View className="absolute -top-12 md:-top-14 lg:-top-16 left-0 flex h-20 w-20 md:h-24 md:w-24 lg:h-28 lg:w-28 items-center justify-center rounded-full border-2 border-white bg-[#222222]">
-              <Icon name="user" size={32} color="white" />
+              <Icon name="user" size={isMobile ? 32 : isTablet ? 36 : 40} color="white" />
             </View>
           )}
 
@@ -305,39 +317,39 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
 
         <View className="mx-2 md:mx-3 lg:mx-4 mt-2 md:mt-3 lg:mt-4 flex flex-row items-center px-20 md:px-24 lg:px-28">
           <View className="flex-1 flex-row items-center justify-center">
-            <Icon name="heart" size={18} color="white" />
+            <Icon name="heart" size={isMobile ? 18 : isTablet ? 20 : 22} color="white" />
             {isLoadingReactionData ? (
-              <View className="ml-1 opacity-30">
+              <View className="ml-1 md:ml-1.5 lg:ml-2 opacity-30">
                 <Skeleton colorMode="dark" height={20} width={20} radius={4} />
               </View>
             ) : (
-              <Typography cls="text-sm ml-1" variant="p">
+              <Typography cls="text-sm md:text-base lg:text-lg ml-1 md:ml-1.5 lg:ml-2" variant="p">
                 {heartReactionCount || 0}
               </Typography>
             )}
           </View>
 
           <View className="flex-1 flex-row items-center justify-center">
-            <Icon name="smile" size={18} color="white" />
+            <Icon name="smile" size={isMobile ? 18 : isTablet ? 20 : 22} color="white" />
             {isLoadingReactionData ? (
-              <View className="ml-1 opacity-30">
+              <View className="ml-1 md:ml-1.5 lg:ml-2 opacity-30">
                 <Skeleton colorMode="dark" height={20} width={20} radius={4} />
               </View>
             ) : (
-              <Typography cls="text-sm ml-1" variant="p">
+              <Typography cls="text-sm md:text-base lg:text-lg ml-1 md:ml-1.5 lg:ml-2" variant="p">
                 {smileReactionCount || 0}
               </Typography>
             )}
           </View>
 
           <View className="flex-1 flex-row items-center justify-center">
-            <Icon name="star" size={18} color="white" />
+            <Icon name="star" size={isMobile ? 18 : isTablet ? 20 : 22} color="white" />
             {isLoadingReactionData ? (
-              <View className="ml-1 opacity-30">
+              <View className="ml-1 md:ml-1.5 lg:ml-2 opacity-30">
                 <Skeleton colorMode="dark" height={20} width={20} radius={4} />
               </View>
             ) : (
-              <Typography cls="text-sm ml-1" variant="p">
+              <Typography cls="text-sm md:text-base lg:text-lg ml-1 md:ml-1.5 lg:ml-2" variant="p">
                 {starReactionCount || 0}
               </Typography>
             )}

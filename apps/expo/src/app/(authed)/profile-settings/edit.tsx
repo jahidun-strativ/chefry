@@ -84,44 +84,46 @@ const EditProfilePage: FC = () => {
         </Button>
       }
     >
-      <View className="h-2" />
+      <View className="h-2 md:h-3 lg:h-4" />
 
-      <View className="flex items-center justify-center py-4">
-        <ChangeProfileImageButton />
+      <View className="max-w-2xl lg:max-w-3xl mx-auto w-full">
+        <View className="flex items-center justify-center py-4 md:py-5 lg:py-6">
+          <ChangeProfileImageButton />
+        </View>
+
+        <Input
+          label="Username"
+          autoCorrect={false}
+          autoCapitalize="none"
+          placeholder="Enter your name..."
+          classes={{ root: "mb-4 md:mb-5 lg:mb-6" }}
+          value={username}
+          onChangeText={setUsername}
+        />
+        <Input
+          label="Email address"
+          value={user?.emailAddresses?.[0]?.emailAddress ?? ""}
+          editable={false}
+          classes={{ root: "opacity-50 mb-4 md:mb-5 lg:mb-6" }}
+          onPressIn={() => {
+            createToast({
+              type: "error",
+              message: "You cannot change your email address",
+            });
+          }}
+        />
+        <Input
+          multiline
+          label="Bio"
+          placeholder="Enter your bio..."
+          numberOfLines={6}
+          value={bio}
+          onChangeText={setBio}
+          classes={{ inputWrapper: "h-32 md:h-40 lg:h-48 rounded-2xl", input: "px-4 md:px-5 lg:px-6 py-3 md:py-4 lg:py-5" }}
+        />
+
+        <TagsEditor tag={tag} onChange={setTag} />
       </View>
-
-      <Input
-        label="Username"
-        autoCorrect={false}
-        autoCapitalize="none"
-        placeholder="Enter your name..."
-        classes={{ root: "mb-4" }}
-        value={username}
-        onChangeText={setUsername}
-      />
-      <Input
-        label="Email address"
-        value={user?.emailAddresses?.[0]?.emailAddress ?? ""}
-        editable={false}
-        classes={{ root: "opacity-50 mb-4" }}
-        onPressIn={() => {
-          createToast({
-            type: "error",
-            message: "You cannot change your email address",
-          });
-        }}
-      />
-      <Input
-        multiline
-        label="Bio"
-        placeholder="Enter your bio..."
-        numberOfLines={6}
-        value={bio}
-        onChangeText={setBio}
-        classes={{ inputWrapper: "h-32 rounded-2xl", input: "px-4 py-3" }}
-      />
-
-      <TagsEditor tag={tag} onChange={setTag} />
     </MainLayout>
   );
 };

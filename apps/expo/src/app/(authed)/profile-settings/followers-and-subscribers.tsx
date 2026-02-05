@@ -8,6 +8,7 @@ import { FlashList } from "@shopify/flash-list";
 import type { RouterOutputs } from "@/utils/api";
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
+import { useResponsive } from "@/hooks/useResponsive";
 import createToast from "@/utils/createToast";
 import { getImageUrl } from "@/utils/imagekit";
 import { Image } from "@/components/image";
@@ -20,6 +21,7 @@ import StartrackerIcon from "@/assets/startracker_icon.svg";
 
 const FollowersAndSubscribersPage: FC = () => {
   const [followerType, setFollowerType] = useState<"DEFAULT" | "STAR_TRACKER">("DEFAULT");
+  const { isMobile, isTablet, isDesktop } = useResponsive();
 
   const { data, isLoading, hasNextPage, fetchNextPage, refetch } = api.auth.userFollow.list.useInfiniteQuery(
     { limit: 20, myFollowers: true, type: followerType },
@@ -109,12 +111,12 @@ const FollowersAndSubscribersPage: FC = () => {
     ({ item }: { item: RouterOutputs["auth"]["userFollow"]["list"]["items"][number] }) => {
       const user = item.followingUser;
       return (
-        <View className="flex flex-row items-center px-4 py-2">
+        <View className="flex flex-row items-center px-4 md:px-5 lg:px-6 py-2 md:py-3 lg:py-4">
           <LinearGradient
             colors={["#938DFB", "#9589F6", "#9B7FEA", "#A56ED5", "#B457B8", "#C73993", "#DD1465", "#EB004C"]}
             start={[0.0, 0.5]}
             end={[1.0, 0.5]}
-            className="mr-4 aspect-square w-12 rounded-full p-[2px]"
+            className="mr-4 md:mr-5 lg:mr-6 aspect-square w-12 md:w-14 lg:w-16 rounded-full p-[2px]"
           >
             {!user && <Skeleton cls="w-full h-full rounded-full overflow-hidden opacity-50" width={150} height={150} />}
 
@@ -135,10 +137,10 @@ const FollowersAndSubscribersPage: FC = () => {
             )}
           </LinearGradient>
 
-          <View className="flex-1">
-            <Typography fontWeight="bold">{item.followingUser.username}</Typography>
+          <View className="flex-1 px-2 md:px-3 lg:px-4">
+            <Typography fontWeight="bold" cls="text-base md:text-lg lg:text-xl">{item.followingUser.username}</Typography>
           </View>
-          <Button size="xs" variant="outline" cls="py-1 px-2" onPress={() => handleRemoveFollower(item)}>
+          <Button size="xs" variant="outline" cls="py-1 md:py-1.5 lg:py-2 px-2 md:px-3 lg:px-4" onPress={() => handleRemoveFollower(item)}>
             Remove
           </Button>
         </View>
@@ -149,53 +151,54 @@ const FollowersAndSubscribersPage: FC = () => {
 
   return (
     <MainLayout title="Followers & subscribers" contentType="custom" showBackButton>
-      <FlashList
-        className="flex h-full w-full flex-col space-y-6 px-6"
-        scrollEventThrottle={50}
-        ListHeaderComponent={
-          <View className="flex w-full items-center justify-center pb-4 pt-10">
-            <View className="flex flex-row rounded-full border border-white">
-              <View className="overflow-hidden rounded-full">
-                <ButtonBase
-                  className={cn("rounded-full px-3 py-3", followerType === "DEFAULT" && "bg-white")}
-                  onPress={() => setFollowerType("DEFAULT")}
-                >
-                  <Typography fontWeight="bold" cls={cn("text-white text-sm", followerType === "DEFAULT" && "text-black")}>
-                    Followers
-                  </Typography>
-                </ButtonBase>
-              </View>
+      <View className="max-w-2xl lg:max-w-3xl mx-auto w-full h-full">
+        <FlashList
+          className="flex h-full w-full flex-col space-y-6 px-6 md:px-8 lg:px-10"
+          scrollEventThrottle={50}
+          ListHeaderComponent={
+            <View className="flex w-full items-center justify-center pb-4 md:pb-5 lg:pb-6 pt-10 md:pt-12 lg:pt-14">
+              <View className="flex flex-row rounded-full border border-white">
+                <View className="overflow-hidden rounded-full">
+                  <ButtonBase
+                    className={cn("rounded-full px-3 md:px-4 lg:px-5 py-3 md:py-4 lg:py-5", followerType === "DEFAULT" && "bg-white")}
+                    onPress={() => setFollowerType("DEFAULT")}
+                  >
+                    <Typography fontWeight="bold" cls={cn("text-white text-sm md:text-base lg:text-lg", followerType === "DEFAULT" && "text-black")}>
+                      Followers
+                    </Typography>
+                  </ButtonBase>
+                </View>
 
-              <View className="overflow-hidden rounded-full">
-                <ButtonBase
-                  className={cn("rounded-full px-3 py-3", followerType === "STAR_TRACKER" && "bg-white")}
-                  onPress={() => setFollowerType("STAR_TRACKER")}
-                >
-                  <Typography fontWeight="bold" cls={cn("text-white text-sm", followerType === "STAR_TRACKER" && "text-black")}>
-                    Subscribers
-                  </Typography>
-                </ButtonBase>
+                <View className="overflow-hidden rounded-full">
+                  <ButtonBase
+                    className={cn("rounded-full px-3 md:px-4 lg:px-5 py-3 md:py-4 lg:py-5", followerType === "STAR_TRACKER" && "bg-white")}
+                    onPress={() => setFollowerType("STAR_TRACKER")}
+                  >
+                    <Typography fontWeight="bold" cls={cn("text-white text-sm md:text-base lg:text-lg", followerType === "STAR_TRACKER" && "text-black")}>
+                      Subscribers
+                    </Typography>
+                  </ButtonBase>
+                </View>
               </View>
             </View>
-          </View>
-        }
-        ListEmptyComponent={() => {
-          if (isLoading) {
-            return null;
           }
+          ListEmptyComponent={() => {
+            if (isLoading) {
+              return null;
+            }
 
-          return (
-            <View className="flex flex-col items-center justify-center p-6 py-6">
-              <StartrackerIcon className="opacity-60" width={160} height={160} />
-              <Typography variant="h2" fontWeight="bold" cls="text-center mt-6">
-                {followerType === "DEFAULT" ? "No followers yet" : "No subscribers yet"}
-              </Typography>
-              <Typography variant="p" fontWeight="regular" cls="text-center text-lg leading-5 mt-2 mb-10">
-                {followerType === "DEFAULT" ? "You do not have any followers yet." : "You do not have any subscribers yet."}
-              </Typography>
-            </View>
-          );
-        }}
+            return (
+              <View className="flex flex-col items-center justify-center p-6 md:p-8 lg:p-12 max-w-md lg:max-w-lg mx-auto w-full">
+                <StartrackerIcon className="opacity-60" width={isMobile ? 160 : isTablet ? 180 : 200} height={isMobile ? 160 : isTablet ? 180 : 200} />
+                <Typography variant="h2" fontWeight="bold" cls="text-center mt-6 md:mt-8 lg:mt-10">
+                  {followerType === "DEFAULT" ? "No followers yet" : "No subscribers yet"}
+                </Typography>
+                <Typography variant="p" fontWeight="regular" cls="text-center mt-2 md:mt-3 lg:mt-4 mb-10 md:mb-12 lg:mb-14">
+                  {followerType === "DEFAULT" ? "You do not have any followers yet." : "You do not have any subscribers yet."}
+                </Typography>
+              </View>
+            );
+          }}
         onRefresh={handleRefresh}
         refreshing={isRefreshing}
         data={followers}
@@ -209,7 +212,8 @@ const FollowersAndSubscribersPage: FC = () => {
         estimatedItemSize={100}
         // onScroll={onScroll}
         renderItem={handleRenderFollower}
-      />
+        />
+      </View>
     </MainLayout>
   );
 };

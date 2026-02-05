@@ -18,7 +18,7 @@ export default function SubscriptionsAndPurchasesPage() {
       <MainLayout title="Subscriptions & purchases" contentType="scrollable" showBackButton>
         <View className="h-3 md:h-4 lg:h-5" />
 
-        <View className="flex w-full items-center justify-center pb-6 md:pb-8 lg:pb-10 pt-4 md:pt-5 lg:pt-6">
+        <View className="flex w-full items-center justify-center pb-6 md:pb-8 lg:pb-10 pt-4 md:pt-5 lg:pt-6 max-w-md lg:max-w-lg mx-auto">
           <View className="flex flex-row rounded-full border border-white">
             <View className="overflow-hidden rounded-full">
               <ButtonBase

@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 
 import { api } from "@/utils/api";
@@ -29,18 +29,20 @@ const PostPage: FC = () => {
 
   return (
     <>
-      <MainLayout showBackButton contentType="scrollable" isLoading={!post} classes={{ content: "px-2" }}>
-        {post && !!myStarFollows && (
-          <PostListItem
-            isVisible
-            isStartracker={isStartracker}
-            post={post}
-            cls={cn(Platform.OS === "ios" ? "mt-0" : "mt-2")}
-            linkPrefix="/discover"
-            disableBottomPadding
-            onOpenImageViewer={handleSelectImageUrl}
-            onOpenVideoViewer={handleSelectVideoUrl}
-          />
+      <MainLayout showBackButton contentType="scrollable" isLoading={!post} classes={{ content: "px-2 md:px-4 lg:px-6" }}>
+        {post && (
+          <View className="max-w-2xl lg:max-w-3xl mx-auto w-full">
+            <PostListItem
+              isVisible
+              isStartracker={isStartracker}
+              post={post}
+              cls={cn(Platform.OS === "ios" ? "mt-0" : "mt-2 md:mt-3 lg:mt-4")}
+              linkPrefix="/discover"
+              disableBottomPadding
+              onOpenImageViewer={handleSelectImageUrl}
+              onOpenVideoViewer={handleSelectVideoUrl}
+            />
+          </View>
         )}
       </MainLayout>
       <ImageViewer mediaUrl={selectedImageUrl} onClose={handleCloseImageViewer} />

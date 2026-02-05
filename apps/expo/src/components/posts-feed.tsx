@@ -189,8 +189,8 @@ const PostsFeed: FC<Props> = ({
           }
         }}
         onEndReached={handleEndReached}
-        estimatedItemSize={listType === "list" ? listItemContentHeight : 130}
-        numColumns={listType === "grid" ? 3 : 1}
+        estimatedItemSize={listType === "list" ? listItemContentHeight : isMobile ? 130 : isTablet ? 140 : 150}
+        numColumns={listType === "grid" ? (isMobile ? 3 : isTablet ? 4 : 5) : 1}
         // ref={scrollRef}
         onScroll={onScroll}
       />
