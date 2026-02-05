@@ -31,7 +31,7 @@ const PostPage: FC = () => {
     <>
       <MainLayout showBackButton contentType="scrollable" isLoading={!post} classes={{ content: "px-2 md:px-4 lg:px-6" }}>
         {post && (
-          <View className="max-w-2xl lg:max-w-3xl mx-auto w-full">
+          <View className="max-w-xl lg:max-w-2xl mx-auto w-full">
             <PostListItem
               isVisible
               isStartracker={isStartracker}

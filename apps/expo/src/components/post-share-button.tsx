@@ -2,6 +2,7 @@ import type { FC } from "react";
 import { Share } from "react-native";
 import Icon from "@expo/vector-icons/FontAwesome";
 
+import { useResponsive } from "@/hooks/useResponsive";
 import createToast from "@/utils/createToast";
 import ButtonBase from "./ui/button-base";
 
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const PostShareButton: FC<Props> = ({ postId }) => {
+  const { isMobile, isTablet } = useResponsive();
+  
   return (
     <ButtonBase
       onPress={async () => {
@@ -25,9 +28,14 @@ const PostShareButton: FC<Props> = ({ postId }) => {
           });
         }
       }}
-      className="absolute -bottom-8 left-0 flex h-20 w-20 items-center justify-center rounded-full border-2 border-white bg-[#222222]"
+      className="absolute left-0 flex items-center justify-center rounded-full border-2 border-white bg-[#222222]"
+      style={{
+        bottom: isMobile ? -32 : isTablet ? -36 : -40,
+        width: isMobile ? 64 : isTablet ? 72 : 80,
+        height: isMobile ? 64 : isTablet ? 72 : 80,
+      }}
     >
-      <Icon name="share" size={24} color="white" />
+      <Icon name="share" size={isMobile ? 18 : isTablet ? 20 : 22} color="white" />
     </ButtonBase>
   );
 };

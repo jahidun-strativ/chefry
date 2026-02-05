@@ -139,22 +139,22 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
 
   return (
     <>
-      <View className={cn("mb-12 md:mb-14 lg:mb-16 mt-12 md:mt-14 lg:mt-16 flex flex-col pb-4 md:pb-6 lg:pb-8", cls)}>
-        <View className="flex flex-row items-center justify-between pl-[90px] md:pl-[100px] lg:pl-[110px]">
+      <View className={cn("mb-8 md:mb-10 lg:mb-12 mt-8 md:mt-10 lg:mt-12 flex flex-col pb-4 md:pb-6 lg:pb-8", cls)}>
+        <View className="flex flex-row items-center justify-between" style={{ paddingLeft: isMobile ? 72 : isTablet ? 80 : 88 }}>
           <Link
             disabled={!me || me.id === post.createdBy.id}
             asChild
             href={(linkPrefix || "") + "/view-profile/" + post.createdBy.username}
           >
             <ButtonBase className="flex flex-row items-center">
-              <Typography cls="text-base md:text-lg lg:text-xl" variant="h3">
+              <Typography cls="text-sm md:text-base lg:text-lg" variant="h3">
                 {post.createdBy.username}
               </Typography>
-              {post.createdBy.verified && <VerifiedTick cls="ml-2 md:ml-3 lg:ml-4" />}
+              {post.createdBy.verified && <VerifiedTick cls="ml-1.5 md:ml-2 lg:ml-2.5" />}
             </ButtonBase>
           </Link>
 
-          <IconButton iconName="more-horizontal" onPress={openPostSettings} />
+          <IconButton iconName="more-horizontal" onPress={openPostSettings} size="sm" />
         </View>
 
         <View className="relative flex-1">
@@ -163,7 +163,7 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
           <View 
             className="w-full mx-auto" 
             style={{ 
-              maxWidth: isMobile ? "100%" : isTablet ? 600 : 800,
+              maxWidth: isMobile ? "100%" : isTablet ? 450 : 550,
             }}
           >
             <LinearGradient
@@ -179,14 +179,14 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
               {media?.type === "IMAGE" && (
                 <Image
                   source={{
-                    uri: getImageUrl(media.url, [{ width: isMobile ? "1024" : isTablet ? "1280" : "1600" }]),
+                    uri: getImageUrl(media.url, [{ width: isMobile ? "1024" : isTablet ? "1024" : "1200" }]),
                   }}
                   placeholder={Platform.OS === "ios" ? media.thumbhash : undefined}
                   placeholderContentFit="cover"
                   className="w-full rounded-[50px]"
                   style={{ 
                     aspectRatio: Math.max(aspectRatio, 0.7),
-                    maxHeight: isMobile ? undefined : isTablet ? 600 : 700,
+                    maxHeight: isMobile ? undefined : isTablet ? 450 : 550,
                   }}
                   contentFit="cover"
                   transition={200}
@@ -195,7 +195,7 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
               )}
 
               {media?.type === "VIDEO" && (
-                <View style={{ maxHeight: isMobile ? undefined : isTablet ? 600 : 700 }}>
+                <View style={{ maxHeight: isMobile ? undefined : isTablet ? 450 : 550 }}>
                   <PostVideoPlayer ref={postVideoPlayerHandleRef} isVisible={isVisible} media={media} aspectRatio={aspectRatio} />
                 </View>
               )}
@@ -271,8 +271,8 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
                 className="absolute m-px flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-[50px] bg-[#9A82EE]/40"
               >
                 <BlurView cls={cn("absolute h-full w-full", Platform.OS === "android" ? "bg-black" : "bg-black/80")} />
-                <StartrackerIcon width={isMobile ? 80 : isTablet ? 96 : 112} height={isMobile ? 80 : isTablet ? 96 : 112} />
-                <Typography cls="mt-4 md:mt-5 lg:mt-6" variant="h2">
+                <StartrackerIcon width={isMobile ? 60 : isTablet ? 70 : 80} height={isMobile ? 60 : isTablet ? 70 : 80} />
+                <Typography cls="mt-3 md:mt-4 lg:mt-5 text-base md:text-lg lg:text-xl" variant="h2">
                   Subscribe to see this content
                 </Typography>
               </Pressable>
@@ -281,13 +281,17 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
 
           {profileImage && (
             <Link disabled={!me || me.id === post.createdBy.id} asChild href={("/view-profile/" + post.createdBy.username) as any}>
-              <ButtonBase cls="absolute -top-12 md:-top-14 lg:-top-16">
+              <ButtonBase cls="absolute" style={{ top: isMobile ? -48 : isTablet ? -52 : -56, left: 0 }}>
                 <Image
                   source={{
                     uri: getImageUrl(profileImage.url, [{ width: "128" }]),
                     thumbhash: profileImage.thumbhash ?? undefined,
                   }}
-                  className="left-0 h-20 w-20 md:h-24 md:w-24 lg:h-28 lg:w-28 rounded-full border-2 border-white bg-[#222222]"
+                  className="rounded-full border-2 border-white bg-[#222222]"
+                  style={{ 
+                    width: isMobile ? 64 : isTablet ? 72 : 80,
+                    height: isMobile ? 64 : isTablet ? 72 : 80,
+                  }}
                   contentFit="cover"
                 />
               </ButtonBase>
@@ -295,8 +299,8 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
           )}
 
           {!profileImage && (
-            <View className="absolute -top-12 md:-top-14 lg:-top-16 left-0 flex h-20 w-20 md:h-24 md:w-24 lg:h-28 lg:w-28 items-center justify-center rounded-full border-2 border-white bg-[#222222]">
-              <Icon name="user" size={isMobile ? 32 : isTablet ? 36 : 40} color="white" />
+            <View className="absolute left-0 flex items-center justify-center rounded-full border-2 border-white bg-[#222222]" style={{ top: isMobile ? -48 : isTablet ? -52 : -56, width: isMobile ? 64 : isTablet ? 72 : 80, height: isMobile ? 64 : isTablet ? 72 : 80 }}>
+              <Icon name="user" size={isMobile ? 24 : isTablet ? 28 : 32} color="white" />
             </View>
           )}
 
@@ -315,41 +319,41 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
           )}
         </View>
 
-        <View className="mx-2 md:mx-3 lg:mx-4 mt-2 md:mt-3 lg:mt-4 flex flex-row items-center px-20 md:px-24 lg:px-28">
+        <View className="mx-2 md:mx-3 lg:mx-4 mt-3 md:mt-4 lg:mt-5 flex flex-row items-center" style={{ paddingHorizontal: isMobile ? 60 : isTablet ? 72 : 84 }}>
           <View className="flex-1 flex-row items-center justify-center">
-            <Icon name="heart" size={isMobile ? 18 : isTablet ? 20 : 22} color="white" />
+            <Icon name="heart" size={isMobile ? 16 : isTablet ? 18 : 20} color="white" />
             {isLoadingReactionData ? (
               <View className="ml-1 md:ml-1.5 lg:ml-2 opacity-30">
-                <Skeleton colorMode="dark" height={20} width={20} radius={4} />
+                <Skeleton colorMode="dark" height={16} width={16} radius={4} />
               </View>
             ) : (
-              <Typography cls="text-sm md:text-base lg:text-lg ml-1 md:ml-1.5 lg:ml-2" variant="p">
+              <Typography cls="text-xs md:text-sm lg:text-base ml-1 md:ml-1.5 lg:ml-2" variant="p">
                 {heartReactionCount || 0}
               </Typography>
             )}
           </View>
 
           <View className="flex-1 flex-row items-center justify-center">
-            <Icon name="smile" size={isMobile ? 18 : isTablet ? 20 : 22} color="white" />
+            <Icon name="smile" size={isMobile ? 16 : isTablet ? 18 : 20} color="white" />
             {isLoadingReactionData ? (
               <View className="ml-1 md:ml-1.5 lg:ml-2 opacity-30">
-                <Skeleton colorMode="dark" height={20} width={20} radius={4} />
+                <Skeleton colorMode="dark" height={16} width={16} radius={4} />
               </View>
             ) : (
-              <Typography cls="text-sm md:text-base lg:text-lg ml-1 md:ml-1.5 lg:ml-2" variant="p">
+              <Typography cls="text-xs md:text-sm lg:text-base ml-1 md:ml-1.5 lg:ml-2" variant="p">
                 {smileReactionCount || 0}
               </Typography>
             )}
           </View>
 
           <View className="flex-1 flex-row items-center justify-center">
-            <Icon name="star" size={isMobile ? 18 : isTablet ? 20 : 22} color="white" />
+            <Icon name="star" size={isMobile ? 16 : isTablet ? 18 : 20} color="white" />
             {isLoadingReactionData ? (
               <View className="ml-1 md:ml-1.5 lg:ml-2 opacity-30">
-                <Skeleton colorMode="dark" height={20} width={20} radius={4} />
+                <Skeleton colorMode="dark" height={16} width={16} radius={4} />
               </View>
             ) : (
-              <Typography cls="text-sm md:text-base lg:text-lg ml-1 md:ml-1.5 lg:ml-2" variant="p">
+              <Typography cls="text-xs md:text-sm lg:text-base ml-1 md:ml-1.5 lg:ml-2" variant="p">
                 {starReactionCount || 0}
               </Typography>
             )}
@@ -357,7 +361,7 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
         </View>
 
         <ExpandablePostCaption caption={post.caption} username={post.createdBy.username} shouldBeHidden={post.starPost && !isStartracker} />
-        <Typography variant="p" cls="mt-3 md:mt-4 lg:mt-5 pl-2 md:pl-3 lg:pl-4">
+        <Typography variant="p" cls="mt-2 md:mt-3 lg:mt-4 pl-2 md:pl-3 lg:pl-4 text-xs md:text-sm lg:text-base">
           {autoRelativeTimeFormat(new Date(post.createdAt))}
         </Typography>
         <ContentSettingsBottomSheet isOpen={postSettingsOpen} onClose={closePostSettings} postId={post.id} />

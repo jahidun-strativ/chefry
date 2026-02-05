@@ -10,6 +10,7 @@ import { AnimatePresence } from "moti";
 
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
+import { useResponsive } from "@/hooks/useResponsive";
 import createToast from "@/utils/createToast";
 import type { POST_REACTION_TYPE } from "@/utils/models";
 import useOpenState from "@/hooks/useOpenState";
@@ -106,9 +107,14 @@ const PostLikeButton = forwardRef<PostLikeButtonHandle, Props>(
       return postInteractions.find((interaction) => interaction.type === myReaction)?.gradientColors || [];
     }, [myReaction]);
 
+    const { isMobile, isTablet } = useResponsive();
+    const buttonSize = isMobile ? 64 : isTablet ? 72 : 80;
+    const iconSize = isMobile ? 18 : isTablet ? 20 : 22;
+    const bottomOffset = isMobile ? -32 : isTablet ? -36 : -40;
+
     return (
       <>
-        <View className="pointer-events-auto absolute -bottom-8 right-2 z-10 h-20 w-20">
+        <View className="pointer-events-auto absolute right-2 z-10" style={{ bottom: bottomOffset, width: buttonSize, height: buttonSize }}>
           <AnimatePresence>
             {interactionPickerOpen &&
               postInteractions.map((interaction, index) => (
@@ -129,7 +135,8 @@ const PostLikeButton = forwardRef<PostLikeButtonHandle, Props>(
 
         <LinearGradient
           colors={buttonGradient as [string, string, ...string[]]}
-          className="absolute -bottom-8 right-0 z-20 h-20 w-20 rounded-full p-[2px]"
+          className="absolute right-0 z-20 rounded-full p-[2px]"
+          style={{ bottom: bottomOffset, width: buttonSize, height: buttonSize }}
           start={[0.0, 0.0]}
           end={[1.0, 1.0]}
         >
@@ -140,14 +147,14 @@ const PostLikeButton = forwardRef<PostLikeButtonHandle, Props>(
           >
             {!interactionPickerOpen && !isLoading && (
               <>
-                {!myReaction && <Icon name="heart" size={24} color="#B950AF" />}
-                {myReaction === "HEART" && <Icon name="heart" size={24} color="white" />}
-                {myReaction === "STAR" && <Icon name="star" size={24} color="white" />}
-                {myReaction === "SMILE" && <Icon name="smile" size={24} color="white" />}
+                {!myReaction && <Icon name="heart" size={iconSize} color="#B950AF" />}
+                {myReaction === "HEART" && <Icon name="heart" size={iconSize} color="white" />}
+                {myReaction === "STAR" && <Icon name="star" size={iconSize} color="white" />}
+                {myReaction === "SMILE" && <Icon name="smile" size={iconSize} color="white" />}
               </>
             )}
-            {interactionPickerOpen && !isLoading && <Icon name="x" size={24} color="white" />}
-            {isLoading && <Spinner size={24} />}
+            {interactionPickerOpen && !isLoading && <Icon name="x" size={iconSize} color="white" />}
+            {isLoading && <Spinner size={iconSize} />}
           </ButtonBase>
         </LinearGradient>
       </>

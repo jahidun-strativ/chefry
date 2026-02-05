@@ -61,11 +61,11 @@ export const ExpandablePostCaption: FC<Props> = ({ username, caption: _caption, 
   };
 
   return (
-    <View className="mt-4 px-2 leading-5">
+    <View className="mt-3 md:mt-4 lg:mt-5 px-2 md:px-3 lg:px-4 leading-5">
       <Typography
         key={numberOfLines}
         numberOfLines={numberOfLines}
-        cls="text-sm"
+        cls="text-xs md:text-sm lg:text-base"
         variant="p"
         onLayout={handleLayout}
         onTextLayout={handleTextLayout}
@@ -83,9 +83,9 @@ export const ExpandablePostCaption: FC<Props> = ({ username, caption: _caption, 
             console.log("onPress");
             setNumberOfLines(undefined);
           }}
-          className="mt-1"
+          className="mt-1 md:mt-1.5 lg:mt-2"
         >
-          <Typography variant="p" fontWeight="bold" className="text-sm">
+          <Typography variant="p" fontWeight="bold" className="text-xs md:text-sm lg:text-base">
             Read more
           </Typography>
         </Pressable>
