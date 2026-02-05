@@ -2,6 +2,8 @@ import { useState } from "react";
 import { View } from "react-native";
 
 import { cn } from "@/utils/cn";
+import { Image } from "@/components/image";
+import toPurchaseIcon from "@/assets/to-purchase.png";
 import MainLayout from "@/components/main-layout";
 import { MyPackages } from "@/components/my-packages";
 import { MySubscriptions } from "@/components/my-subscriptions";
@@ -30,10 +32,23 @@ export default function SubscriptionsAndPurchasesPage() {
             </View>
 
             <View className="overflow-hidden rounded-full">
-              <ButtonBase cls={cn("rounded-full px-3 py-3", type === "PACKAGES" && "bg-white")} onPress={() => setType("PACKAGES")}>
-                <Typography fontWeight="bold" cls={cn("text-white text-sm", type === "PACKAGES" && "!text-black")}>
-                  Packages
-                </Typography>
+              <ButtonBase
+                cls={cn("rounded-full px-3 py-3", type === "PACKAGES" && "bg-white")}
+                onPress={() => setType("PACKAGES")}
+              >
+                <View className="flex flex-row items-center">
+                  <Image
+                    source={toPurchaseIcon as unknown as number}
+                    style={{ width: 16, height: 16, marginRight: 6 }}
+                    contentFit="contain"
+                  />
+                  <Typography
+                    fontWeight="bold"
+                    cls={cn("text-white text-sm", type === "PACKAGES" && "!text-black")}
+                  >
+                    Packages
+                  </Typography>
+                </View>
               </ButtonBase>
             </View>
           </View>

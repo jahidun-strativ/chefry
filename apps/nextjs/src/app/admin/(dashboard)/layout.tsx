@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 
-import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import { currentUser } from "@clerk/nextjs/server";
 import { SignOutButton } from "@clerk/nextjs";
@@ -13,7 +12,6 @@ import AppBar from "@/components/app-bar";
 import TabMenu from "@/components/tab-menu";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
-import logo from "@/assets/logo.svg";
 import { ClientProviders } from "./providers";
 
 const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 8);
@@ -25,7 +23,7 @@ export const metadata = {
 const NotAuthorized = () => {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
-      <Image priority src={(logo as StaticImageData).src} alt="Logo" width={300} height={150} />
+      <Image priority src="/main-logo.png" alt="Logo" width={300} height={150} />
       <div className="mt-12 flex max-w-md flex-col items-center justify-center">
         <h1 className="text-center font-sans text-4xl font-bold">Not authorized</h1>
         <p className="mt-4 text-center font-sans text-lg text-slate-500">

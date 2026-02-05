@@ -9,7 +9,8 @@ import { FlashList } from "@shopify/flash-list";
 import type { RouterInputs, RouterOutputs } from "@/utils/api";
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
-import StartrackerIcon from "@/assets/startracker_icon.svg";
+import subscribeLogo from "@/assets/subscribe-logo.png";
+import { Image } from "@/components/image";
 import { ImageViewer } from "./image-viewer";
 import PostGridItem from "./post-grid-item";
 import PostListItem from "./post-list-item";
@@ -117,7 +118,8 @@ const PostsFeed: FC<Props> = ({
 
           return (
             <View className={cn("flex flex-col items-center justify-center p-6", Platform.OS === "android" && "py-0")}>
-              <StartrackerIcon className="opacity-60" width={160} height={160} />
+              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */}
+              <Image source={subscribeLogo as any} style={{ width: 160, height: 160, opacity: 0.6 }} contentFit="contain" />
               <Typography variant="h2" fontWeight="bold" cls="text-center mt-6">
                 No posts yet
               </Typography>

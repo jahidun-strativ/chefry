@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { FC } from "react";
 import { useState } from "react";
 import { Alert, View } from "react-native";
@@ -7,17 +8,24 @@ import Icon from "@expo/vector-icons/Feather";
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
 import createToast from "@/utils/createToast";
+import { Image } from "@/components/image";
+import toPurchaseIcon from "@/assets/to-purchase.png";
 import FullPageLoadingOverlay from "@/components/full-page-loading-overlay";
 import MainLayout from "@/components/main-layout";
 import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
 
-const ProfileListButton: FC<{ href: string; label: string; cls?: string }> = ({ href, label, cls }) => (
+const ProfileListButton: FC<{ href: string; label: string; cls?: string; showPurchaseIcon?: boolean }> = ({ href, label, cls, showPurchaseIcon }) => (
   <Button variant="outline" cls={cn("mb-2", cls)} href={href}>
-    <View className="flex w-full flex-row items-center justify-between pl-4">
-      <Typography variant="h2" cls="text-lg">
-        {label}
-      </Typography>
+      <View className="flex w-full flex-row items-center justify-between pl-4">
+        <View className="flex flex-row items-center">
+          {showPurchaseIcon && (
+            <Image source={toPurchaseIcon} style={{ width: 20, height: 20, marginRight: 8 }} contentFit="contain" />
+          )}
+          <Typography variant="h2" cls="text-lg">
+            {label}
+          </Typography>
+        </View>
       <Icon name="chevron-right" size={24} color="white" />
     </View>
   </Button>
@@ -86,7 +94,7 @@ const ProfileSettingsPage: FC = () => {
         <ProfileListButton href="/profile-settings/blocked-users" label="Blocked users" />
 
         {me?.verified && <ProfileListButton href="/profile-settings/followers-and-subscribers" label="Followers & subscribers" />}
-        <ProfileListButton href="/profile-settings/subscriptions-and-purchases" label="Subscriptions & packages" />
+        <ProfileListButton href="/profile-settings/subscriptions-and-purchases" label="Subscriptions & packages" showPurchaseIcon />
 
         {!me?.verified && (
           <Button variant="gradient" cls="mb-2 border border-white" href="/profile-settings/become-a-star">

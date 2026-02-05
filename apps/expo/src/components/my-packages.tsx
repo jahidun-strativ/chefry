@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useMemo, useState } from "react";
 import { Platform, View } from "react-native";
 
@@ -8,7 +9,7 @@ import { constructMediaUrl } from "@/utils/imagekit";
 import { Image } from "@/components/image";
 import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
-import StartrackerIcon from "@/assets/startracker_icon.svg";
+import toPurchaseIcon from "@/assets/to-purchase.png";
 import LoadingPage from "./ui/loading-page";
 import UnsubscribeBottomSheet from "./unsubscribe-bottom-sheet";
 
@@ -28,7 +29,7 @@ export function MyPackages() {
     <>
       {eventPackages.length === 0 && (
         <View className={cn("flex flex-col items-center justify-center p-6", Platform.OS === "android" && "py-0")}>
-          <StartrackerIcon className="opacity-60" width={160} height={160} />
+          <Image source={toPurchaseIcon} style={{ width: 160, height: 160, opacity: 0.6 }} contentFit="contain" />
           <Typography variant="h2" fontWeight="bold" cls="text-center mt-6">
             No packages bought
           </Typography>

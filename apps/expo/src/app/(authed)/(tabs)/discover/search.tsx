@@ -12,13 +12,14 @@ import { z } from "zod";
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
 import type { INTEREST } from "@/utils/models";
+import subscribeLogo from "@/assets/subscribe-logo.png";
+import { Image } from "@/components/image";
 import FollowSuggestionItem from "@/components/follow-suggestion-item";
 import InterestsFilterPanel from "@/components/interests-filter-panel";
 import MainLayout from "@/components/main-layout";
 import Input from "@/components/ui/input";
 import Typography from "@/components/ui/typography";
 import UserSearchListItem from "@/components/user-search-list-item";
-import StartrackerIcon from "@/assets/startracker_icon.svg";
 
 const RecentSearchesSchema = z.array(z.string());
 
@@ -177,7 +178,8 @@ const SearchPage: FC = () => {
             transition={{ type: "timing", duration: 200 }}
           >
             <View className={cn("flex flex-col items-center justify-center p-6", Platform.OS === "android" && "py-0")}>
-              <StartrackerIcon className="opacity-60" width={160} height={160} />
+              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */}
+              <Image source={subscribeLogo as any} style={{ width: 160, height: 160, opacity: 0.6 }} contentFit="contain" />
               <Typography variant="h2" fontWeight="bold" cls="text-center mt-6">
                 No results yet
               </Typography>

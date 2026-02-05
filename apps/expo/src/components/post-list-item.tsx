@@ -3,9 +3,7 @@
 import type { FC } from "react";
 import React, { useMemo, useRef } from "react";
 import { Platform, Pressable, View } from "react-native";
-import type { HandlerStateChangeEvent, TapGestureHandlerEventPayload } from "react-native-gesture-handler";
-import { State, TapGestureHandler } from "react-native-gesture-handler";
-import * as Haptics from "expo-haptics";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import Icon from "@expo/vector-icons/Feather";
@@ -51,7 +49,7 @@ interface Props {
   onOpenVideoViewer: (videoUrl: string) => void;
 }
 
-const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartracker, onOpenImageViewer, onOpenVideoViewer }) => {
+const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartracker }) => {
   const { data: me } = api.auth.user.me.useQuery();
   const { data: canSubscribe } = api.auth.stripe.canSubscribe.useQuery(
     { username: post.createdBy.username },
@@ -101,28 +99,28 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
   const postVideoPlayerHandleRef = useRef<PostVideoPlayerHandle>(null);
   const postLikeButtonHandleRef = useRef<PostLikeButtonHandle>(null);
 
-  const doubleTapRef = useRef<TapGestureHandler>(null);
-  const handleDoubleTapEvent = (e: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) => {
-    if (e.nativeEvent.state === State.ACTIVE && postLikeButtonHandleRef.current) {
-      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      postLikeButtonHandleRef.current.likePost();
-    }
-  };
+  // const doubleTapRef = useRef<TapGestureHandler>(null);
+  // const handleDoubleTapEvent = (e: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) => {
+  //   if (e.nativeEvent.state === State.ACTIVE && postLikeButtonHandleRef.current) {
+  //     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  //     postLikeButtonHandleRef.current.likePost();
+  //   }
+  // };
 
-  const handleSingleTapEvent = (e: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) => {
-    console.log("handleSingleTapEvent", e.nativeEvent.state);
-    if (e.nativeEvent.state === State.ACTIVE && media && media.type === "VIDEO" && postVideoPlayerHandleRef.current) {
-      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      if (Platform.OS === "android") {
-        onOpenVideoViewer(media.url);
-      } else {
-        postVideoPlayerHandleRef.current.onOpenInFullscreen();
-      }
-    } else if (e.nativeEvent.state === State.ACTIVE && media && media.type === "IMAGE") {
-      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      onOpenImageViewer(media.url); // push("/image/" + media.url);
-    }
-  };
+  // const handleSingleTapEvent = (e: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) => {
+  //   console.log("handleSingleTapEvent", e.nativeEvent.state);
+  //   if (e.nativeEvent.state === State.ACTIVE && media && media.type === "VIDEO" && postVideoPlayerHandleRef.current) {
+  //     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  //     if (Platform.OS === "android") {
+  //       onOpenVideoViewer(media.url);
+  //     } else {
+  //       postVideoPlayerHandleRef.current.onOpenInFullscreen();
+  //     }
+  //   } else if (e.nativeEvent.state === State.ACTIVE && media && media.type === "IMAGE") {
+  //     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  //     onOpenImageViewer(media.url); // push("/image/" + media.url);
+  //   }
+  // };
 
   const handlePostReact = (reactionType: "HEART" | "SMILE" | "STAR") => {
     if (reactionType === "HEART") {
@@ -192,50 +190,52 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
           {/* </TapGestureHandler>
           </TapGestureHandler> */}
 
-          <View className="absolute bottom-0 right-0 z-20 h-full w-full" pointerEvents="none">
-            <LottieView
-              autoPlay={false}
-              // autoSize
-              loop={false}
-              progress={1}
-              ref={heartAnimationRef}
-              style={{
-                position: "absolute",
-                transform: Platform.OS === "android" ? undefined : [{ scale: 1.1 }],
-                width: "100%",
-                height: "100%",
-              }}
-              source={heartAnimation}
-            />
-            <LottieView
-              autoPlay={false}
-              // autoSize
-              loop={false}
-              progress={1}
-              ref={starAnimationRef}
-              style={{
-                position: "absolute",
-                transform: [{ scale: 1.1 }],
-                width: "100%",
-                height: "100%",
-              }}
-              source={starAnimation}
-            />
-            <LottieView
-              autoPlay={false}
-              // autoSize
-              loop={false}
-              progress={1}
-              ref={smileAnimationRef}
-              style={{
-                position: "absolute",
-                transform: [{ scale: 1.1 }],
-                width: "100%",
-                height: "100%",
-              }}
-              source={smileAnimation}
-            />
-          </View>
+          {Platform.OS !== "web" && (
+            <View className="absolute bottom-0 right-0 z-20 h-full w-full" pointerEvents="none">
+              <LottieView
+                autoPlay={false}
+                // autoSize
+                loop={false}
+                progress={1}
+                ref={heartAnimationRef}
+                style={{
+                  position: "absolute",
+                  transform: Platform.OS === "android" ? undefined : [{ scale: 1.1 }],
+                  width: "100%",
+                  height: "100%",
+                }}
+                source={heartAnimation}
+              />
+              <LottieView
+                autoPlay={false}
+                // autoSize
+                loop={false}
+                progress={1}
+                ref={starAnimationRef}
+                style={{
+                  position: "absolute",
+                  transform: [{ scale: 1.1 }],
+                  width: "100%",
+                  height: "100%",
+                }}
+                source={starAnimation}
+              />
+              <LottieView
+                autoPlay={false}
+                // autoSize
+                loop={false}
+                progress={1}
+                ref={smileAnimationRef}
+                style={{
+                  position: "absolute",
+                  transform: [{ scale: 1.1 }],
+                  width: "100%",
+                  height: "100%",
+                }}
+                source={smileAnimation}
+              />
+            </View>
+          )}
 
           {post.starPost && !isStartracker && (
             <LinearGradient

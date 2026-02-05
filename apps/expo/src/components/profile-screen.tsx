@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { useCallback, useRef, useState } from "react";
 import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
+import type { RefObject } from "react";
 import type { FlashList } from "@shopify/flash-list";
 
 import type { RouterOutputs } from "@/utils/api";
@@ -18,7 +19,7 @@ interface Props {
 
 const ProfileScreen: FC<Props> = ({ username, linkPrefix, onScroll }) => {
   const { data: me } = api.auth.user.me.useQuery();
-  const scrollRef = useRef<FlashList<Post>>(null);
+  const scrollRef = useRef<FlashList<Post>>(null) as RefObject<FlashList<Post>>;
   const profileOverviewHeight = useRef(0);
 
   const scrollPosition = useRef(0);

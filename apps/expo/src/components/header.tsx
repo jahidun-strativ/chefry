@@ -1,7 +1,7 @@
 import type { ComponentProps, FC } from "react";
 import { useEffect, useMemo } from "react";
 import { Platform, View } from "react-native";
-import Animated, { Easing, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated";
+import Animated, { Easing, useAnimatedProps, useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import { useNavigation, usePathname, useRouter } from "expo-router";
@@ -83,7 +83,23 @@ const Header: FC<Props> = ({
     return blurIntensity.value / 50;
   }, [blurIntensity]);
 
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
+    };
+  });
+
+  const animatedProps = useAnimatedProps(() => {
+    return {
+      intensity: blurIntensity.value,
+    };
+  });
+
   const showCustomAction = !!customActionIconName && !!onCustomActionPress;
+
+  const isDiscoverProfilePage = pathname.includes("/discover/view-profile/");
+  const isFeedProfilePage = pathname === "/feed/profile";
+  const logoVariant = isDiscoverProfilePage || isFeedProfilePage ? "secondary" : "main";
 
   return (
     <View
@@ -93,14 +109,14 @@ const Header: FC<Props> = ({
       }}
     >
       {Platform.OS === "ios" && (
-        <AnimatedBlurView className="absolute h-full w-full" intensity={blurIntensity} tint="dark" style={{ opacity: opacity }} />
+        <AnimatedBlurView className="absolute h-full w-full" tint="dark" style={animatedStyle} animatedProps={animatedProps} />
       )}
 
       {Platform.OS !== "ios" && <View className="absolute h-full w-full bg-black/40" style={{ opacity: blurred ? 1 : 0 }} />}
 
       <View style={{ paddingTop: top }} className="absolute z-10 flex h-full w-full flex-row items-center justify-between px-4 pb-4 pt-2">
         {showBackButton ? <IconButton onPress={handleGoBack} iconName="arrow-left" size="base" /> : <View className="w-10" />}
-        <Logo width={200} height={60} />
+        <Logo width={200} height={60} variant={logoVariant} />
 
         {showCustomAction && <IconButton onPress={onCustomActionPress} iconName={customActionIconName} />}
 
