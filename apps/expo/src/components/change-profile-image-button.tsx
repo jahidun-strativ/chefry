@@ -7,6 +7,7 @@ import Icon from "@expo/vector-icons/Feather";
 
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
+import { useResponsive } from "@/hooks/useResponsive";
 import createToast from "@/utils/createToast";
 import { getImageUrl, uploadMedia } from "@/utils/imagekit";
 import { Image } from "@/components/image";
@@ -20,6 +21,7 @@ interface Props {
 
 const ChangeProfileImageButton: FC<Props> = ({ refetchUser }) => {
   const { refetch, data: user } = api.auth.user.me.useQuery();
+  const { isMobile, isTablet } = useResponsive();
 
   const utils = api.useContext();
   const { mutateAsync } = api.auth.user.updateProfileImage.useMutation({
@@ -76,10 +78,13 @@ const ChangeProfileImageButton: FC<Props> = ({ refetchUser }) => {
     }
   };
 
+  const profileImageSize = isMobile ? 112 : isTablet ? 120 : 128;
+  const iconSize = isMobile ? 28 : isTablet ? 32 : 36;
+
   if (isUploading) {
     return (
-      <View className="flex h-28 w-28 items-center justify-center rounded-full border-2 border-white">
-        <Spinner size={20} />
+      <View className="flex items-center justify-center rounded-full border-2 border-white" style={{ width: profileImageSize, height: profileImageSize }}>
+        <Spinner size={isMobile ? 20 : isTablet ? 22 : 24} />
       </View>
     );
   }
@@ -91,7 +96,8 @@ const ChangeProfileImageButton: FC<Props> = ({ refetchUser }) => {
         colors={["#938DFB", "#A56ED5", "#B457B8", "#C73993", "#DD1465", "#EB004C"]}
         start={[0.0, 0.5]}
         end={[1.0, 0.5]}
-        className={cn("z-10 aspect-square w-28 rounded-full", "p-[2px]")}
+        className={cn("z-10 aspect-square rounded-full", "p-[2px]")}
+        style={{ width: profileImageSize, height: profileImageSize }}
       >
         {!user && <Skeleton cls="w-full h-full rounded-full overflow-hidden opacity-50" />}
 
@@ -107,7 +113,7 @@ const ChangeProfileImageButton: FC<Props> = ({ refetchUser }) => {
         )}
         {user && !user?.image && (
           <View className="flex aspect-square w-full items-center justify-center rounded-full bg-[#222222]">
-            <Icon name="user" color="white" size={32} />
+            <Icon name="user" color="white" size={iconSize} />
           </View>
         )}
       </LinearGradient>

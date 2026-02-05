@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { useUser } from "@clerk/clerk-expo";
 
 import { api } from "@/utils/api";
+import { useResponsive } from "@/hooks/useResponsive";
 import createToast from "@/utils/createToast";
 import type { INTEREST } from "@/utils/models";
 import ChangeProfileImageButton from "@/components/change-profile-image-button";
@@ -58,6 +59,8 @@ const EditProfilePage: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [me]);
 
+  const { isMobile, isTablet } = useResponsive();
+
   return (
     <MainLayout
       showBackButton
@@ -65,28 +68,30 @@ const EditProfilePage: FC = () => {
       title="Edit profile"
       isLoading={!me}
       floatingButton={
-        <Button
-          variant="gradient"
-          cls="w-full"
-          isLoading={isLoading}
-          onPress={() => {
-            if (!/^[a-z0-9_-]+$/.test(username)) {
-              createToast({
-                type: "error",
-                message: "Username can only contain lowercase (a-z) letters,underscores (_) and hyphens (-)",
-              });
-              return;
-            }
-            mutate({ bio, username, tags: tag ? [tag] : null });
-          }}
-        >
-          Save
-        </Button>
+        <View className="max-w-md lg:max-w-lg mx-auto w-full px-4 md:px-6 lg:px-8">
+          <Button
+            variant="gradient"
+            cls="w-full"
+            isLoading={isLoading}
+            onPress={() => {
+              if (!/^[a-z0-9_-]+$/.test(username)) {
+                createToast({
+                  type: "error",
+                  message: "Username can only contain lowercase (a-z) letters,underscores (_) and hyphens (-)",
+                });
+                return;
+              }
+              mutate({ bio, username, tags: tag ? [tag] : null });
+            }}
+          >
+            Save
+          </Button>
+        </View>
       }
     >
       <View className="h-2 md:h-3 lg:h-4" />
 
-      <View className="max-w-2xl lg:max-w-3xl mx-auto w-full">
+      <View className="max-w-md lg:max-w-lg mx-auto w-full px-4 md:px-6 lg:px-8">
         <View className="flex items-center justify-center py-4 md:py-5 lg:py-6">
           <ChangeProfileImageButton />
         </View>
@@ -119,7 +124,11 @@ const EditProfilePage: FC = () => {
           numberOfLines={6}
           value={bio}
           onChangeText={setBio}
-          classes={{ inputWrapper: "h-32 md:h-40 lg:h-48 rounded-2xl", input: "px-4 md:px-5 lg:px-6 py-3 md:py-4 lg:py-5" }}
+          classes={{ 
+            root: "mb-4 md:mb-5 lg:mb-6",
+            inputWrapper: isMobile ? "h-32" : isTablet ? "h-36" : "h-40 rounded-2xl", 
+            input: "px-4 md:px-5 lg:px-6 py-3 md:py-4 lg:py-5 text-sm md:text-base lg:text-lg" 
+          }}
         />
 
         <TagsEditor tag={tag} onChange={setTag} />
