@@ -6,7 +6,7 @@ const defineConfig = (): ExpoConfig => ({
   scheme: "startracker",
   version: "1.2.8",
   orientation: "portrait",
-  icon: "./assets/main-logo.png",
+  icon: "./assets/adaptive-iconn.png",
   userInterfaceStyle: "light",
   newArchEnabled: true,
   splash: {
@@ -39,7 +39,7 @@ const defineConfig = (): ExpoConfig => ({
     versionCode: 29,
     googleServicesFile: "./google-services.json",
     adaptiveIcon: {
-      foregroundImage: "./assets/main-logo.png",
+      foregroundImage: "./assets/adaptive-iconn.png",
     },
   },
   web: {

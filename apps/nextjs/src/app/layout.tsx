@@ -11,6 +11,14 @@ const fontSans = Inter({
 
 export const metadata = {
   title: "Star Tracker",
+  icons: {
+    icon: [
+      { url: "/icon.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "192x192", type: "image/png" },
+    ],
+  },
 };
 
 export default function Layout(props: { children: React.ReactNode }) {
