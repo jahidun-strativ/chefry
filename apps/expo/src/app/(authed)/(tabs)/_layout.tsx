@@ -54,11 +54,7 @@ const TabsLayout: FC = () => {
             };
 
             if (route.name === "new-post") {
-              // On web, don't show the CreatePostButton (it uses native modules)
-              // On native, show it only if user is verified
-              if (Platform.OS === "web") {
-                return null;
-              }
+              // Show CreatePostButton if user is verified (works on both web and native now)
               if (me?.verified) return <CreatePostButton key={routeIndex} />;
               else return null;
             } else {
