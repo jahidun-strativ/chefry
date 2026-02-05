@@ -40,9 +40,9 @@ const TabsLayout: FC = () => {
                 canPreventDefault: true,
               });
 
-              if (!isFocused && !event.defaultPrevented) {
+                if (!isFocused && !event.defaultPrevented) {
                 // @ts-expect-error - expo-router navigation types
-                navigation.navigate({ name: route.name, merge: true });
+                  navigation.navigate({ name: route.name, merge: true });
               }
             };
 

@@ -79,7 +79,7 @@ const Layout: FC = () => {
 
   //       console.log("[AuthedLayout] Fetching connected account...");
   //       const connectedAccount = await utils.auth.stripe.connectedAccount.fetch();
-        
+
   //       if (!isMounted || fetchAborted) {
   //         console.log("[AuthedLayout] Component unmounted after fetching connected account");
   //         return;
