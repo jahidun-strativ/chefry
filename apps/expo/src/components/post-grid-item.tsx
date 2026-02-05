@@ -6,6 +6,7 @@ import { Link } from "expo-router";
 import type { RouterOutputs } from "@startracker/api";
 
 import { cn } from "@/utils/cn";
+import { useResponsive } from "@/hooks/useResponsive";
 import { getImageUrl } from "@/utils/imagekit";
 import { Image } from "@/components/image";
 import toPurchaseIcon from "@/assets/to-purchase.png";
@@ -22,10 +23,11 @@ interface Props {
 
 const PostGridItem: FC<Props> = ({ post, index: _index, isStartracker, linkPrefix }) => {
   const media = post.media[0];
+  const { isMobile, isTablet, isDesktop } = useResponsive();
 
   return (
     <Link asChild href={`${linkPrefix || ""}/post/${post.id}`}>
-      <ButtonBase className={cn("flex w-full flex-col px-1 py-1", "h-[130px]")}>
+      <ButtonBase className={cn("flex w-full flex-col px-1 md:px-1.5 lg:px-2 py-1 md:py-1.5 lg:py-2", "h-[130px] md:h-[150px] lg:h-[170px]")}>
         <LinearGradient
           colors={
             post.starPost
@@ -65,8 +67,8 @@ const PostGridItem: FC<Props> = ({ post, index: _index, isStartracker, linkPrefi
               <View className="absolute flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-[#9A82EE]/40">
                 <BlurView cls={cn("absolute h-full w-full", Platform.OS === "android" ? "bg-black" : "bg-black/80")} />
                 {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */}
-                <Image source={toPurchaseIcon as any} style={{ width: 60, height: 60 }} contentFit="contain" />
-                <Typography cls="mt-4 text-sm" variant="h2">
+                <Image source={toPurchaseIcon as any} style={{ width: isMobile ? 60 : isTablet ? 64 : 80, height: isMobile ? 60 : isTablet ? 64 : 80 }} contentFit="contain" />
+                <Typography cls="mt-4 md:mt-5 lg:mt-6" variant="h2">
                   Star content
                 </Typography>
               </View>

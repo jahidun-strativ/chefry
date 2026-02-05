@@ -73,7 +73,7 @@ const ProfileOverview: FC<Props> = ({ username, onChangeListType, listType, onMe
 
   return (
     <>
-      <View className="w-full px-2 pt-12" onLayout={(e) => onMeasured?.(e.nativeEvent.layout.height)}>
+      <View className="w-full px-2 md:px-4 lg:px-6 pt-12 md:pt-14 lg:pt-16" onLayout={(e) => onMeasured?.(e.nativeEvent.layout.height)}>
         <View className="flex w-full flex-row items-center justify-center">
           <ButtonBase cls="z-20" disabled={storiesCount === 0} onPress={openStoriesPlayer}>
             <LinearGradient
@@ -86,7 +86,7 @@ const ProfileOverview: FC<Props> = ({ username, onChangeListType, listType, onMe
               }
               start={[0.0, 0.5]}
               end={[1.0, 0.5]}
-              className={cn("z-10 aspect-square w-24 rounded-full", storiesCount == 0 ? "p-0.5" : "p-[3px]")}
+              className={cn("z-10 aspect-square w-24 md:w-28 lg:w-32 rounded-full", storiesCount == 0 ? "p-0.5" : "p-[3px]")}
             >
               {!user && <Skeleton cls="w-full h-full rounded-full overflow-hidden opacity-50" width={150} height={150} />}
 
@@ -108,12 +108,12 @@ const ProfileOverview: FC<Props> = ({ username, onChangeListType, listType, onMe
             </LinearGradient>
           </ButtonBase>
 
-          <View className="mx-4 flex flex-1 flex-col">
+          <View className="mx-4 md:mx-6 lg:mx-8 flex flex-1 flex-col">
             <View className="flex flex-row items-center">
-              <Typography fontWeight="bold" cls="text-xl text-center" allowFontScaling={false}>
+              <Typography fontWeight="bold" cls="text-xl md:text-2xl lg:text-3xl text-center" allowFontScaling={false}>
                 {user ? user.username : <Skeleton height={20} width={60} />}
               </Typography>
-              {user?.verified && <VerifiedTick cls="ml-2" />}
+              {user?.verified && <VerifiedTick cls="ml-2 md:ml-3 lg:ml-4" />}
             </View>
 
             {user?.bio && <ProfileBioText bio={user.bio} />}
@@ -134,15 +134,15 @@ const ProfileOverview: FC<Props> = ({ username, onChangeListType, listType, onMe
 
         <EventPackagesOverview username={username} isMe={isMe} meVerified={!!(me?.verified && me?.stripeConnectedAccountId)} />
 
-        <View className="mt-6 flex flex-col">
+        <View className="mt-6 md:mt-8 lg:mt-10 flex flex-col">
           <SubscriptionInformation canSubscribe={Boolean(canSubscribe)} username={username} />
 
           {postCount != null && postCount !== 0 ? (
-            <View className="mb-3 mt-6 flex items-center justify-center">
+            <View className="mb-3 md:mb-4 lg:mb-5 mt-6 md:mt-8 lg:mt-10 flex items-center justify-center">
               <ListTypePicker value={listType} onChange={onChangeListType} />
             </View>
           ) : (
-            <View className="h-4" />
+            <View className="h-4 md:h-5 lg:h-6" />
           )}
         </View>
       </View>

@@ -120,7 +120,7 @@ const CreatePostForm: FC<Props> = ({ media, onClose, isRefetchingMedia, openCrop
     <BlurView cls={cn("w-full h-full", Platform.OS === "android" ? "bg-black/70" : "bg-black/40")}>
       <KeyboardAwareScrollView
         contentContainerStyle={{ minHeight: "100%" }}
-        className="flex flex-col px-2 pb-12"
+        className="flex flex-col px-2 md:px-4 lg:px-6 pb-12 md:pb-14 lg:pb-16 max-w-2xl lg:max-w-3xl mx-auto w-full"
         style={{ paddingTop: top + 10 }}
         // extraHeight={1000}
         extraScrollHeight={Platform.OS === "android" ? 100 : 0}
@@ -136,12 +136,12 @@ const CreatePostForm: FC<Props> = ({ media, onClose, isRefetchingMedia, openCrop
       > */}
         {me && (
           <>
-            <Typography variant="h2" fontWeight="bold" cls="text-center mb-2">
+            <Typography variant="h2" fontWeight="bold" cls="text-center mb-2 md:mb-3 lg:mb-4">
               New {postType === "POST" ? "post" : "story"}
             </Typography>
 
-            <View className="flex max-h-[400px] min-h-[260px] items-center justify-center px-1">
-              <View className="relative mx-auto mb-4 mt-4 overflow-hidden rounded-lg border border-white bg-black" style={{ aspectRatio }}>
+            <View className="flex max-h-[400px] md:max-h-[500px] lg:max-h-[600px] min-h-[260px] md:min-h-[300px] lg:min-h-[350px] items-center justify-center px-1 md:px-2 lg:px-3">
+              <View className="relative mx-auto mb-4 md:mb-5 lg:mb-6 mt-4 md:mt-5 lg:mt-6 overflow-hidden rounded-lg border border-white bg-black" style={{ aspectRatio }}>
                 {media.type === "IMAGE" && (
                   <Image
                     className={aspectRatio >= 1 ? "w-full" : "h-full"}
@@ -182,11 +182,11 @@ const CreatePostForm: FC<Props> = ({ media, onClose, isRefetchingMedia, openCrop
               </View>
             </View>
 
-            <View ref={ref} accessible={false} className="mt-6 flex-none">
+            <View ref={ref} accessible={false} className="mt-6 md:mt-8 lg:mt-10 flex-none">
               <Input
                 multiline
                 numberOfLines={5}
-                classes={{ root: "flex-none", inputWrapper: "rounded-lg", input: "px-4 py-4 h-full rounded-lg" }}
+                classes={{ root: "flex-none", inputWrapper: "rounded-lg", input: "px-4 md:px-5 lg:px-6 py-4 md:py-5 lg:py-6 h-full rounded-lg" }}
                 placeholder="Write a caption..."
                 value={caption}
                 onChangeText={setCaption}
@@ -196,14 +196,14 @@ const CreatePostForm: FC<Props> = ({ media, onClose, isRefetchingMedia, openCrop
             </View>
 
             {me.verified && (
-              <View className="mt-2 flex flex-col">
+              <View className="mt-2 md:mt-3 lg:mt-4 flex flex-col">
                 <Typography variant="h3" cls="text-center" numberOfLines={1}>
                   Share with
                 </Typography>
 
-                <View className="mb-2 mt-2 flex w-full flex-row items-center">
-                  <View className="flex flex-1 items-end pr-2">
-                    <Typography cls={cn("text-sm", isStarPost && "opacity-60")} fontWeight="medium" numberOfLines={1}>
+                <View className="mb-2 md:mb-3 lg:mb-4 mt-2 md:mt-3 lg:mt-4 flex w-full flex-row items-center">
+                  <View className="flex flex-1 items-end pr-2 md:pr-3 lg:pr-4">
+                    <Typography cls={cn("text-sm md:text-base", isStarPost && "opacity-60")} fontWeight="medium" numberOfLines={1}>
                       All users
                     </Typography>
                   </View>
@@ -212,8 +212,8 @@ const CreatePostForm: FC<Props> = ({ media, onClose, isRefetchingMedia, openCrop
                     <Toggle checked={isStarPost} onToggle={() => setIsStarPost(!isStarPost)} />
                   </View>
 
-                  <View className="flex w-full flex-1 items-start pl-2">
-                    <Typography cls={cn("text-sm", !isStarPost && "opacity-60")} fontWeight="medium" numberOfLines={1}>
+                  <View className="flex w-full flex-1 items-start pl-2 md:pl-3 lg:pl-4">
+                    <Typography cls={cn("text-sm md:text-base", !isStarPost && "opacity-60")} fontWeight="medium" numberOfLines={1}>
                       Subscribers only
                     </Typography>
                   </View>
@@ -221,7 +221,7 @@ const CreatePostForm: FC<Props> = ({ media, onClose, isRefetchingMedia, openCrop
               </View>
             )}
 
-            <Button onPress={handleCreatePost} isLoading={isCreating} size="lg" variant="outline" cls="mt-4">
+            <Button onPress={handleCreatePost} isLoading={isCreating} size="lg" variant="outline" cls="mt-4 md:mt-5 lg:mt-6">
               {isCreating ? "Uploading..." : "Upload"}
             </Button>
           </>

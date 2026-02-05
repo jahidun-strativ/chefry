@@ -130,16 +130,16 @@ const CreateAccoutWithEmailPage: FC = () => {
             <Input
               placeholder="Enter your username"
               autoCorrect={false}
-              classes={{ root: "mt-4" }}
+              classes={{ root: "mt-4 md:mt-5 lg:mt-6" }}
               onChange={handleChangeSignUpData("username")}
               autoCapitalize="none"
               value={signupData.username}
             />
 
-            <View className="mt-2 flex flex-row items-center rounded-2xl border border-yellow-300 bg-black/20 p-4">
+            <View className="mt-2 md:mt-3 lg:mt-4 flex flex-row items-center rounded-2xl border border-yellow-300 bg-black/20 p-4 md:p-5 lg:p-6">
               <Icon color="rgb(253 224 71)" name="info" size={32} />
-              <View className="ml-4 flex-1">
-                <Typography cls="text-sm" variant="p">
+              <View className="ml-4 md:ml-5 lg:ml-6 flex-1">
+                <Typography cls="text-sm md:text-base lg:text-lg" variant="p">
                   Please use your actual name so users can find you easier.
                 </Typography>
               </View>

@@ -63,10 +63,10 @@ const CreateAccountForm: FC = () => {
   };
 
   return (
-    <View className="flex w-full flex-col">
+    <View className="flex w-full flex-col max-w-md lg:max-w-lg mx-auto">
       <Input
         placeholder="Enter your username"
-        classes={{ root: "mt-4" }}
+        classes={{ root: "mt-4 md:mt-5 lg:mt-6" }}
         autoCorrect={false}
         onChange={handleChangeSignUpData("username")}
         autoCapitalize="none"
@@ -77,13 +77,13 @@ const CreateAccountForm: FC = () => {
         keyboardType="email-address"
         autoCorrect={false}
         autoCapitalize="none"
-        classes={{ root: "mt-4" }}
+        classes={{ root: "mt-4 md:mt-5 lg:mt-6" }}
         onChange={handleChangeSignUpData("email")}
         value={signupData.email}
       />
       <PasswordInput
         placeholder="Create a password"
-        classes={{ root: "mt-4" }}
+        classes={{ root: "mt-4 md:mt-5 lg:mt-6" }}
         autoCapitalize="none"
         onChange={handleChangeSignUpData("password")}
         value={signupData.password}
@@ -91,14 +91,14 @@ const CreateAccountForm: FC = () => {
       <PasswordInput
         placeholder="Repeat the password"
         secureTextEntry={true}
-        classes={{ root: "mt-4" }}
+        classes={{ root: "mt-4 md:mt-5 lg:mt-6" }}
         autoCapitalize="none"
         onChange={handleChangeSignUpData("repeatedPassword")}
         value={signupData.repeatedPassword}
       />
 
       <Button
-        cls="mt-8"
+        cls="mt-8 md:mt-10 lg:mt-12"
         variant="gradient"
         disabled={isLoading || !signupData.email || !signupData.username || !signupData.password || !signupData.repeatedPassword}
         onPress={handleCreateAccount}

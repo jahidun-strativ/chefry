@@ -59,7 +59,7 @@ const BottomSheet: FC<Props> = ({ open, onClose, children, isLoading, classes = 
               from={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               key="content"
-              className={cn("flex flex-col p-6 pt-2", classes?.content)}
+              className={cn("flex flex-col p-6 md:p-8 lg:p-10 pt-2 max-w-md lg:max-w-lg mx-auto w-full", classes?.content)}
             >
               {children}
             </MotiView>

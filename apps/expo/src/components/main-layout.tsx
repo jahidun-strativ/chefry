@@ -47,9 +47,9 @@ const MainLayout: FC<Props> = ({
   const content = (
     <>
       {(!!kicker || !!title || !!description) && (
-        <View className="mb-2 mt-3">
+        <View className="mb-2 md:mb-3 lg:mb-4 mt-3 md:mt-4 lg:mt-5">
           {kicker && (
-            <Typography cls="text-center uppercase mb-2 " variant="h3" style={{ letterSpacing: 4 }}>
+            <Typography cls="text-center uppercase mb-2 md:mb-3 lg:mb-4" variant="h3" style={{ letterSpacing: 4 }}>
               {kicker}
             </Typography>
           )}
@@ -61,7 +61,7 @@ const MainLayout: FC<Props> = ({
           )}
 
           {description && (
-            <Typography variant="p" cls="mt-4 text-base text-center">
+            <Typography variant="p" cls="mt-4 md:mt-6 lg:mt-8 text-center">
               {description}
             </Typography>
           )}
@@ -111,19 +111,19 @@ const MainLayout: FC<Props> = ({
                 enableOnAndroid
                 onScroll={onScroll}
                 enableAutomaticScroll
-                className={clsx("flex-1 px-4", classes.content)}
+                className={clsx("flex-1 px-4 md:px-6 lg:px-8 max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto w-full", classes.content)}
                 style={{
                   paddingTop,
                 }}
               >
                 {content}
-                <View className="h-64" />
+                <View className="h-64 md:h-80 lg:h-96" />
               </KeyboardAwareScrollView>
             )}
 
             {contentType === "fixed" && (
               <View
-                className={clsx("flex-1 px-6", classes.content)}
+                className={clsx("flex-1 px-4 md:px-6 lg:px-8 max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto w-full", classes.content)}
                 style={{
                   paddingTop,
                   paddingBottom,
@@ -136,7 +136,7 @@ const MainLayout: FC<Props> = ({
             {contentType === "custom" && children}
 
             {floatingButton && keyboardStatus === "hidden" && (
-              <View style={{ bottom: paddingBottom }} className="absolute left-4 right-4 z-10 flex flex-row items-center justify-center">
+              <View style={{ bottom: paddingBottom }} className="absolute left-4 md:left-6 lg:left-8 right-4 md:right-6 lg:right-8 z-10 flex flex-row items-center justify-center max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto w-full">
                 {floatingButton}
               </View>
             )}

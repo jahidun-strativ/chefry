@@ -9,6 +9,7 @@ import type Icon from "@expo/vector-icons/Feather";
 
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
+import { useResponsive } from "@/hooks/useResponsive";
 import { Logo } from "./logo";
 import IconButton from "./ui/icon-button";
 
@@ -78,6 +79,18 @@ const Header: FC<Props> = ({
   }, [blurred, blurIntensity]);
 
   const { top } = useSafeAreaInsets();
+  const { isMobile, isTablet, isDesktop } = useResponsive();
+
+  const logoSize = useMemo(() => {
+    if (isMobile) return { width: 150, height: 45 };
+    if (isTablet) return { width: 175, height: 52 };
+    return { width: 200, height: 60 };
+  }, [isMobile, isTablet, isDesktop]);
+
+  const headerHeight = useMemo(() => {
+    const baseHeight = isMobile ? 70 : isTablet ? 75 : 80;
+    return (top || 20) + baseHeight;
+  }, [top, isMobile, isTablet, isDesktop]);
 
   const opacity = useDerivedValue(() => {
     return blurIntensity.value / 50;
@@ -105,7 +118,7 @@ const Header: FC<Props> = ({
     <View
       className={cn("absolute left-0 right-0 top-0 z-10 w-full", cls)}
       style={{
-        height: (top || 20) + 80,
+        height: headerHeight,
       }}
     >
       {Platform.OS === "ios" && (
@@ -114,16 +127,16 @@ const Header: FC<Props> = ({
 
       {Platform.OS !== "ios" && <View className="absolute h-full w-full bg-black/40" style={{ opacity: blurred ? 1 : 0 }} />}
 
-      <View style={{ paddingTop: top }} className="absolute z-10 flex h-full w-full flex-row items-center justify-between px-4 pb-4 pt-2">
-        {showBackButton ? <IconButton onPress={handleGoBack} iconName="arrow-left" size="base" /> : <View className="w-10" />}
-        <Logo width={200} height={60} variant={logoVariant} />
+      <View style={{ paddingTop: top }} className="absolute z-10 flex h-full w-full flex-row items-center justify-between px-4 md:px-6 lg:px-8 pb-4 pt-2">
+        {showBackButton ? <IconButton onPress={handleGoBack} iconName="arrow-left" size="base" /> : <View className="w-10 md:w-12 lg:w-14" />}
+        <Logo width={logoSize.width} height={logoSize.height} variant={logoVariant} />
 
         {showCustomAction && <IconButton onPress={onCustomActionPress} iconName={customActionIconName} />}
 
         {!showCustomAction && (
           <>
             {!showProfileButton && !showProfileSettingsButton ? (
-              <View className="w-10" />
+              <View className="w-10 md:w-12 lg:w-14" />
             ) : (
               <IconButton
                 iconName={me?.verified ? (pathname.includes("/profile") ? "settings" : "user") : "settings"}

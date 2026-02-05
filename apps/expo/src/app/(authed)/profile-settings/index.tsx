@@ -16,13 +16,13 @@ import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
 
 const ProfileListButton: FC<{ href: string; label: string; cls?: string; showPurchaseIcon?: boolean }> = ({ href, label, cls, showPurchaseIcon }) => (
-  <Button variant="outline" cls={cn("mb-2", cls)} href={href}>
-      <View className="flex w-full flex-row items-center justify-between pl-4">
+  <Button variant="outline" cls={cn("mb-2 md:mb-3 lg:mb-4", cls)} href={href}>
+      <View className="flex w-full flex-row items-center justify-between pl-4 md:pl-5 lg:pl-6">
         <View className="flex flex-row items-center">
           {showPurchaseIcon && (
             <Image source={toPurchaseIcon} style={{ width: 20, height: 20, marginRight: 8 }} contentFit="contain" />
           )}
-          <Typography variant="h2" cls="text-lg">
+          <Typography variant="h2" cls="text-lg md:text-xl lg:text-2xl">
             {label}
           </Typography>
         </View>
@@ -83,7 +83,7 @@ const ProfileSettingsPage: FC = () => {
   return (
     <>
       <MainLayout showBackButton isLoading={!me} title="Your profile" contentType="scrollable">
-        <View className="h-3" />
+        <View className="h-3 md:h-4 lg:h-5" />
 
         <ProfileListButton href="/profile-settings/edit" label="Edit profile" />
 
@@ -97,9 +97,9 @@ const ProfileSettingsPage: FC = () => {
         <ProfileListButton href="/profile-settings/subscriptions-and-purchases" label="Subscriptions & packages" showPurchaseIcon />
 
         {!me?.verified && (
-          <Button variant="gradient" cls="mb-2 border border-white" href="/profile-settings/become-a-star">
-            <View className="flex w-full flex-row items-center justify-between pl-4">
-              <Typography variant="h2" cls="text-lg">
+          <Button variant="gradient" cls="mb-2 md:mb-3 lg:mb-4 border border-white" href="/profile-settings/become-a-star">
+            <View className="flex w-full flex-row items-center justify-between pl-4 md:pl-5 lg:pl-6">
+              <Typography variant="h2" cls="text-lg md:text-xl lg:text-2xl">
                 Become a Star
               </Typography>
               <Icon name="chevron-right" size={24} color="white" />
@@ -109,7 +109,7 @@ const ProfileSettingsPage: FC = () => {
 
         {me?.verified && <ProfileListButton href="/profile-settings/star-settings" label="Star settings" />}
 
-        <View className="flex-colv mt-16 flex w-full">
+        <View className="flex-colv mt-16 md:mt-20 lg:mt-24 flex w-full max-w-md lg:max-w-lg mx-auto">
           <Button
             size="sm"
             onPress={handleSignOut}
@@ -121,7 +121,7 @@ const ProfileSettingsPage: FC = () => {
             Logout
           </Button>
 
-          <View className="h-2" />
+          <View className="h-2 md:h-3 lg:h-4" />
 
           <Button
             size="sm"
