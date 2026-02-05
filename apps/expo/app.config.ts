@@ -55,6 +55,11 @@ const defineConfig = (): ExpoConfig => ({
     eas: {
       projectId: "32e1894f-aaf3-425f-9eae-b594cb452fb6",
     },
+    // Clerk redirect URLs
+    CLERK_SIGN_IN_FALLBACK_REDIRECT_URL: "/",
+    CLERK_SIGN_UP_FALLBACK_REDIRECT_URL: "/",
+    CLERK_SIGN_IN_FORCE_REDIRECT_URL: "/",
+    CLERK_SIGN_UP_FORCE_REDIRECT_URL: "/",
   },
   plugins: [
     "expo-router",

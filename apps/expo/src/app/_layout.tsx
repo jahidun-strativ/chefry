@@ -1,5 +1,4 @@
 import { default as React, useEffect, useState } from "react";
-import { Text, View } from "react-native";
 
 import "react-native-gesture-handler";
 import "../styles.css";
@@ -19,7 +18,6 @@ import { ClickOutsideProvider } from "react-native-click-outside";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import * as Linking from "expo-linking";
 import * as NavigationBar from "expo-navigation-bar";
 import { Slot, SplashScreen, usePathname, useRouter, useSegments } from "expo-router";
 import * as SecureStore from "expo-secure-store";
@@ -184,6 +182,10 @@ const RootLayoutWrapper = () => {
     <ClerkProvider
       publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}
       tokenCache={tokenCache}
+      signInFallbackRedirectUrl={process.env.EXPO_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL || "/"}
+      signUpFallbackRedirectUrl={process.env.EXPO_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL || "/"}
+      signInForceRedirectUrl={process.env.EXPO_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL || "/"}
+      signUpForceRedirectUrl={process.env.EXPO_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL || "/"}
     >
       <TRPCProvider>
         <StripeWrapper>
