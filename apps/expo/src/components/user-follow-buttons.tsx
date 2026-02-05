@@ -6,6 +6,7 @@ import { usePrevious } from "@uidotdev/usehooks";
 import type { RouterOutputs } from "@/utils/api";
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
+import { useResponsive } from "@/hooks/useResponsive";
 import createToast from "@/utils/createToast";
 import useOpenState from "@/hooks/useOpenState";
 import DeleteSubscriptionBottomSheet from "./delete-subscription-bottom-sheet";
@@ -23,6 +24,7 @@ interface Props {
 
 const UserFollowButtons: FC<Props> = ({ username, user, canSubscribe, subscriptionPrice, isMe }) => {
   const { data: userFollow, refetch: refetchFollowStatus } = api.auth.userFollow.get.useQuery({ username });
+  const { isMobile, isTablet } = useResponsive();
 
   const utils = api.useContext();
   const { mutate: toggleFollow, isLoading: isChangingFollowStatus } = api.auth.userFollow.toggleFollow.useMutation({
@@ -83,7 +85,7 @@ const UserFollowButtons: FC<Props> = ({ username, user, canSubscribe, subscripti
 
   return (
     <>
-      <View className={cn("flex w-full flex-row", !isMe && user && "mt-6", !canSubscribe && "items-center justify-center")}>
+      <View className={cn("flex w-full flex-row max-w-md lg:max-w-lg mx-auto", !isMe && user && "mt-4 md:mt-5 lg:mt-6", !canSubscribe && "items-center justify-center")}>
         {!isMe && user && (
           <>
             <Button
@@ -94,13 +96,13 @@ const UserFollowButtons: FC<Props> = ({ username, user, canSubscribe, subscripti
               disabled={isChangingFollowStatus}
               onPress={handleToggleFollow("DEFAULT")}
             >
-              <View className={cn("flex h-16 flex-col items-center justify-center ", !canSubscribe ? "w-36" : "w-28")}>
+              <View className={cn("flex flex-col items-center justify-center", !canSubscribe ? "w-32 md:w-36 lg:w-40 h-14 md:h-16 lg:h-18" : "w-24 md:w-28 lg:w-32 h-14 md:h-16 lg:h-18")}>
                 {!userFollow && (
                   <>
-                    <Typography allowFontScaling={false} cls="text-sm" fontWeight="bold">
+                    <Typography allowFontScaling={false} cls="text-xs md:text-sm lg:text-base" fontWeight="bold">
                       Follow
                     </Typography>
-                    <Typography allowFontScaling={false} cls="text-sm" fontWeight="medium">
+                    <Typography allowFontScaling={false} cls="text-xs md:text-sm lg:text-base" fontWeight="medium">
                       Free
                     </Typography>
                   </>
@@ -108,7 +110,7 @@ const UserFollowButtons: FC<Props> = ({ username, user, canSubscribe, subscripti
 
                 {userFollow && (
                   <>
-                    <Typography allowFontScaling={false} cls="text-sm" fontWeight="bold">
+                    <Typography allowFontScaling={false} cls="text-xs md:text-sm lg:text-base" fontWeight="bold">
                       Following
                     </Typography>
                   </>
@@ -118,20 +120,20 @@ const UserFollowButtons: FC<Props> = ({ username, user, canSubscribe, subscripti
 
             {canSubscribe && (
               <>
-                <View className="w-2" />
+                <View className="w-2 md:w-3 lg:w-4" />
                 <Button
                   disabled={isChangingFollowStatus}
                   variant={userFollow?.type === "STAR_TRACKER" ? "gradient" : "gradient-border"}
                   clsForce={cn("w-auto flex-1 p-[1px]", userFollow?.type !== "STAR_TRACKER" && "bg-[#3c203f]")}
                   onPress={handleToggleFollow("STAR_TRACKER")}
                 >
-                  <View className="flex h-16 flex-col items-center justify-center">
+                  <View className="flex h-14 md:h-16 lg:h-18 flex-col items-center justify-center">
                     {userFollow?.type !== "STAR_TRACKER" && (
                       <>
-                        <Typography allowFontScaling={false} cls="text-sm" fontWeight="bold">
+                        <Typography allowFontScaling={false} cls="text-xs md:text-sm lg:text-base" fontWeight="bold">
                           Subscribe
                         </Typography>
-                        <Typography allowFontScaling={false} cls="text-sm" fontWeight="bold">
+                        <Typography allowFontScaling={false} cls="text-xs md:text-sm lg:text-base" fontWeight="bold">
                           ${subscriptionPrice}/month
                         </Typography>
                       </>
@@ -139,7 +141,7 @@ const UserFollowButtons: FC<Props> = ({ username, user, canSubscribe, subscripti
 
                     {userFollow?.type === "STAR_TRACKER" && (
                       <>
-                        <Typography allowFontScaling={false} cls="text-sm" fontWeight="bold">
+                        <Typography allowFontScaling={false} cls="text-xs md:text-sm lg:text-base" fontWeight="bold">
                           Subscribed
                         </Typography>
                       </>

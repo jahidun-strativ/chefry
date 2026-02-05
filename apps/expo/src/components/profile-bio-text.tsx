@@ -65,12 +65,12 @@ export const ProfileBioText: FC<Props> = ({ bio }) => {
   return (
     <>
       <View className="w-full">
-        <Typography onLayout={handleLayout} variant="p" cls="text-left text-xs mt-0.5" numberOfLines={3} onTextLayout={handleTextLayout}>
+        <Typography onLayout={handleLayout} variant="p" cls="text-left text-xs md:text-sm lg:text-base mt-0.5 md:mt-1 lg:mt-1.5" numberOfLines={3} onTextLayout={handleTextLayout}>
           {bioWithLinks}
         </Typography>
         {moreVisible && (
-          <Pressable hitSlop={20} onPress={() => setIsExpanded(true)} className="mt-1">
-            <Typography variant="p" fontWeight="bold" className="text-xs">
+          <Pressable hitSlop={20} onPress={() => setIsExpanded(true)} className="mt-1 md:mt-1.5 lg:mt-2">
+            <Typography variant="p" fontWeight="bold" className="text-xs md:text-sm lg:text-base">
               View more
             </Typography>
           </Pressable>

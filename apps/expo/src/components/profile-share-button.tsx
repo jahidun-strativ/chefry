@@ -2,6 +2,7 @@ import type { FC } from "react";
 import { Share } from "react-native";
 import Icon from "@expo/vector-icons/FontAwesome";
 
+import { useResponsive } from "@/hooks/useResponsive";
 import createToast from "@/utils/createToast";
 import IconButton from "./ui/icon-button";
 
@@ -10,6 +11,10 @@ interface Props {
 }
 
 const ProfileShareButton: FC<Props> = ({ username }) => {
+  const { isMobile, isTablet } = useResponsive();
+  const iconSize = isMobile ? 18 : isTablet ? 20 : 22;
+  const buttonSize = isMobile ? 48 : isTablet ? 52 : 56;
+  
   return (
     <IconButton
       onPress={async () => {
@@ -25,9 +30,10 @@ const ProfileShareButton: FC<Props> = ({ username }) => {
           });
         }
       }}
-      icon={<Icon name="share" size={24} color="white" />}
-      cls="border-2 bg-black/10 border-white w-14 h-14"
-      size="lg"
+      icon={<Icon name="share" size={iconSize} color="white" />}
+      cls="border-2 bg-black/10 border-white"
+      style={{ width: buttonSize, height: buttonSize }}
+      size="base"
     />
   );
 };

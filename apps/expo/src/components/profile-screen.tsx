@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import { useCallback, useRef, useState } from "react";
+import { View } from "react-native";
 import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import type { RefObject } from "react";
 import type { FlashList } from "@shopify/flash-list";
@@ -30,27 +31,29 @@ const ProfileScreen: FC<Props> = ({ username, linkPrefix, onScroll }) => {
   const [listType, setListType] = useState<"grid" | "list">("grid");
 
   return (
-    <PostsFeed
-      listType={listType}
-      ListHeaderComponent={
-        <ProfileOverview
-          onMeasured={(height) => (profileOverviewHeight.current = height)}
-          listType={listType}
-          username={username}
-          onChangeListType={handleSetListType}
-        />
-      }
-      linkPrefix={linkPrefix}
-      variables={{ username }}
-      feedEmptyText={
-        username === me?.username ? "You have not yet uploaded any content" : "Unfortunately, this account has not posted any content yet."
-      }
-      scrollRef={scrollRef}
-      onScroll={(e) => {
-        scrollPosition.current = e.nativeEvent.contentOffset.y;
-        onScroll(e);
-      }}
-    />
+    <View className="max-w-4xl lg:max-w-6xl mx-auto w-full h-full">
+      <PostsFeed
+        listType={listType}
+        ListHeaderComponent={
+          <ProfileOverview
+            onMeasured={(height) => (profileOverviewHeight.current = height)}
+            listType={listType}
+            username={username}
+            onChangeListType={handleSetListType}
+          />
+        }
+        linkPrefix={linkPrefix}
+        variables={{ username }}
+        feedEmptyText={
+          username === me?.username ? "You have not yet uploaded any content" : "Unfortunately, this account has not posted any content yet."
+        }
+        scrollRef={scrollRef}
+        onScroll={(e) => {
+          scrollPosition.current = e.nativeEvent.contentOffset.y;
+          onScroll(e);
+        }}
+      />
+    </View>
   );
 };
 

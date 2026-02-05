@@ -24,17 +24,17 @@ export const ProfileMetadata: FC<Props> = ({ metaInfo }) => {
   ];
 
   return (
-    <View className="mx-auto mt-3 flex max-w-[240px] flex-row justify-center space-x-2 px-2">
+    <View className="mx-auto mt-3 md:mt-4 lg:mt-5 flex max-w-[240px] md:max-w-[280px] lg:max-w-[320px] flex-row justify-center space-x-2 md:space-x-3 lg:space-x-4 px-2">
       {metaInfoArray.map((item, index) => (
         <View key={index} className="flex flex-1 flex-col items-center justify-center">
           {item.value == null ? (
             <Skeleton height={20} width={20} cls="opacity-30" />
           ) : (
-            <Typography fontWeight="bold" cls="text-lg text-center" allowFontScaling={false}>
+            <Typography fontWeight="bold" cls="text-base md:text-lg lg:text-xl text-center" allowFontScaling={false}>
               {item?.value || 0}
             </Typography>
           )}
-          <Typography variant="p" cls="text-xs" allowFontScaling={false}>
+          <Typography variant="p" cls="text-xs md:text-sm lg:text-base" allowFontScaling={false}>
             {item.label}
           </Typography>
         </View>
