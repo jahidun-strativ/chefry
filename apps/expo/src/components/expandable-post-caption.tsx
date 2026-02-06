@@ -5,6 +5,7 @@ import { Platform, Pressable, View } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import { linkIt } from "react-linkify-it";
 
+import { useResponsive } from "@/hooks/useResponsive";
 import Typography from "./ui/typography";
 
 interface Props {
@@ -17,6 +18,7 @@ const MAX_LINE_COUNT = 2;
 
 export const ExpandablePostCaption: FC<Props> = ({ username, caption: _caption, shouldBeHidden }) => {
   const IS_ANDROID = Platform.OS === "android";
+  const { isMobile, isTablet } = useResponsive();
 
   // Get the 25 first characters of the caption
   const caption = _caption ? (shouldBeHidden ? (_caption?.length > 25 ? `${_caption.substring(0, 25)}...` : _caption) : _caption) : null;
@@ -61,7 +63,12 @@ export const ExpandablePostCaption: FC<Props> = ({ username, caption: _caption, 
   };
 
   return (
-    <View className="mt-3 md:mt-4 lg:mt-5 px-2 md:px-3 lg:px-4 leading-5">
+    <View 
+      className="mt-3 md:mt-4 lg:mt-5 px-2 md:px-3 lg:px-4 leading-5 mx-auto w-full" 
+      style={{
+        maxWidth: isMobile ? "100%" : isTablet ? 500 : 600,
+      }}
+    >
       <Typography
         key={numberOfLines}
         numberOfLines={numberOfLines}

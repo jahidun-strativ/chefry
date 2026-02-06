@@ -9,7 +9,7 @@ import { cn } from "@/utils/cn";
 import { useResponsive } from "@/hooks/useResponsive";
 import { getImageUrl } from "@/utils/imagekit";
 import { Image } from "@/components/image";
-import toPurchaseIcon from "@/assets/to-purchase.png";
+import subscribeLogo from "@/assets/subscribe-logo.png";
 import BlurView from "./ui/blur-view";
 import ButtonBase from "./ui/button-base";
 import Typography from "./ui/typography";
@@ -67,7 +67,7 @@ const PostGridItem: FC<Props> = ({ post, index: _index, isStartracker, linkPrefi
               <View className="absolute flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-[#9A82EE]/40">
                 <BlurView cls={cn("absolute h-full w-full", Platform.OS === "android" ? "bg-black" : "bg-black/80")} />
                 {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */}
-                <Image source={toPurchaseIcon as any} style={{ width: isMobile ? 60 : isTablet ? 64 : 80, height: isMobile ? 60 : isTablet ? 64 : 80 }} contentFit="contain" />
+                <Image source={subscribeLogo as any} style={{ width: isMobile ? 60 : isTablet ? 64 : 80, height: isMobile ? 60 : isTablet ? 64 : 80 }} contentFit="contain" />
                 <Typography cls="mt-4 md:mt-5 lg:mt-6" variant="h2">
                   Star content
                 </Typography>

@@ -89,10 +89,10 @@ const EditProfilePage: FC = () => {
         </View>
       }
     >
-      <View className="h-2 md:h-3 lg:h-4" />
+      <View className="h-1 md:h-2 lg:h-3" />
 
       <View className="max-w-md lg:max-w-lg mx-auto w-full px-4 md:px-6 lg:px-8">
-        <View className="flex items-center justify-center py-4 md:py-5 lg:py-6">
+        <View className="flex items-center justify-center py-2 md:py-3 lg:py-4">
           <ChangeProfileImageButton />
         </View>
 
@@ -101,7 +101,7 @@ const EditProfilePage: FC = () => {
           autoCorrect={false}
           autoCapitalize="none"
           placeholder="Enter your name..."
-          classes={{ root: "mb-4 md:mb-5 lg:mb-6" }}
+          classes={{ root: "mb-3 md:mb-4 lg:mb-5" }}
           value={username}
           onChangeText={setUsername}
         />
@@ -109,7 +109,7 @@ const EditProfilePage: FC = () => {
           label="Email address"
           value={user?.emailAddresses?.[0]?.emailAddress ?? ""}
           editable={false}
-          classes={{ root: "opacity-50 mb-4 md:mb-5 lg:mb-6" }}
+          classes={{ root: "opacity-50 mb-3 md:mb-4 lg:mb-5" }}
           onPressIn={() => {
             createToast({
               type: "error",
@@ -125,7 +125,7 @@ const EditProfilePage: FC = () => {
           value={bio}
           onChangeText={setBio}
           classes={{ 
-            root: "mb-4 md:mb-5 lg:mb-6",
+            root: "mb-3 md:mb-4 lg:mb-5",
             inputWrapper: isMobile ? "h-32" : isTablet ? "h-36" : "h-40 rounded-2xl", 
             input: "px-4 md:px-5 lg:px-6 py-3 md:py-4 lg:py-5 text-sm md:text-base lg:text-lg" 
           }}

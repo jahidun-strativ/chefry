@@ -114,7 +114,7 @@ const PostLikeButton = forwardRef<PostLikeButtonHandle, Props>(
 
     return (
       <>
-        <View className="pointer-events-auto absolute right-2 z-10" style={{ bottom: bottomOffset, width: buttonSize, height: buttonSize }}>
+        <View className="pointer-events-auto absolute z-10" style={{ bottom: 10, right: 10, width: buttonSize, height: buttonSize }}>
           <AnimatePresence>
             {interactionPickerOpen &&
               postInteractions.map((interaction, index) => (
@@ -135,8 +135,8 @@ const PostLikeButton = forwardRef<PostLikeButtonHandle, Props>(
 
         <LinearGradient
           colors={buttonGradient as [string, string, ...string[]]}
-          className="absolute right-0 z-20 rounded-full p-[2px]"
-          style={{ bottom: bottomOffset, width: buttonSize, height: buttonSize }}
+          className="absolute z-20 rounded-full p-[2px]"
+          style={{ bottom: 10, right: 10, width: buttonSize, height: buttonSize }}
           start={[0.0, 0.0]}
           end={[1.0, 1.0]}
         >

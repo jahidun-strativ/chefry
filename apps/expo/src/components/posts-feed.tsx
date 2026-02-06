@@ -51,7 +51,7 @@ const PostsFeed: FC<Props> = ({
   showDiscoverButtonOnEmpty,
 }) => {
   const { bottom, top } = useSafeAreaInsets();
-  const { width, isMobile, isTablet, isDesktop } = useResponsive();
+  const {  isMobile, isTablet } = useResponsive();
   const headerHeight = isMobile ? 70 : isTablet ? 75 : 80;
   const listItemContentHeight = Dimensions.get("window").height - (bottom + 55) - ((top || 20) + headerHeight);
 
@@ -121,7 +121,6 @@ const PostsFeed: FC<Props> = ({
 
           return (
             <View className={cn("flex flex-col items-center justify-center p-6 md:p-8 lg:p-12", Platform.OS === "android" && "py-0")}>
-              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */}
               <Image source={subscribeLogo as any} style={{ width: isMobile ? 160 : isTablet ? 180 : 200, height: isMobile ? 160 : isTablet ? 180 : 200, opacity: 0.6 }} contentFit="contain" />
               <Typography variant="h2" fontWeight="bold" cls="text-center mt-6 md:mt-8 lg:mt-10">
                 No posts yet
@@ -159,9 +158,9 @@ const PostsFeed: FC<Props> = ({
         onViewableItemsChanged={({ viewableItems }) => {
           setVisibleItems(viewableItems.map((item) => item.key));
         }}
-        // viewabilityConfig={{
-        //   itemVisiblePercentThreshold: 10,
-        // }}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 30,
+        }}
         extraData={{ visibleItems, listType, myStarFollows: myStarFollows?.map((follow) => follow?.followedUser.id) || [], meId: me?.id }}
         renderItem={({ item, extraData, index }) => {
           const { visibleItems, listType, myStarFollows, meId } = extraData as {
@@ -181,7 +180,7 @@ const PostsFeed: FC<Props> = ({
                 linkPrefix={linkPrefix}
                 onOpenImageViewer={handleSelectImageUrl}
                 onOpenVideoViewer={handleSelectVideoUrl}
-                cls="px-2 md:px-4 lg:px-6 mt-2 md:mt-3 lg:mt-4 mb-6 md:mb-8 lg:mb-10"
+                cls="px-2 md:px-4 lg:px-6 mt-1 md:mt-2 lg:mt-3 mb-3 md:mb-4 lg:mb-5"
               />
             );
           } else {

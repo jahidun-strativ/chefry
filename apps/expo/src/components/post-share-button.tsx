@@ -12,6 +12,8 @@ interface Props {
 
 const PostShareButton: FC<Props> = ({ postId }) => {
   const { isMobile, isTablet } = useResponsive();
+  const buttonSize = isMobile ? 64 : isTablet ? 72 : 80;
+  const iconSize = isMobile ? 18 : isTablet ? 20 : 22;
   
   return (
     <ButtonBase
@@ -28,14 +30,15 @@ const PostShareButton: FC<Props> = ({ postId }) => {
           });
         }
       }}
-      className="absolute left-0 flex items-center justify-center rounded-full border-2 border-white bg-[#222222]"
+      className="absolute flex items-center justify-center rounded-full border-2 border-white bg-[#222222]"
       style={{
-        bottom: isMobile ? -32 : isTablet ? -36 : -40,
-        width: isMobile ? 64 : isTablet ? 72 : 80,
-        height: isMobile ? 64 : isTablet ? 72 : 80,
+        bottom: 10,
+        left: 10,
+        width: buttonSize,
+        height: buttonSize,
       }}
     >
-      <Icon name="share" size={isMobile ? 18 : isTablet ? 20 : 22} color="white" />
+      <Icon name="share" size={iconSize} color="white" />
     </ButtonBase>
   );
 };

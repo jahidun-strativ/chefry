@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { FC } from "react";
 import React, { useMemo, useRef } from "react";
 import { Platform, Pressable, View } from "react-native";
@@ -21,7 +19,7 @@ import { Image } from "@/components/image";
 import heartAnimation from "@/assets/animations/heart.json";
 import smileAnimation from "@/assets/animations/smile.json";
 import starAnimation from "@/assets/animations/star.json";
-import StartrackerIcon from "@/assets/gradient_icon.svg";
+import subscribeLogo from "@/assets/subscribe-logo.png";
 import useOpenState from "@/hooks/useOpenState";
 import ContentSettingsBottomSheet from "./content-settings-bottom-sheet";
 import { ExpandablePostCaption } from "./expandable-post-caption";
@@ -52,7 +50,7 @@ interface Props {
 
 const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartracker }) => {
   const { data: me } = api.auth.user.me.useQuery();
-  const { isMobile, isTablet, isDesktop } = useResponsive();
+  const { isMobile, isTablet } = useResponsive();
   const { data: canSubscribe } = api.auth.stripe.canSubscribe.useQuery(
     { username: post.createdBy.username },
     { enabled: !isStartracker && !!me && !!post.starPost && post.createdBy.id !== me.id },
@@ -78,12 +76,14 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
 
     const { cropX, cropY, cropWidth, cropHeight, width, height } = media;
 
-    if (cropWidth != null && cropHeight != null && cropX != null && cropY != null) {
-      return cropWidth / cropHeight;
+    if (cropWidth != null && cropHeight != null && cropX != null && cropY != null && cropHeight > 0) {
+      const ratio = cropWidth / cropHeight;
+      return Math.max(0.5, Math.min(ratio, 2)); // Clamp between 0.5 and 2
     }
 
-    if (width != null && height != null) {
-      return width / height;
+    if (width != null && height != null && height > 0) {
+      const ratio = width / height;
+      return Math.max(0.5, Math.min(ratio, 2)); // Clamp between 0.5 and 2
     }
 
     return 1;
@@ -136,76 +136,146 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
       starAnimationRef.current?.play();
     }
   };
+console.log({media});
 
   return (
     <>
-      <View className={cn("mb-8 md:mb-10 lg:mb-12 mt-8 md:mt-10 lg:mt-12 flex flex-col pb-4 md:pb-6 lg:pb-8", cls)}>
-        <View className="flex flex-row items-center justify-between" style={{ paddingLeft: isMobile ? 72 : isTablet ? 80 : 88 }}>
-          <Link
-            disabled={!me || me.id === post.createdBy.id}
-            asChild
-            href={(linkPrefix || "") + "/view-profile/" + post.createdBy.username}
-          >
-            <ButtonBase className="flex flex-row items-center">
-              <Typography cls="text-sm md:text-base lg:text-lg" variant="h3">
-                {post.createdBy.username}
-              </Typography>
-              {post.createdBy.verified && <VerifiedTick cls="ml-1.5 md:ml-2 lg:ml-2.5" />}
-            </ButtonBase>
-          </Link>
+      <View className={cn("mb-4 md:mb-6 lg:mb-8 mt-4 md:mt-6 lg:mt-8 flex flex-col pb-2 md:pb-3 lg:pb-4", cls)}>
+        <View 
+          className="relative flex flex-row items-center justify-between mb-2 md:mb-3 lg:mb-4 mx-auto w-full" 
+          style={{ 
+            maxWidth: isMobile ? "100%" : isTablet ? 500 : 600,
+          }}
+        >
+          <View className="flex flex-row items-center flex-1">
+            {profileImage && (
+              <Link disabled={!me || me.id === post.createdBy.id} asChild href={(linkPrefix || "") + "/view-profile/" + post.createdBy.username}>
+                <ButtonBase className="mr-2 md:mr-3 lg:mr-4">
+                  <Image
+                    source={{
+                      uri: getImageUrl(profileImage.url, [{ width: "128" }]),
+                      thumbhash: profileImage.thumbhash ?? undefined,
+                    }}
+                    className="rounded-full border-2 border-white bg-[#222222]"
+                    style={{ 
+                      width: isMobile ? 48 : isTablet ? 52 : 56,
+                      height: isMobile ? 48 : isTablet ? 52 : 56,
+                    }}
+                    contentFit="cover"
+                  />
+                </ButtonBase>
+              </Link>
+            )}
 
-          <IconButton iconName="more-horizontal" onPress={openPostSettings} size="sm" />
+            {!profileImage && (
+              <View className="mr-2 md:mr-3 lg:mr-4 flex items-center justify-center rounded-full border-2 border-white bg-[#222222]" style={{ width: isMobile ? 48 : isTablet ? 52 : 56, height: isMobile ? 48 : isTablet ? 52 : 56 }}>
+                <Icon name="user" size={isMobile ? 20 : isTablet ? 22 : 24} color="white" />
+              </View>
+            )}
+
+            <Link
+              disabled={!me || me.id === post.createdBy.id}
+              asChild
+              href={(linkPrefix || "") + "/view-profile/" + post.createdBy.username}
+            >
+              <ButtonBase className="flex flex-row items-center">
+                <Typography cls="text-sm md:text-base lg:text-lg" variant="h3">
+                  {post.createdBy.username}
+                </Typography>
+                {post.createdBy.verified && <VerifiedTick cls="ml-1.5 md:ml-2 lg:ml-2.5" />}
+              </ButtonBase>
+            </Link>
+          </View>
+
+          <IconButton 
+            iconName="more-horizontal" 
+            onPress={openPostSettings} 
+            size="sm" 
+          />
         </View>
 
-        <View className="relative flex-1">
+        <View className="relative flex-1 overflow-hidden" >
           {/* <TapGestureHandler onHandlerStateChange={handleSingleTapEvent} numberOfTaps={1} waitFor={doubleTapRef}>
             <TapGestureHandler onHandlerStateChange={handleDoubleTapEvent} numberOfTaps={2} ref={doubleTapRef}> */}
           <View 
-            className="w-full mx-auto" 
+            className="relative w-full mx-auto" 
             style={{ 
-              maxWidth: isMobile ? "100%" : isTablet ? 450 : 550,
+              maxWidth: isMobile ? "100%" : isTablet ? 500 : 600,
             }}
           >
-            <LinearGradient
-              colors={
-                post.starPost
-                  ? ["#938DFB", "#9589F6", "#9B7FEA", "#A56ED5", "#B457B8", "#C73993", "#DD1465", "#EB004C"]
-                  : ["#FFFFFF", "#FFFFFF"]
-              }
-              start={[0.0, 0.5]}
-              end={[1.0, 0.5]}
-              className="rounded-[50px] p-px"
-            >
-              {media?.type === "IMAGE" && (
-                <Image
-                  source={{
-                    uri: getImageUrl(media.url, [{ width: isMobile ? "1024" : isTablet ? "1024" : "1200" }]),
-                  }}
-                  placeholder={Platform.OS === "ios" ? media.thumbhash : undefined}
-                  placeholderContentFit="cover"
-                  className="w-full rounded-[50px]"
+            {media?.url ? (
+              <View className="relative">
+                <LinearGradient
+                  colors={
+                    post.starPost
+                      ? ["#938DFB", "#9589F6", "#9B7FEA", "#A56ED5", "#B457B8", "#C73993", "#DD1465", "#EB004C"]
+                      : ["#FFFFFF", "#FFFFFF"]
+                  }
+                  start={[0.0, 0.5]}
+                  end={[1.0, 0.5]}
+                  className="relative rounded-[50px] p-px"
                   style={{ 
-                    aspectRatio: Math.max(aspectRatio, 0.7),
-                    maxHeight: isMobile ? undefined : isTablet ? 450 : 550,
+                    overflow: "hidden",
+                    maxHeight: isMobile ? 320 : isTablet ? 380 : 420,
                   }}
-                  contentFit="cover"
-                  transition={200}
-                  recyclingKey={media.id}
-                />
-              )}
+                >
+                  {media.type === "IMAGE" && (
+                    <Image
+                      source={{
+                        uri: getImageUrl(media.url, [{ width: isMobile ? "800" : isTablet ? "900" : "1000" }]),
+                      }}
+                      placeholder={Platform.OS === "ios" && media.thumbhash ? media.thumbhash : undefined}
+                      placeholderContentFit="cover"
+                      style={{ 
+                        aspectRatio: aspectRatio,
+                        maxHeight: isMobile ? 318 : isTablet ? 378 : 418,
+                        minHeight: 198,
+                        width: "100%",
+                      }}
+                      contentFit="cover"
+                      transition={200}
+                      recyclingKey={media.id}
+                      onError={(error) => {
+                        console.warn("Image load error:", error);
+                      }}
+                      onLoad={() => {
+                        console.log("Image loaded successfully");
+                      }}
+                    />
+                  )}
 
-              {media?.type === "VIDEO" && (
-                <View style={{ maxHeight: isMobile ? undefined : isTablet ? 450 : 550 }}>
-                  <PostVideoPlayer ref={postVideoPlayerHandleRef} isVisible={isVisible} media={media} aspectRatio={aspectRatio} />
+                  {media.type === "VIDEO" && (
+                    <PostVideoPlayer ref={postVideoPlayerHandleRef} isVisible={isVisible} media={media} aspectRatio={aspectRatio} />
+                  )}
+                  
+                  {(!post.starPost || isStartracker) && (
+                    <>
+                      <PostShareButton postId={post.id} />
+                      <PostLikeButton
+                        ref={postLikeButtonHandleRef}
+                        isLoading={isLoadingReactionData}
+                        myReaction={myReaction}
+                        refetchReactionData={refetch}
+                        postId={post.id}
+                        onReact={handlePostReact}
+                      />
+                    </>
+                  )}
+                </LinearGradient>
+              </View>
+            ) : (
+              <View className="w-full rounded-[50px] bg-white/10 border border-white/20" style={{ height: 200, minHeight: 200 }}>
+                <View className="flex h-full w-full items-center justify-center">
+                  <Icon name="image" size={32} color="white" style={{ opacity: 0.5 }} />
                 </View>
-              )}
-            </LinearGradient>
+              </View>
+            )}
           </View>
           {/* </TapGestureHandler>
           </TapGestureHandler> */}
 
           {Platform.OS !== "web" && (
-            <View className="absolute bottom-0 right-0 z-20 h-full w-full" pointerEvents="none">
+            <View  className="absolute bottom-0 right-0 z-20 h-full w-full" pointerEvents="none">
               <LottieView
                 autoPlay={false}
                 // autoSize
@@ -271,51 +341,13 @@ const PostListItem: FC<Props> = ({ cls, isVisible, post, linkPrefix, isStartrack
                 className="absolute m-px flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-[50px] bg-[#9A82EE]/40"
               >
                 <BlurView cls={cn("absolute h-full w-full", Platform.OS === "android" ? "bg-black" : "bg-black/80")} />
-                <StartrackerIcon width={isMobile ? 60 : isTablet ? 70 : 80} height={isMobile ? 60 : isTablet ? 70 : 80} />
+                {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */}
+                <Image source={subscribeLogo as any} style={{ width: isMobile ? 60 : isTablet ? 70 : 80, height: isMobile ? 60 : isTablet ? 70 : 80 }} contentFit="contain" />
                 <Typography cls="mt-3 md:mt-4 lg:mt-5 text-base md:text-lg lg:text-xl" variant="h2">
                   Subscribe to see this content
                 </Typography>
               </Pressable>
             </LinearGradient>
-          )}
-
-          {profileImage && (
-            <Link disabled={!me || me.id === post.createdBy.id} asChild href={("/view-profile/" + post.createdBy.username) as any}>
-              <ButtonBase cls="absolute" style={{ top: isMobile ? -48 : isTablet ? -52 : -56, left: 0 }}>
-                <Image
-                  source={{
-                    uri: getImageUrl(profileImage.url, [{ width: "128" }]),
-                    thumbhash: profileImage.thumbhash ?? undefined,
-                  }}
-                  className="rounded-full border-2 border-white bg-[#222222]"
-                  style={{ 
-                    width: isMobile ? 64 : isTablet ? 72 : 80,
-                    height: isMobile ? 64 : isTablet ? 72 : 80,
-                  }}
-                  contentFit="cover"
-                />
-              </ButtonBase>
-            </Link>
-          )}
-
-          {!profileImage && (
-            <View className="absolute left-0 flex items-center justify-center rounded-full border-2 border-white bg-[#222222]" style={{ top: isMobile ? -48 : isTablet ? -52 : -56, width: isMobile ? 64 : isTablet ? 72 : 80, height: isMobile ? 64 : isTablet ? 72 : 80 }}>
-              <Icon name="user" size={isMobile ? 24 : isTablet ? 28 : 32} color="white" />
-            </View>
-          )}
-
-          {(!post.starPost || isStartracker) && (
-            <>
-              <PostShareButton postId={post.id} />
-              <PostLikeButton
-                ref={postLikeButtonHandleRef}
-                isLoading={isLoadingReactionData}
-                myReaction={myReaction}
-                refetchReactionData={refetch}
-                postId={post.id}
-                onReact={handlePostReact}
-              />
-            </>
           )}
         </View>
 

@@ -39,11 +39,11 @@ const TagsEditor: FC<Props> = ({ onChange, tag }) => {
   };
 
   return (
-    <View className="mt-4 md:mt-6 lg:mt-8 flex flex-col items-center justify-center pb-24 md:pb-28 lg:pb-32 w-full">
-      <Typography cls="text-center text-sm md:text-base lg:text-lg" variant="h3">
+    <View className="mt-2 md:mt-3 lg:mt-4 flex flex-col items-center justify-center pb-20 md:pb-24 lg:pb-28 w-full">
+      <Typography cls="text-center text-sm md:text-base lg:text-lg mb-2 md:mb-3 lg:mb-4" variant="h3">
         Tags
       </Typography>
-      <View className="flex flex-row flex-wrap items-center justify-center gap-2 md:gap-3 lg:gap-4 px-2 md:px-4 lg:px-6 pt-4 md:pt-6 lg:pt-8">
+      <View className="flex flex-row flex-wrap items-center justify-center gap-2 md:gap-3 lg:gap-4 px-2 md:px-4 lg:px-6 pt-2 md:pt-3 lg:pt-4">
         {interests.map((interest) => {
           const isSelected = tag === interest.id;
           return (

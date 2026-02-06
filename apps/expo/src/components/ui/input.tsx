@@ -20,11 +20,11 @@ const Input: FC<InputProps> = ({ classes = {}, label, bottomSheetInput, suffix, 
   return (
     <View className={classes.root}>
       {label && (
-        <Typography cls="mb-1.5 md:mb-2 lg:mb-2.5 ml-3 md:ml-4 lg:ml-5 text-xs md:text-sm lg:text-base" variant="h3">
+        <Typography cls="mb-1 md:mb-1.5 lg:mb-2 ml-3 md:ml-4 lg:ml-5 text-xs md:text-sm lg:text-base" variant="h3">
           {label}
         </Typography>
       )}
-      <View className={cn("flex flex-row rounded-full border border-white bg-red-500 bg-white/10", classes.inputWrapper)}>
+      <View className={cn("flex flex-row rounded-full border border-white bg-white/10", classes.inputWrapper)}>
         <InputComponent
           // className={cn("h-12 flex-1 rounded-full px-6 text-base text-white", classes.input, props.multiline ? "" : "h-12")}
           {...props}
