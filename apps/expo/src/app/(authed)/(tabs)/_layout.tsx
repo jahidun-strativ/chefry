@@ -16,7 +16,7 @@ import ButtonBase from "@/components/ui/button-base";
 const TabsLayout: FC = () => {
   const { data: me } = api.auth.user.me.useQuery();
   const { bottom: _bottom } = useSafeAreaInsets();
-  const bottom = Platform.OS === "android" ? _bottom + 10 : _bottom;
+  const bottom = Platform.OS === "android" ? _bottom - 12 + 10 : _bottom;
 
   const renderTabBar = useCallback(
     ({ navigation, state }: BottomTabBarProps) => {
@@ -25,10 +25,10 @@ const TabsLayout: FC = () => {
       return (
         <BlurView
           cls={cn(
-            "absolute bottom-0 left-0 right-0 flex flex-row items-center justify-center pt-4",
+            "absolute bottom-0 left-0 right-0 flex flex-row items-center justify-center",
             Platform.OS === "android" ? "bg-black/60" : "bg-black/20",
           )}
-          style={{ paddingBottom: bottom || 15, height: (bottom || 15) + 55 }}
+          style={{  height: (bottom || 15) + 45 }}
         >
           {state.routes.map((route, routeIndex) => {
             const isFocused = state?.index === routeIndex;
@@ -61,8 +61,8 @@ const TabsLayout: FC = () => {
               return (
                 <ButtonBase key={routeIndex} onPress={onPress} onLongPress={onLongPress} cls="mx-1.5">
                   <MotiView
-                    from={{ width: 50, height: 50 }}
-                    animate={{ width: isFocused ? 80 : 50, height: 50 }}
+                    from={{ width: 44, height: 44 }}
+                    animate={{ width: isFocused ? 80 : 44, height: 44 }}
                     transition={{
                       type: "spring",
                       stiffness: 200,
@@ -70,7 +70,7 @@ const TabsLayout: FC = () => {
                     }}
                     className="flex items-center justify-center rounded-full border border-white"
                   >
-                    <Icon name={icons[routeIndex]} size={24} color="white" />
+                    <Icon name={icons[routeIndex]} size={18} color="white" />
                   </MotiView>
                 </ButtonBase>
               );

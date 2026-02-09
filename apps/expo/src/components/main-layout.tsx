@@ -55,13 +55,13 @@ const MainLayout: FC<Props> = ({
           )}
 
           {title && (
-            <Typography cls="text-center" variant="h2">
+            <Typography cls="text-center text-sm md:text-base lg:text-lg" variant="h2">
               {title}
             </Typography>
           )}
 
           {description && (
-            <Typography variant="p" cls="mt-4 md:mt-6 lg:mt-8 text-center">
+            <Typography variant="p" cls="mt-4 md:mt-6 lg:mt-8 text-center text-xs md:text-sm lg:text-md">
               {description}
             </Typography>
           )}
@@ -73,7 +73,7 @@ const MainLayout: FC<Props> = ({
 
   const { top, bottom } = useSafeAreaInsets();
   const paddingTop = (top || 20) + 80;
-  const paddingBottom = bottom || 20;
+  const paddingBottom = bottom || 30;
 
   const [contentIsScrolled, onScroll] = useScrollTracker();
 
@@ -117,7 +117,7 @@ const MainLayout: FC<Props> = ({
                 }}
               >
                 {content}
-                <View className="h-64 md:h-80 lg:h-96" />
+                <View className="h-20 md:h-24 lg:h-32" />
               </KeyboardAwareScrollView>
             )}
 

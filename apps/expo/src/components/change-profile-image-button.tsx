@@ -78,7 +78,7 @@ const ChangeProfileImageButton: FC<Props> = ({ refetchUser }) => {
     }
   };
 
-  const profileImageSize = isMobile ? 112 : isTablet ? 120 : 128;
+  const profileImageSize = isMobile ? 100 : isTablet ? 110 : 116;
   const iconSize = isMobile ? 28 : isTablet ? 32 : 36;
 
   if (isUploading) {

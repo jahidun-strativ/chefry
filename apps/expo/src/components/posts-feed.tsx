@@ -92,7 +92,7 @@ const PostsFeed: FC<Props> = ({
       return ListHeaderComponent;
     } else {
       return (
-        <View className="mt-28">
+        <View className="mt-8">
           <>{ListHeaderComponent}</>
         </View>
       );
@@ -110,7 +110,8 @@ const PostsFeed: FC<Props> = ({
   return (
     <>
       <FlashList
-        className="flex h-full w-full flex-col gap-6"
+        className="flex h-full w-full flex-col gap-6 "
+        contentContainerStyle={listType === "grid" ? { paddingHorizontal: isMobile ? 8 : isTablet ? 13 : 12 } : undefined}
         scrollEventThrottle={50}
         data={posts}
         ref={scrollRef}
@@ -121,7 +122,7 @@ const PostsFeed: FC<Props> = ({
 
           return (
             <View className={cn("flex flex-col items-center justify-center p-6 md:p-8 lg:p-12", Platform.OS === "android" && "py-0")}>
-              <Image source={subscribeLogo as any} style={{ width: isMobile ? 160 : isTablet ? 180 : 200, height: isMobile ? 160 : isTablet ? 180 : 200, opacity: 0.6 }} contentFit="contain" />
+              <Image source={subscribeLogo} style={{ width: isMobile ? 160 : isTablet ? 180 : 200, height: isMobile ? 160 : isTablet ? 180 : 200, opacity: 0.6 }} contentFit="contain" />
               <Typography variant="h2" fontWeight="bold" cls="text-center mt-6 md:mt-8 lg:mt-10">
                 No posts yet
               </Typography>
@@ -146,7 +147,7 @@ const PostsFeed: FC<Props> = ({
         refreshing={isRefreshing}
         ListHeaderComponent={renderHeader()}
         ListFooterComponent={() => (
-          <View style={{ paddingBottom: bottom + 160 }} className="flex flex-col items-center justify-start">
+          <View style={{ paddingBottom: bottom + 90 }} className="flex flex-col items-center justify-start ">
             {isLoading && (
               <View className="flex h-20 w-20 items-center justify-center">
                 <Spinner size={32} />
@@ -180,7 +181,7 @@ const PostsFeed: FC<Props> = ({
                 linkPrefix={linkPrefix}
                 onOpenImageViewer={handleSelectImageUrl}
                 onOpenVideoViewer={handleSelectVideoUrl}
-                cls="px-2 md:px-4 lg:px-6 mt-1 md:mt-2 lg:mt-3 mb-3 md:mb-4 lg:mb-5"
+                cls="px-4 md:px-4 lg:px-6 mt-1 md:mt-2 lg:mt-3 mb-3 md:mb-4 lg:mb-5"
               />
             );
           } else {
@@ -189,7 +190,7 @@ const PostsFeed: FC<Props> = ({
         }}
         onEndReached={handleEndReached}
         estimatedItemSize={listType === "list" ? listItemContentHeight : isMobile ? 130 : isTablet ? 140 : 150}
-        numColumns={listType === "grid" ? (isMobile ? 3 : isTablet ? 4 : 5) : 1}
+        numColumns={listType === "grid" ? (isMobile ? (Dimensions.get("window").width <= 320 ? 2 : 3) : isTablet ? 4 : 5) : 1}
         // ref={scrollRef}
         onScroll={onScroll}
       />

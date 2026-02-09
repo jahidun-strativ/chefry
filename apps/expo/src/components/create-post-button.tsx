@@ -239,8 +239,8 @@ const CreatePostButton: FC = () => {
         isVisible={pickPostTypePopoverOpen}
         from={(sourceRef) => (
           <ButtonBase ref={sourceRef as any} onPress={!isUploading ? openPickPostTypePopover : undefined} cls="mx-1.5">
-            <View className="flex items-center justify-center rounded-full border border-white" style={{ width: 50, height: 50 }}>
-              <Icon name="plus" size={24} color="white" />
+            <View className="flex items-center justify-center rounded-full border border-white" style={{ width: 44, height: 44 }}>
+              <Icon name="plus" size={18} color="white" />
             </View>
           </ButtonBase>
         )}

@@ -31,7 +31,7 @@ const ProfileScreen: FC<Props> = ({ username, linkPrefix, onScroll }) => {
   const [listType, setListType] = useState<"grid" | "list">("grid");
 
   return (
-    <View className="max-w-4xl lg:max-w-6xl mx-auto w-full h-full">
+    <View className="max-w-4xl lg:max-w-6xl mx-auto w-full h-full mt-8" >
       <PostsFeed
         listType={listType}
         ListHeaderComponent={

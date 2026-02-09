@@ -163,7 +163,7 @@ const FollowersAndSubscribersPage: FC = () => {
                     className={cn("rounded-full px-3 md:px-4 lg:px-5 py-3 md:py-4 lg:py-5", followerType === "DEFAULT" && "bg-white")}
                     onPress={() => setFollowerType("DEFAULT")}
                   >
-                    <Typography fontWeight="bold" cls={cn("text-white text-sm md:text-base lg:text-lg", followerType === "DEFAULT" && "text-black")}>
+                    <Typography fontWeight="bold" cls={cn("text-sm md:text-base lg:text-lg", followerType === "DEFAULT" ? "text-black" : "text-white")}>
                       Followers
                     </Typography>
                   </ButtonBase>
@@ -174,7 +174,7 @@ const FollowersAndSubscribersPage: FC = () => {
                     className={cn("rounded-full px-3 md:px-4 lg:px-5 py-3 md:py-4 lg:py-5", followerType === "STAR_TRACKER" && "bg-white")}
                     onPress={() => setFollowerType("STAR_TRACKER")}
                   >
-                    <Typography fontWeight="bold" cls={cn("text-white text-sm md:text-base lg:text-lg", followerType === "STAR_TRACKER" && "text-black")}>
+                    <Typography fontWeight="bold" cls={cn("text-sm md:text-base lg:text-lg", followerType === "STAR_TRACKER" ? "text-black" : "text-white")}>
                       Subscribers
                     </Typography>
                   </ButtonBase>

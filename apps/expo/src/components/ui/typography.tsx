@@ -3,6 +3,7 @@ import type { TextProps } from "react-native";
 import { Text } from "react-native";
 import clsx from "clsx";
 
+import { cn } from "@/utils/cn";
 import { maxFontSizeMultiplier } from "@/utils/constants";
 
 interface Props extends PropsWithChildren, TextProps {
@@ -35,7 +36,7 @@ const Typography: FC<Props> = ({ children, fontWeight, variant = "p", cls, style
   }
 
   return (
-    <Text {...props} style={[{ fontFamily }, style]} className={clsx(variantClass, cls)} maxFontSizeMultiplier={maxFontSizeMultiplier}>
+    <Text {...props} style={[{ fontFamily }, style]} className={cn(variantClass, cls)} maxFontSizeMultiplier={maxFontSizeMultiplier}>
       {children}
     </Text>
   );

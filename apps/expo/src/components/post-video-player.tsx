@@ -64,10 +64,10 @@ const PostVideoPlayer = forwardRef<PostVideoPlayerHandle, Props>(({ media, isVis
     <>
       {isFullscreen && <View className="fixed inset-0 h-full w-full bg-black" />}
       <View
-        className="w-full overflow-hidden rounded-[50px]"
+        className="w-full overflow-hidden rounded-[30px]"
         style={{
           aspectRatio: Math.max(aspectRatio, 0.7),
-          maxHeight: "100%",
+          backgroundColor: "#111",
         }}
       >
         {/* Thumbnail — always behind as fallback, hidden after video loads */}
@@ -76,7 +76,7 @@ const PostVideoPlayer = forwardRef<PostVideoPlayerHandle, Props>(({ media, isVis
             uri: media.thumbnail?.url ? getImageUrl(media.thumbnail?.url, [{ width: "1024" }]) : undefined,
           }}
           placeholder={Platform.OS === "ios" ? media.thumbhash : undefined}
-          placeholderContentFit="cover"
+          placeholderContentFit="contain"
           style={{
             position: "absolute",
             top: 0,
@@ -86,7 +86,7 @@ const PostVideoPlayer = forwardRef<PostVideoPlayerHandle, Props>(({ media, isVis
             zIndex: 1,
             opacity: hasLoaded ? 0 : 1,
           }}
-          contentFit="cover"
+          contentFit="contain"
           recyclingKey={media.id}
         />
 
@@ -142,7 +142,7 @@ const PostVideoPlayer = forwardRef<PostVideoPlayerHandle, Props>(({ media, isVis
             height: "100%",
             zIndex: 10,
           }}
-          resizeMode={isFullscreen ? ResizeMode.CONTAIN : ResizeMode.COVER}
+          resizeMode={ResizeMode.CONTAIN}
           onFullscreenUpdate={(e) => {
             if (e.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
               setIsFullscreen(false);

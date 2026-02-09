@@ -6,7 +6,6 @@ import { usePrevious } from "@uidotdev/usehooks";
 import type { RouterOutputs } from "@/utils/api";
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
-import { useResponsive } from "@/hooks/useResponsive";
 import createToast from "@/utils/createToast";
 import useOpenState from "@/hooks/useOpenState";
 import DeleteSubscriptionBottomSheet from "./delete-subscription-bottom-sheet";
@@ -24,8 +23,6 @@ interface Props {
 
 const UserFollowButtons: FC<Props> = ({ username, user, canSubscribe, subscriptionPrice, isMe }) => {
   const { data: userFollow, refetch: refetchFollowStatus } = api.auth.userFollow.get.useQuery({ username });
-  const { isMobile, isTablet } = useResponsive();
-
   const utils = api.useContext();
   const { mutate: toggleFollow, isLoading: isChangingFollowStatus } = api.auth.userFollow.toggleFollow.useMutation({
     onSuccess: async () => {
@@ -85,24 +82,23 @@ const UserFollowButtons: FC<Props> = ({ username, user, canSubscribe, subscripti
 
   return (
     <>
-      <View className={cn("flex w-full flex-row max-w-md lg:max-w-lg mx-auto", !isMe && user && "mt-4 md:mt-5 lg:mt-6", !canSubscribe && "items-center justify-center")}>
+      <View className={cn("flex w-full flex-row max-w-md lg:max-w-lg mx-auto", !isMe && user && "mt-2 md:mt-3 lg:mt-4", !canSubscribe && "items-center justify-center")}>
         {!isMe && user && (
           <>
             <Button
               variant={!userFollow ? "gradient-border" : "gradient"}
               gradient={["#938DFB", "#9589F6", "#9B7FEA", "#A56ED5"]}
-              // cls="w-auto p-[1px] bg-[#3c203f]"
               clsForce={cn("w-auto p-[1px]", !userFollow && "bg-[#3c203f]")}
               disabled={isChangingFollowStatus}
               onPress={handleToggleFollow("DEFAULT")}
             >
-              <View className={cn("flex flex-col items-center justify-center", !canSubscribe ? "w-32 md:w-36 lg:w-40 h-14 md:h-16 lg:h-18" : "w-24 md:w-28 lg:w-32 h-14 md:h-16 lg:h-18")}>
+              <View className={cn("flex flex-col items-center justify-center px-4 md:px-5 lg:px-6 py-2 md:py-2.5 lg:py-3", !canSubscribe ? "w-28 md:w-32 lg:w-36 h-8 md:h-10 lg:h-12" : "w-20 md:w-24 lg:w-28 h-8 md:h-10 lg:h-12")}>
                 {!userFollow && (
                   <>
-                    <Typography allowFontScaling={false} cls="text-xs md:text-sm lg:text-base" fontWeight="bold">
+                    <Typography allowFontScaling={false} cls="text-[10px] md:text-xs lg:text-sm" fontWeight="bold">
                       Follow
                     </Typography>
-                    <Typography allowFontScaling={false} cls="text-xs md:text-sm lg:text-base" fontWeight="medium">
+                    <Typography allowFontScaling={false} cls="text-[10px] md:text-xs lg:text-sm" fontWeight="medium">
                       Free
                     </Typography>
                   </>
@@ -110,7 +106,7 @@ const UserFollowButtons: FC<Props> = ({ username, user, canSubscribe, subscripti
 
                 {userFollow && (
                   <>
-                    <Typography allowFontScaling={false} cls="text-xs md:text-sm lg:text-base" fontWeight="bold">
+                    <Typography allowFontScaling={false} cls="text-[12px] md:text-xs lg:text-sm" fontWeight="bold">
                       Following
                     </Typography>
                   </>
@@ -120,28 +116,28 @@ const UserFollowButtons: FC<Props> = ({ username, user, canSubscribe, subscripti
 
             {canSubscribe && (
               <>
-                <View className="w-2 md:w-3 lg:w-4" />
+                <View className="w-1.5 md:w-2 lg:w-3" />
                 <Button
                   disabled={isChangingFollowStatus}
                   variant={userFollow?.type === "STAR_TRACKER" ? "gradient" : "gradient-border"}
                   clsForce={cn("w-auto flex-1 p-[1px]", userFollow?.type !== "STAR_TRACKER" && "bg-[#3c203f]")}
                   onPress={handleToggleFollow("STAR_TRACKER")}
                 >
-                  <View className="flex h-14 md:h-16 lg:h-18 flex-col items-center justify-center">
+                  <View className="flex h-8 md:h-10 lg:h-12 px-4 md:px-5 lg:px-6 py-2 md:py-2.5 lg:py-3 flex-col items-center justify-center">
                     {userFollow?.type !== "STAR_TRACKER" && (
                       <>
-                        <Typography allowFontScaling={false} cls="text-xs md:text-sm lg:text-base" fontWeight="bold">
-                          Subscribe
+                        <Typography allowFontScaling={false} cls="text-[12px] md:text-xs lg:text-sm" fontWeight="bold">
+                          Subscribe  ${subscriptionPrice}/month
                         </Typography>
-                        <Typography allowFontScaling={false} cls="text-xs md:text-sm lg:text-base" fontWeight="bold">
-                          ${subscriptionPrice}/month
-                        </Typography>
+                        {/* <Typography allowFontScaling={false} cls="text-[10px] md:text-xs lg:text-sm" fontWeight="bold">
+                         
+                        </Typography> */}
                       </>
                     )}
 
                     {userFollow?.type === "STAR_TRACKER" && (
                       <>
-                        <Typography allowFontScaling={false} cls="text-xs md:text-sm lg:text-base" fontWeight="bold">
+                        <Typography allowFontScaling={false} cls="text-[10px] md:text-xs lg:text-sm" fontWeight="bold">
                           Subscribed
                         </Typography>
                       </>

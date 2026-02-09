@@ -79,18 +79,18 @@ const Header: FC<Props> = ({
   }, [blurred, blurIntensity]);
 
   const { top } = useSafeAreaInsets();
-  const { isMobile, isTablet, isDesktop } = useResponsive();
+  const { isMobile, isTablet } = useResponsive();
 
   const logoSize = useMemo(() => {
-    if (isMobile) return { width: 150, height: 45 };
-    if (isTablet) return { width: 175, height: 52 };
-    return { width: 200, height: 60 };
-  }, [isMobile, isTablet, isDesktop]);
+    if (isMobile) return { width: 160, height: 55 };
+    if (isTablet) return { width: 175, height: 60 };
+    return { width: 180, height: 65 };
+  }, [isMobile, isTablet]);
 
-  const headerHeight = useMemo(() => {
-    const baseHeight = isMobile ? 70 : isTablet ? 75 : 80;
-    return (top || 20) + baseHeight;
-  }, [top, isMobile, isTablet, isDesktop]);
+  const headerHeight = useMemo(()=> {
+    const baseHeight = isMobile ? 60 : isTablet ? 64 : 68;
+    return (top || 16) + baseHeight;
+  }, [top, isMobile, isTablet]);
 
   const opacity = useDerivedValue(() => {
     return blurIntensity.value / 50;
@@ -127,8 +127,8 @@ const Header: FC<Props> = ({
 
       {Platform.OS !== "ios" && <View className="absolute h-full w-full bg-black/40" style={{ opacity: blurred ? 1 : 0 }} />}
 
-      <View style={{ paddingTop: top }} className="absolute z-10 flex h-full w-full flex-row items-center justify-between px-4 md:px-6 lg:px-8 pb-4 pt-2">
-        {showBackButton ? <IconButton onPress={handleGoBack} iconName="arrow-left" size="base" /> : <View className="w-10 md:w-12 lg:w-14" />}
+      <View style={{ paddingTop: top }} className="absolute z-10 flex h-full w-full flex-row items-center justify-between px-4 md:px-6 lg:px-8  pt-2">
+        {showBackButton ? <IconButton onPress={handleGoBack} iconName="arrow-left" size="sm" /> : <View className="w-10 md:w-12 lg:w-14" />}
         <Logo width={logoSize.width} height={logoSize.height} variant={logoVariant} />
 
         {showCustomAction && <IconButton onPress={onCustomActionPress} iconName={customActionIconName} />}
@@ -140,7 +140,7 @@ const Header: FC<Props> = ({
             ) : (
               <IconButton
                 iconName={me?.verified ? (pathname.includes("/profile") ? "settings" : "user") : "settings"}
-                size="base"
+                size="sm"
                 onPress={me?.verified ? handleGoToProfile : handleGoToSettings}
               />
             )}

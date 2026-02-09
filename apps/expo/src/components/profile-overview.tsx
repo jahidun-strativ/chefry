@@ -75,7 +75,7 @@ const ProfileOverview: FC<Props> = ({ username, onChangeListType, listType, onMe
 
   return (
     <>
-      <View className="w-full px-2 md:px-4 lg:px-6 pt-8 md:pt-10 lg:pt-12 max-w-2xl lg:max-w-3xl mx-auto" onLayout={(e) => onMeasured?.(e.nativeEvent.layout.height)}>
+      <View className="w-full px-4  lg:px-6 pt-4 max-w-2xl lg:max-w-3xl mx-auto" onLayout={(e) => onMeasured?.(e.nativeEvent.layout.height)}>
         <View className="flex w-full flex-row items-center justify-center">
           <ButtonBase cls="z-20" disabled={storiesCount === 0} onPress={openStoriesPlayer}>
             <LinearGradient
@@ -88,7 +88,7 @@ const ProfileOverview: FC<Props> = ({ username, onChangeListType, listType, onMe
               }
               start={[0.0, 0.5]}
               end={[1.0, 0.5]}
-              className={cn("z-10 aspect-square rounded-full", storiesCount == 0 ? "p-0.5" : "p-[3px]", isMobile ? "w-20" : isTablet ? "w-24" : "w-28")}
+              className={cn("z-10 aspect-square rounded-full", storiesCount == 0 ? "p-0.5" : "p-[3px]", isMobile ? "w-16" : isTablet ? "w-20" : "w-24")}
             >
               {!user && <Skeleton cls="w-full h-full rounded-full overflow-hidden opacity-50" width={isMobile ? 80 : isTablet ? 96 : 112} height={isMobile ? 80 : isTablet ? 96 : 112} />}
 

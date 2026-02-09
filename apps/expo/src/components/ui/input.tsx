@@ -24,11 +24,11 @@ const Input: FC<InputProps> = ({ classes = {}, label, bottomSheetInput, suffix, 
           {label}
         </Typography>
       )}
-      <View className={cn("flex flex-row rounded-full border border-white bg-white/10", classes.inputWrapper)}>
+      <View className={cn("flex flex-row rounded-lg border border-white bg-white/10", classes.inputWrapper)}>
         <InputComponent
           // className={cn("h-12 flex-1 rounded-full px-6 text-base text-white", classes.input, props.multiline ? "" : "h-12")}
           {...props}
-          className={cn("flex-1 px-6 py-5 text-white", classes.input)}
+          className={cn("flex-1 p-4 text-white", classes.input)}
           numberOfLines={Platform.OS === "ios" ? undefined : props.numberOfLines}
           style={{
             fontFamily: "Inter_400Regular",

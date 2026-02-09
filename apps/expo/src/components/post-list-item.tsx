@@ -213,35 +213,37 @@ console.log({media});
                   }
                   start={[0.0, 0.5]}
                   end={[1.0, 0.5]}
-                  className="relative rounded-[50px] p-px"
+                  className="relative rounded-[30px] p-px"
                   style={{ 
                     overflow: "hidden",
-                    maxHeight: isMobile ? 320 : isTablet ? 380 : 420,
                   }}
                 >
                   {media.type === "IMAGE" && (
-                    <Image
-                      source={{
-                        uri: getImageUrl(media.url, [{ width: isMobile ? "800" : isTablet ? "900" : "1000" }]),
-                      }}
-                      placeholder={Platform.OS === "ios" && media.thumbhash ? media.thumbhash : undefined}
-                      placeholderContentFit="cover"
-                      style={{ 
+                    <View 
+                      className="w-full rounded-[30px] overflow-hidden"
+                      style={{
                         aspectRatio: aspectRatio,
-                        maxHeight: isMobile ? 318 : isTablet ? 378 : 418,
-                        minHeight: 198,
-                        width: "100%",
+                        backgroundColor: "#111",
                       }}
-                      contentFit="cover"
-                      transition={200}
-                      recyclingKey={media.id}
-                      onError={(error) => {
-                        console.warn("Image load error:", error);
-                      }}
-                      onLoad={() => {
-                        console.log("Image loaded successfully");
-                      }}
-                    />
+                    >
+                      <Image
+                        source={{
+                          uri: getImageUrl(media.url, [{ width: isMobile ? "800" : isTablet ? "900" : "1000" }]),
+                        }}
+                        placeholder={Platform.OS === "ios" && media.thumbhash ? media.thumbhash : undefined}
+                        placeholderContentFit="contain"
+                        style={{ 
+                          width: "100%",
+                          height: "100%",
+                        }}
+                        contentFit="contain"
+                        transition={200}
+                        recyclingKey={media.id}
+                        onError={(error) => {
+                          console.warn("Image load error:", error);
+                        }}
+                      />
+                    </View>
                   )}
 
                   {media.type === "VIDEO" && (
@@ -264,7 +266,7 @@ console.log({media});
                 </LinearGradient>
               </View>
             ) : (
-              <View className="w-full rounded-[50px] bg-white/10 border border-white/20" style={{ height: 200, minHeight: 200 }}>
+              <View className="w-full rounded-[30px] bg-white/10 border border-white/20" style={{ height: 200, minHeight: 200 }}>
                 <View className="flex h-full w-full items-center justify-center">
                   <Icon name="image" size={32} color="white" style={{ opacity: 0.5 }} />
                 </View>
@@ -330,7 +332,7 @@ console.log({media});
               }
               start={[0.0, 0.5]}
               end={[1.0, 0.5]}
-              className="absolute h-full w-full rounded-[50px] p-px"
+              className="absolute h-full w-full rounded-[30px] p-px"
             >
               <Pressable
                 onPress={() => {

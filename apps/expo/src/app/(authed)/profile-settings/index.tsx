@@ -22,13 +22,13 @@ const ProfileListButton: FC<{ href: string; label: string; cls?: string; showPur
   const purchaseIconSize = isMobile ? 18 : isTablet ? 20 : 22;
   
   return (
-    <Button variant="outline" cls={cn("mb-2 md:mb-3 lg:mb-4 max-w-md lg:max-w-lg mx-auto w-full", cls)} href={href}>
-      <View className="flex w-full flex-row items-center justify-between pl-3 md:pl-4 lg:pl-5 pr-3 md:pr-4 lg:pr-5">
+    <Button size={'sm'} variant="outline" cls={cn("mb-2 md:mb-3 lg:mb-4 max-w-md lg:max-w-lg mx-auto w-full", cls)} href={href}>
+      <View  className="flex w-full flex-row items-center justify-between pl-3 md:pl-4 lg:pl-5 pr-3 md:pr-4 lg:pr-5">
         <View className="flex flex-row items-center">
           {showPurchaseIcon && (
             <Image source={toPurchaseIcon} style={{ width: purchaseIconSize, height: purchaseIconSize, marginRight: isMobile ? 8 : isTablet ? 10 : 12 }} contentFit="contain" />
           )}
-          <Typography variant="h2" cls="text-base md:text-lg lg:text-xl">
+          <Typography variant="p" cls="text-sm md:text-base lg:text-lg">
             {label}
           </Typography>
         </View>
@@ -93,7 +93,7 @@ const ProfileSettingsPage: FC = () => {
   return (
     <>
       <MainLayout showBackButton isLoading={!me} title="Your profile" contentType="scrollable">
-        <View className="h-3 md:h-4 lg:h-5" />
+        <View className="h-2 md:h-3 lg:h-4" />
 
         <View className="max-w-md lg:max-w-lg mx-auto w-full">
           <ProfileListButton href="/profile-settings/edit" label="Edit profile" />
@@ -110,7 +110,7 @@ const ProfileSettingsPage: FC = () => {
           {!me?.verified && (
             <Button variant="gradient" cls="mb-2 md:mb-3 lg:mb-4 border border-white max-w-md lg:max-w-lg mx-auto w-full" href="/profile-settings/become-a-star">
               <View className="flex w-full flex-row items-center justify-between pl-3 md:pl-4 lg:pl-5 pr-3 md:pr-4 lg:pr-5">
-                <Typography variant="h2" cls="text-base md:text-lg lg:text-xl">
+                <Typography variant="h2" cls="text-sm md:text-base lg:text-lg">
                   Become a Star
                 </Typography>
                 <Icon name="chevron-right" size={iconSize} color="white" />

@@ -26,7 +26,7 @@ const ConnectBankAccountBottomSheet: FC<Props> = ({ isOpen, onClose }) => {
           <Logo width={180} height={50} />
         </View>
 
-        <Typography variant="h2" fontWeight="bold" cls="mb-4 mt-8 text-center">
+        <Typography variant="h2" fontWeight="bold" cls="4 text-center">
           Congratulations!
         </Typography>
 
@@ -36,7 +36,7 @@ const ConnectBankAccountBottomSheet: FC<Props> = ({ isOpen, onClose }) => {
           </Typography>
         </View>
 
-        <Typography variant="h2" fontWeight="bold" cls="mb-4 mt-8 text-center">
+        <Typography variant="h2" fontWeight="bold" cls="mb-4 mt-4 text-center">
           Connect your Bank Account
         </Typography>
 

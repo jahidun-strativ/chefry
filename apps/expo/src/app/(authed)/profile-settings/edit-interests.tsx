@@ -13,7 +13,7 @@ import MainLayout from "@/components/main-layout";
 const EditInterestsPage: FC = () => {
   const { data: interestsData, isLoading, refetch } = api.auth.user.myInterests.useQuery();
   const interests = useMemo(() => (interestsData || []) as INTEREST[], [interestsData]);
-  const { isMobile, isTablet, isDesktop } = useResponsive();
+  const { isMobile, isTablet } = useResponsive();
   
   const numColumns = isMobile ? 2 : isTablet ? 3 : 4;
   
@@ -41,7 +41,7 @@ const EditInterestsPage: FC = () => {
         utils.auth.user.myInterests.setData(undefined, interests);
       }
     },
-    onError: (e) => {
+    onError: () => {
       createToast({
         type: "error",
         message: "Something went wrong",

@@ -23,11 +23,11 @@ interface Props {
 
 const PostGridItem: FC<Props> = ({ post, index: _index, isStartracker, linkPrefix }) => {
   const media = post.media[0];
-  const { isMobile, isTablet, isDesktop } = useResponsive();
+  const { isMobile, isTablet } = useResponsive();
 
   return (
     <Link asChild href={`${linkPrefix || ""}/post/${post.id}`}>
-      <ButtonBase className={cn("flex w-full flex-col px-1 md:px-1.5 lg:px-2 py-1 md:py-1.5 lg:py-2", "h-[130px] md:h-[140px] lg:h-[150px]")}>
+      <ButtonBase className={cn("flex w-full flex-col px-1.5 md:px-1.5 lg:px-2 py-1 md:py-1.5 lg:py-2", "h-[130px] md:h-[140px] lg:h-[150px]")}>
         <LinearGradient
           colors={
             post.starPost

@@ -47,7 +47,7 @@ const StoriesList = forwardRef<StoriesListHandle>((_, ref) => {
 
   return (
     <>
-      <View className="mb-4 mt-8">
+      <View className="mb-4 mt-4">
         <AnimatePresence>
           {(userStories.length > 0 || myStories.length > 0) && (
             <MotiView

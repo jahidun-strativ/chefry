@@ -68,10 +68,12 @@ const EditProfilePage: FC = () => {
       title="Edit profile"
       isLoading={!me}
       floatingButton={
-        <View className="max-w-md lg:max-w-lg mx-auto w-full px-4 md:px-6 lg:px-8">
+        <View className=" mx-auto w-8/12 px-2">
           <Button
             variant="gradient"
-            cls="w-full"
+            size={'xs'}
+            // cls="w-full"
+            className="mx-auto py-2"
             isLoading={isLoading}
             onPress={() => {
               if (!/^[a-z0-9_-]+$/.test(username)) {
@@ -104,6 +106,7 @@ const EditProfilePage: FC = () => {
           classes={{ root: "mb-3 md:mb-4 lg:mb-5" }}
           value={username}
           onChangeText={setUsername}
+          // style={{borderWidth:9,borderColor:'red'}}
         />
         <Input
           label="Email address"
@@ -126,7 +129,7 @@ const EditProfilePage: FC = () => {
           onChangeText={setBio}
           classes={{ 
             root: "mb-3 md:mb-4 lg:mb-5",
-            inputWrapper: isMobile ? "h-32" : isTablet ? "h-36" : "h-40 rounded-2xl", 
+            inputWrapper: isMobile ? "h-28" : isTablet ? "h-30" : "h-32 rounded-2xl", 
             input: "px-4 md:px-5 lg:px-6 py-3 md:py-4 lg:py-5 text-sm md:text-base lg:text-lg" 
           }}
         />

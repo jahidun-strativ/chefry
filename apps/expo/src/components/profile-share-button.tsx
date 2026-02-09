@@ -12,8 +12,8 @@ interface Props {
 
 const ProfileShareButton: FC<Props> = ({ username }) => {
   const { isMobile, isTablet } = useResponsive();
-  const iconSize = isMobile ? 18 : isTablet ? 20 : 22;
-  const buttonSize = isMobile ? 48 : isTablet ? 52 : 56;
+  const iconSize = isMobile ? 14 : isTablet ? 18 : 20;
+  const buttonSize = isMobile ? 44 : isTablet ? 50 : 54;
   
   return (
     <IconButton
