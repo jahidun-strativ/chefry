@@ -18,9 +18,9 @@ const SignInPage: FC = () => {
       <SignInForm />
       <ForgotPasswordButton />
 
-      <View className="my-4 flex flex-row items-center">
+      <View className="my-4 md:my-5 lg:my-6 flex flex-row items-center">
         <View className="h-px flex-1 bg-white opacity-50" />
-        <Typography variant="h3" cls="px-4 text-lg">
+        <Typography variant="h3" cls="px-4 md:px-5 lg:px-6">
           Or
         </Typography>
         <View className="h-px flex-1 bg-white opacity-50" />

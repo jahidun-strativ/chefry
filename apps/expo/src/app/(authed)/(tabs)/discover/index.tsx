@@ -20,33 +20,39 @@ const DiscoverPage: FC = () => {
 
   function renderHeader() {
     return (
-      <View key="header" className={cn("flex flex-col pb-2", Platform.OS === "ios" ? "pt-8" : "pt-8")}>
-        <View className="px-2">
+      <View key="header" className={cn("flex flex-col pb-2 md:pb-3 lg:pb-4", Platform.OS === "ios" ? "pt-8 md:pt-10 lg:pt-12" : "pt-8 md:pt-10 lg:pt-12")}>
+        <View className="px-2 md:px-4 lg:px-6">
           <Link asChild href="/discover/search">
-            <ButtonBase className="flex h-14 flex-row items-center rounded-full border border-white bg-white/10 px-6">
+            <ButtonBase className="flex h-14 md:h-16 lg:h-18 flex-row items-center rounded-full border border-white bg-white/10 px-6 md:px-8 lg:px-10 max-w-2xl lg:max-w-3xl mx-auto w-full">
               <Icon name="search" size={24} color="white" />
-              <Typography cls="text-2xl ml-4 text-lg">Search...</Typography>
+              <Typography cls="text-base md:text-lg lg:text-xl ml-4 md:ml-5 lg:ml-6">Search...</Typography>
             </ButtonBase>
           </Link>
         </View>
-        {interestsFilter && <InterestsFilterPanel interestsFilter={interestsFilter} setInterestsFilter={setInterestsFilter} />}
+        {interestsFilter && (
+          <View className="max-w-6xl lg:max-w-7xl mx-auto w-full px-2 md:px-4 lg:px-6">
+            <InterestsFilterPanel interestsFilter={interestsFilter} setInterestsFilter={setInterestsFilter} />
+          </View>
+        )}
       </View>
     );
   }
 
   return (
     <MainLayout isScrolled={isScrolled} contentType="custom" showProfileButton isLoading={!interestsFilter}>
-      <PostsFeed
-        listType="grid"
-        ListHeaderComponent={renderHeader()}
-        onScroll={onScroll}
-        linkPrefix="/discover"
-        feedEmptyText="Unfortunately, no accounts have posted any content yet. We are working to onboard stars to the app so check back soon to see who has arrived!"
-        variables={{
-          isDiscoverFeed: true,
-          tags: interestsFilter !== "ALL" ? interestsFilter : undefined,
-        }}
-      />
+      <View className="max-w-7xl mx-auto w-full h-full">
+        <PostsFeed
+          listType="grid"
+          ListHeaderComponent={renderHeader()}
+          onScroll={onScroll}
+          linkPrefix="/discover"
+          feedEmptyText="Unfortunately, no accounts have posted any content yet. We are working to onboard stars to the app so check back soon to see who has arrived!"
+          variables={{
+            isDiscoverFeed: true,
+            tags: interestsFilter !== "ALL" ? interestsFilter : undefined,
+          }}
+        />
+      </View>
     </MainLayout>
   );
 };

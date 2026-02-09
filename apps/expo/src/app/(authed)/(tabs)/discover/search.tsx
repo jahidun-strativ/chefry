@@ -11,14 +11,16 @@ import { z } from "zod";
 
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
+import { useResponsive } from "@/hooks/useResponsive";
 import type { INTEREST } from "@/utils/models";
+import subscribeLogo from "@/assets/subscribe-logo.png";
+import { Image } from "@/components/image";
 import FollowSuggestionItem from "@/components/follow-suggestion-item";
 import InterestsFilterPanel from "@/components/interests-filter-panel";
 import MainLayout from "@/components/main-layout";
 import Input from "@/components/ui/input";
 import Typography from "@/components/ui/typography";
 import UserSearchListItem from "@/components/user-search-list-item";
-import StartrackerIcon from "@/assets/startracker_icon.svg";
 
 const RecentSearchesSchema = z.array(z.string());
 
@@ -83,10 +85,11 @@ const SearchPage: FC = () => {
   };
 
   const { data: suggestions, isLoading: isLoadingSuggestions } = api.auth.user.suggestions.useQuery();
+  const { isMobile, isTablet, isDesktop } = useResponsive();
 
   return (
     <MainLayout showBackButton contentType="scrollable">
-      <Input placeholder="Search..." autoFocus value={searchText} onChangeText={setSearchText} />
+      <Input placeholder="Search..." autoFocus value={searchText} onChangeText={setSearchText} className="max-w-md lg:max-w-lg mx-auto w-full" />
 
       <View className="-mx-4 w-[110%]">
         {interestsFilter && (
@@ -103,11 +106,11 @@ const SearchPage: FC = () => {
             exit={{ opacity: 0 }}
             transition={{ type: "timing", duration: 200 }}
           >
-            <Typography variant="h3" cls="mt-8 text-base mb-3">
+            <Typography variant="h3" cls="mt-8 md:mt-10 lg:mt-12 mb-3 md:mb-4 lg:mb-5">
               Suggestions
             </Typography>
-            <ScrollView horizontal className="-mx-6" showsHorizontalScrollIndicator={false}>
-              <View className="w-6" />
+            <ScrollView horizontal className="-mx-6 md:-mx-8 lg:-mx-10" showsHorizontalScrollIndicator={false}>
+              <View className="w-6 md:w-8 lg:w-10" />
               {suggestions?.map((suggestion) => (
                 <FollowSuggestionItem key={suggestion.id} suggestion={suggestion} />
               ))}
@@ -122,7 +125,7 @@ const SearchPage: FC = () => {
                   exit={{ opacity: 0 }}
                   transition={{ type: "timing", duration: 200 }}
                 >
-                  <Typography variant="h3" cls="mt-8 text-base mt-8ske mb-3">
+                  <Typography variant="h3" cls="mt-8 md:mt-10 lg:mt-12 mb-3 md:mb-4 lg:mb-5">
                     Recent searches
                   </Typography>
                   {recentSearches.map((user) => (
@@ -142,7 +145,7 @@ const SearchPage: FC = () => {
             exit={{ opacity: 0 }}
             transition={{ type: "timing", duration: 200 }}
           >
-            <Typography variant="h3" cls="mt-8 text-base mb-3">
+            <Typography variant="h3" cls="mt-8 md:mt-10 lg:mt-12 mb-3 md:mb-4 lg:mb-5">
               Stars to follow
             </Typography>
             {Array.from(Array(6).keys()).map((i) => (
@@ -159,7 +162,7 @@ const SearchPage: FC = () => {
             exit={{ opacity: 0 }}
             transition={{ type: "timing", duration: 200 }}
           >
-            <Typography variant="h3" cls="mt-8 text-base mb-3">
+            <Typography variant="h3" cls="mt-8 md:mt-10 lg:mt-12 mb-3 md:mb-4 lg:mb-5">
               Stars to follow
             </Typography>
             {searchResults.map((user) => (
@@ -176,12 +179,13 @@ const SearchPage: FC = () => {
             exit={{ opacity: 0 }}
             transition={{ type: "timing", duration: 200 }}
           >
-            <View className={cn("flex flex-col items-center justify-center p-6", Platform.OS === "android" && "py-0")}>
-              <StartrackerIcon className="opacity-60" width={160} height={160} />
-              <Typography variant="h2" fontWeight="bold" cls="text-center mt-6">
+            <View className={cn("flex flex-col items-center justify-center p-6 md:p-8 lg:p-12", Platform.OS === "android" && "py-0")}>
+              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */}
+              <Image source={subscribeLogo as any} style={{ width: isMobile ? 160 : isTablet ? 180 : 200, height: isMobile ? 160 : isTablet ? 180 : 200, opacity: 0.6 }} contentFit="contain" />
+              <Typography variant="h2" fontWeight="bold" cls="text-center mt-6 md:mt-8 lg:mt-10">
                 No results yet
               </Typography>
-              <Typography variant="p" fontWeight="regular" cls="text-center text-lg mt-2 mb-10">
+              <Typography variant="p" fontWeight="regular" cls="text-center mt-2 md:mt-3 lg:mt-4 mb-10 md:mb-12 lg:mb-14">
                 Unfortunately, no accounts exist with that name. We are working to onboard stars to the app so check back soon to see who
                 has arrived!
               </Typography>

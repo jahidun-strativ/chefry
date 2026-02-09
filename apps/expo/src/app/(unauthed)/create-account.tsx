@@ -14,9 +14,9 @@ const Signup: FC = () => {
 
   return (
     <MainLayout title="Create account" showBackButton contentType="scrollable">
-      <View className="flex h-full w-full flex-col">
+      <View className="flex h-full w-full flex-col max-w-md lg:max-w-lg mx-auto">
         <Button
-          cls="mt-4"
+          cls="mt-4 md:mt-5 lg:mt-6"
           variant="gradient"
           href="/create-account-with-email"
           icon={<Icon name="mail" size={24} color="white" style={{ marginRight: 10 }} />}

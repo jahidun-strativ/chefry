@@ -9,7 +9,9 @@ import { FlashList } from "@shopify/flash-list";
 import type { RouterInputs, RouterOutputs } from "@/utils/api";
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
-import StartrackerIcon from "@/assets/startracker_icon.svg";
+import { useResponsive } from "@/hooks/useResponsive";
+import subscribeLogo from "@/assets/subscribe-logo.png";
+import { Image } from "@/components/image";
 import { ImageViewer } from "./image-viewer";
 import PostGridItem from "./post-grid-item";
 import PostListItem from "./post-list-item";
@@ -49,7 +51,9 @@ const PostsFeed: FC<Props> = ({
   showDiscoverButtonOnEmpty,
 }) => {
   const { bottom, top } = useSafeAreaInsets();
-  const listItemContentHeight = Dimensions.get("window").height - (bottom + 55) - ((top || 20) + 80);
+  const {  isMobile, isTablet } = useResponsive();
+  const headerHeight = isMobile ? 70 : isTablet ? 75 : 80;
+  const listItemContentHeight = Dimensions.get("window").height - (bottom + 55) - ((top || 20) + headerHeight);
 
   const [visibleItems, setVisibleItems] = useState<string[]>([]);
 
@@ -88,7 +92,7 @@ const PostsFeed: FC<Props> = ({
       return ListHeaderComponent;
     } else {
       return (
-        <View className="mt-28">
+        <View className="mt-8">
           <>{ListHeaderComponent}</>
         </View>
       );
@@ -106,7 +110,8 @@ const PostsFeed: FC<Props> = ({
   return (
     <>
       <FlashList
-        className="flex h-full w-full flex-col gap-6"
+        className="flex h-full w-full flex-col gap-6 "
+        contentContainerStyle={listType === "grid" ? { paddingHorizontal: isMobile ? 8 : isTablet ? 13 : 12 } : undefined}
         scrollEventThrottle={50}
         data={posts}
         ref={scrollRef}
@@ -116,17 +121,17 @@ const PostsFeed: FC<Props> = ({
           }
 
           return (
-            <View className={cn("flex flex-col items-center justify-center p-6", Platform.OS === "android" && "py-0")}>
-              <StartrackerIcon className="opacity-60" width={160} height={160} />
-              <Typography variant="h2" fontWeight="bold" cls="text-center mt-6">
+            <View className={cn("flex flex-col items-center justify-center p-6 md:p-8 lg:p-12", Platform.OS === "android" && "py-0")}>
+              <Image source={subscribeLogo} style={{ width: isMobile ? 160 : isTablet ? 180 : 200, height: isMobile ? 160 : isTablet ? 180 : 200, opacity: 0.6 }} contentFit="contain" />
+              <Typography variant="h2" fontWeight="bold" cls="text-center mt-6 md:mt-8 lg:mt-10">
                 No posts yet
               </Typography>
-              <Typography variant="p" fontWeight="regular" cls="text-center text-lg leading-5 mt-2 mb-10">
+              <Typography variant="p" fontWeight="regular" cls="text-center mt-2 md:mt-3 lg:mt-4 mb-10 md:mb-12 lg:mb-14">
                 {feedEmptyText || "Unfortunately, none of the accounts you follow have posted any content."}
               </Typography>
 
               {showDiscoverButtonOnEmpty && (
-                <Button href="/discover" size="lg" variant="outline" cls="w-full mb-12 bg-black/30">
+                <Button href="/discover" size="lg" variant="outline" cls="w-full max-w-md lg:max-w-lg mb-12 md:mb-14 lg:mb-16 bg-black/30">
                   Discover new stars
                 </Button>
               )}
@@ -142,7 +147,7 @@ const PostsFeed: FC<Props> = ({
         refreshing={isRefreshing}
         ListHeaderComponent={renderHeader()}
         ListFooterComponent={() => (
-          <View style={{ paddingBottom: bottom + 160 }} className="flex flex-col items-center justify-start">
+          <View style={{ paddingBottom: bottom + 90 }} className="flex flex-col items-center justify-start ">
             {isLoading && (
               <View className="flex h-20 w-20 items-center justify-center">
                 <Spinner size={32} />
@@ -154,9 +159,9 @@ const PostsFeed: FC<Props> = ({
         onViewableItemsChanged={({ viewableItems }) => {
           setVisibleItems(viewableItems.map((item) => item.key));
         }}
-        // viewabilityConfig={{
-        //   itemVisiblePercentThreshold: 10,
-        // }}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 30,
+        }}
         extraData={{ visibleItems, listType, myStarFollows: myStarFollows?.map((follow) => follow?.followedUser.id) || [], meId: me?.id }}
         renderItem={({ item, extraData, index }) => {
           const { visibleItems, listType, myStarFollows, meId } = extraData as {
@@ -176,7 +181,7 @@ const PostsFeed: FC<Props> = ({
                 linkPrefix={linkPrefix}
                 onOpenImageViewer={handleSelectImageUrl}
                 onOpenVideoViewer={handleSelectVideoUrl}
-                cls="px-2 mt-2 mb-6"
+                cls="px-4 md:px-4 lg:px-6 mt-1 md:mt-2 lg:mt-3 mb-3 md:mb-4 lg:mb-5"
               />
             );
           } else {
@@ -184,8 +189,8 @@ const PostsFeed: FC<Props> = ({
           }
         }}
         onEndReached={handleEndReached}
-        estimatedItemSize={listType === "list" ? listItemContentHeight : 130}
-        numColumns={listType === "grid" ? 3 : 1}
+        estimatedItemSize={listType === "list" ? listItemContentHeight : isMobile ? 130 : isTablet ? 140 : 150}
+        numColumns={listType === "grid" ? (isMobile ? (Dimensions.get("window").width <= 320 ? 2 : 3) : isTablet ? 4 : 5) : 1}
         // ref={scrollRef}
         onScroll={onScroll}
       />

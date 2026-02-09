@@ -3,6 +3,7 @@ import type { TextProps } from "react-native";
 import { Text } from "react-native";
 import clsx from "clsx";
 
+import { cn } from "@/utils/cn";
 import { maxFontSizeMultiplier } from "@/utils/constants";
 
 interface Props extends PropsWithChildren, TextProps {
@@ -13,10 +14,10 @@ interface Props extends PropsWithChildren, TextProps {
 
 const Typography: FC<Props> = ({ children, fontWeight, variant = "p", cls, style = {}, ...props }) => {
   const variantClass = clsx(
-    variant === "h1" && "text-5xl text-white",
-    variant === "h2" && "text-2xl text-white",
-    variant === "h3" && "text-sm text-white",
-    variant === "p" && "text-base text-white",
+    variant === "h1" && "text-4xl md:text-5xl lg:text-6xl text-white",
+    variant === "h2" && "text-xl md:text-2xl lg:text-3xl text-white",
+    variant === "h3" && "text-xs md:text-sm lg:text-base text-white",
+    variant === "p" && "text-sm md:text-base lg:text-lg text-white",
   );
 
   let fontFamily = clsx(
@@ -35,7 +36,7 @@ const Typography: FC<Props> = ({ children, fontWeight, variant = "p", cls, style
   }
 
   return (
-    <Text {...props} style={[{ fontFamily }, style]} className={clsx(variantClass, cls)} maxFontSizeMultiplier={maxFontSizeMultiplier}>
+    <Text {...props} style={[{ fontFamily }, style]} className={cn(variantClass, cls)} maxFontSizeMultiplier={maxFontSizeMultiplier}>
       {children}
     </Text>
   );

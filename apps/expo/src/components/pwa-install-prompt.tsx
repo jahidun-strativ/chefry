@@ -61,7 +61,7 @@ const PWAInstallPrompt = () => {
 
       // For debugging: check if service worker is registered
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(registrations => {
+      void navigator.serviceWorker.getRegistrations().then(registrations => {
           console.log("PWA: Service worker registrations:", registrations.length);
         });
       }

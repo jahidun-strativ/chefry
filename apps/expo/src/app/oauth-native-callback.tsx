@@ -18,12 +18,9 @@ const OauthCallbackPage = () => {
         // Complete the OAuth session
         WebBrowser.maybeCompleteAuthSession();
         
-        // Handle the redirect callback with current URL
+        // Handle the redirect callback - Clerk handles the URL parsing automatically
         if (typeof window !== "undefined") {
-          const currentUrl = window.location.href;
-          await clerk.handleRedirectCallback({
-            redirectUrl: currentUrl,
-          });
+          await clerk.handleRedirectCallback();
         }
         
         console.log("OAuth callback handled successfully");

@@ -100,7 +100,7 @@ const StarStripeSettingsCard: FC = () => {
     }
   };
 
-  const cardClass = "mt-4 flex w-full flex-col items-center justify-center rounded-2xl border border-white p-6 pb-4 pt-6";
+  const cardClass = "mt-4 md:mt-5 lg:mt-6 flex w-full flex-col items-center justify-center rounded-2xl border border-white p-6 md:p-8 lg:p-10 pb-4 md:pb-5 lg:pb-6 pt-6 md:pt-8 lg:pt-10 max-w-md lg:max-w-lg mx-auto";
 
   if (isLoadingConnectedAccount || isLoadingStripePrice) {
     return (
@@ -114,10 +114,10 @@ const StarStripeSettingsCard: FC = () => {
     return (
       <View className={cardClass}>
         <Icon name="alert-circle" size={50} color="white" />
-        <Typography fontWeight="medium" cls="mb-3 mt-4 text-center text-xl">
+        <Typography fontWeight="medium" cls="mb-3 md:mb-4 lg:mb-5 mt-4 md:mt-5 lg:mt-6 text-center text-xl md:text-2xl lg:text-3xl">
           {connectedStripeAccount ? "Finish account creation" : "No account connected"}
         </Typography>
-        <Typography variant="p" cls="mb-6 text-center">
+        <Typography variant="p" cls="mb-6 md:mb-8 lg:mb-10 text-center text-base md:text-lg lg:text-xl">
           {connectedStripeAccount && (
             <>
               You&apos;ve started the process of connecting your account. Please finish the process to allow followers to become Star
@@ -147,19 +147,19 @@ const StarStripeSettingsCard: FC = () => {
   return (
     <>
       <View className={cardClass}>
-        <Typography cls="mb-6 text-center text-2xl" fontWeight="medium">
+        <Typography cls="mb-6 md:mb-8 lg:mb-10 text-center text-2xl md:text-3xl lg:text-4xl" fontWeight="medium">
           General subscription
         </Typography>
 
         {monthlyPrice != null && (
           <>
-            <Typography cls="text-center text-base mb-1.5" fontWeight="medium">
+            <Typography cls="text-center text-base md:text-lg lg:text-xl mb-1.5 md:mb-2 lg:mb-3" fontWeight="medium">
               Price per month
             </Typography>
-            <Typography cls="text-center text-3xl mb-3" fontWeight="medium">
+            <Typography cls="text-center text-3xl md:text-4xl lg:text-5xl mb-3 md:mb-4 lg:mb-5" fontWeight="medium">
               {monthlyPrice}€
             </Typography>
-            <Button cls="mt-4 w-full bg-black/20" size="sm" variant="outline" onPress={openSetPriceModal}>
+            <Button cls="mt-4 md:mt-5 lg:mt-6 w-full bg-black/20" size="sm" variant="outline" onPress={openSetPriceModal}>
               Update price
             </Button>
           </>
@@ -167,20 +167,20 @@ const StarStripeSettingsCard: FC = () => {
 
         {monthlyPrice == null && (
           <>
-            <Typography cls="text-center text-xl mb-1.5" fontWeight="medium">
+            <Typography cls="text-center text-xl md:text-2xl lg:text-3xl mb-1.5 md:mb-2 lg:mb-3" fontWeight="medium">
               No price set
             </Typography>
-            <Typography cls="text-center text-base mb-3" fontWeight="medium">
+            <Typography cls="text-center text-base md:text-lg lg:text-xl mb-3 md:mb-4 lg:mb-5" fontWeight="medium">
               Set a price to start accepting subscriptions and earning money from your followers.
             </Typography>
-            <Button cls="mt-4 w-full bg-black/20" size="sm" variant="outline" onPress={openSetPriceModal}>
+            <Button cls="mt-4 md:mt-5 lg:mt-6 w-full bg-black/20" size="sm" variant="outline" onPress={openSetPriceModal}>
               Set price
             </Button>
           </>
         )}
 
         <Button
-          cls="mt-2 w-full bg-black/20"
+          cls="mt-2 md:mt-3 lg:mt-4 w-full bg-black/20"
           size="sm"
           variant="outline"
           onPress={handleUpdateConnectedAccount}

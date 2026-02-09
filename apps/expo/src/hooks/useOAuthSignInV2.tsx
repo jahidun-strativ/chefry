@@ -37,8 +37,18 @@ const useOAuthSignInV2 = (strategy: OAuthStrategy) => {
             return `${origin}/oauth-native-callback`;
           }
           
-          // Handle custom domains or other hosting
-          return `${origin}/oauth-native-callback`;
+          // Handle localhost development
+          if (origin.includes('localhost')) {
+            return `${origin}/oauth-native-callback`;
+          }
+          
+          // Handle your custom domain (if you have one)
+          if (origin.includes('startracker.vercel.app')) {
+            return `${origin}/oauth-redirect`;
+          }
+          
+          // For any other domains, use the Next.js redirect service as fallback
+          return `https://startracker.vercel.app/oauth-redirect?redirect_to=${encodeURIComponent(origin)}`;
         };
 
         const redirectUrl = getRedirectUrl();
@@ -48,7 +58,7 @@ const useOAuthSignInV2 = (strategy: OAuthStrategy) => {
 
         try {
           // Use the modern Clerk OAuth flow
-          const result = await signIn.authenticateWithRedirect({
+          await signIn.authenticateWithRedirect({
             strategy,
             redirectUrl,
             redirectUrlComplete: redirectUrl,
@@ -92,13 +102,13 @@ const useOAuthSignInV2 = (strategy: OAuthStrategy) => {
       } else {
         // For native platforms
         console.log("Native OAuth flow");
-        const result = await signIn.authenticateWithRedirect({
+        await signIn.authenticateWithRedirect({
           strategy,
           redirectUrl: "exp://localhost:8081/oauth-native-callback",
           redirectUrlComplete: "exp://localhost:8081/oauth-native-callback",
         });
         
-        console.log("Native OAuth result:", result);
+        console.log("Native OAuth initiated");
       }
       
     } catch (error) {

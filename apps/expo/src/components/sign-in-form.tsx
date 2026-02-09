@@ -45,9 +45,9 @@ const SignInForm: FC = () => {
   };
 
   return (
-    <View className="flex flex-col">
+    <View className="flex flex-col max-w-md lg:max-w-lg mx-auto w-full">
       <Input
-        classes={{ root: "mt-4" }}
+        classes={{ root: "mt-4 md:mt-5 lg:mt-6" }}
         placeholder="Enter your email or username"
         autoCapitalize="none"
         autoCorrect={false}
@@ -55,10 +55,10 @@ const SignInForm: FC = () => {
         value={emailOrUsername}
         onChangeText={setEmailOrUserName}
       />
-      <PasswordInput classes={{ root: "mt-4" }} placeholder="Enter your password" value={password} onChangeText={setPassword} />
+      <PasswordInput classes={{ root: "mt-4 md:mt-5 lg:mt-6" }} placeholder="Enter your password" value={password} onChangeText={setPassword} />
       <Button
         onPress={handleSignIn}
-        cls="mt-4 mb-4"
+        cls="mt-4 md:mt-5 lg:mt-6 mb-4 md:mb-5 lg:mb-6"
         variant="gradient"
         disabled={!isLoaded || !emailOrUsername || !password || loading}
         isLoading={loading}

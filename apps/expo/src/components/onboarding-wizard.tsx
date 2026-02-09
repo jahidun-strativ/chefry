@@ -7,6 +7,7 @@ import { Portal } from "@gorhom/portal";
 import { AnimatePresence, MotiView } from "moti";
 
 import { api } from "@/utils/api";
+import { useResponsive } from "@/hooks/useResponsive";
 import { Image } from "@/components/image";
 import wizard_image_1 from "@/assets/wizard/wizard_1.jpg";
 import wizard_image_2 from "@/assets/wizard/wizard_2.jpg";
@@ -71,8 +72,10 @@ const OnboardingWizard: FC<Props> = ({ open, onClose }) => {
   };
 
   const currentItem = wizardItems[currentIndex];
+  const { width, isMobile, isTablet, isDesktop } = useResponsive();
 
   const windowWidth = Dimensions.get("window").width;
+  const logoSize = isMobile ? { width: 150, height: 45 } : isTablet ? { width: 175, height: 52 } : { width: 200, height: 60 };
 
   return (
     <Portal>
@@ -90,7 +93,7 @@ const OnboardingWizard: FC<Props> = ({ open, onClose }) => {
           >
             <View className="h-full w-full">
               <View className="absolute left-0 right-0 z-10 flex items-center justify-center" style={{ top }}>
-                <Logo width={200} height={60} />
+                <Logo width={logoSize.width} height={logoSize.height} />
               </View>
               <AnimatePresence initial={false}>
                 {currentItem && (
@@ -108,11 +111,11 @@ const OnboardingWizard: FC<Props> = ({ open, onClose }) => {
                     <Image className="h-full w-full" source={currentItem.image} contentFit="cover" />
                     <View className="absolute flex h-full w-full flex-col justify-end">
                       <View className="w-full overflow-hidden rounded-t-[50px]">
-                        <BlurView cls="px-8 pt-12" style={{ paddingBottom: bottom || 20 }}>
+                        <BlurView cls="px-8 md:px-10 lg:px-12 pt-12 md:pt-14 lg:pt-16 max-w-2xl lg:max-w-3xl mx-auto" style={{ paddingBottom: bottom || 20 }}>
                           <Typography variant="h2" fontWeight="bold">
                             {currentItem.title}
                           </Typography>
-                          <Typography variant="p" cls="mt-2 mb-10">
+                          <Typography variant="p" cls="mt-2 md:mt-3 lg:mt-4 mb-10 md:mb-12 lg:mb-14">
                             {currentItem.description}
                           </Typography>
                           <Button onPress={handleClickContinue} className="bg-black/30" size="lg" variant="outline">

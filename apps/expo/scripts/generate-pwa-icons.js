@@ -8,7 +8,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const sourceIcon = join(__dirname, "../assets/icon.png");
+const sourceIcon = join(__dirname, "../assets/main-logo.png");
 const publicDir = join(__dirname, "../public");
 
 // Icon sizes needed for PWA

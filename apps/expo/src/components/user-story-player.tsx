@@ -11,7 +11,7 @@ import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
 import { getImageUrl, mediaBaseUrl } from "@/utils/imagekit";
 import { Image } from "@/components/image";
-import StartrackerIcon from "@/assets/gradient_icon.svg";
+import subscribeLogo from "@/assets/subscribe-logo.png";
 import type { UserStory } from "./stories-player";
 import BlurView from "./ui/blur-view";
 import ButtonBase from "./ui/button-base";
@@ -217,7 +217,8 @@ const UserStoryPlayer: FC<Props> = ({
       {currentStory?.starPost && !isStartracker && (
         <View className="absolute flex h-full w-full flex-col items-center justify-center overflow-hidden bg-[#9A82EE]/40">
           <BlurView cls={cn("absolute h-full w-full", Platform.OS === "android" ? "bg-black" : "bg-black/40")} />
-          <StartrackerIcon width={120} height={120} />
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */}
+          <Image source={subscribeLogo as any} style={{ width: 120, height: 120 }} contentFit="contain" />
           <Typography cls="mt-4" variant="h2">
             Subscribe to see this content
           </Typography>

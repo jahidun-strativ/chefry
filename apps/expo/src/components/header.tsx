@@ -1,7 +1,7 @@
 import type { ComponentProps, FC } from "react";
 import { useEffect, useMemo } from "react";
 import { Platform, View } from "react-native";
-import Animated, { Easing, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated";
+import Animated, { Easing, useAnimatedProps, useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import { useNavigation, usePathname, useRouter } from "expo-router";
@@ -9,6 +9,7 @@ import type Icon from "@expo/vector-icons/Feather";
 
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
+import { useResponsive } from "@/hooks/useResponsive";
 import { Logo } from "./logo";
 import IconButton from "./ui/icon-button";
 
@@ -78,40 +79,68 @@ const Header: FC<Props> = ({
   }, [blurred, blurIntensity]);
 
   const { top } = useSafeAreaInsets();
+  const { isMobile, isTablet } = useResponsive();
+
+  const logoSize = useMemo(() => {
+    if (isMobile) return { width: 160, height: 55 };
+    if (isTablet) return { width: 175, height: 60 };
+    return { width: 180, height: 65 };
+  }, [isMobile, isTablet]);
+
+  const headerHeight = useMemo(()=> {
+    const baseHeight = isMobile ? 60 : isTablet ? 64 : 68;
+    return (top || 16) + baseHeight;
+  }, [top, isMobile, isTablet]);
 
   const opacity = useDerivedValue(() => {
     return blurIntensity.value / 50;
   }, [blurIntensity]);
 
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
+    };
+  });
+
+  const animatedProps = useAnimatedProps(() => {
+    return {
+      intensity: blurIntensity.value,
+    };
+  });
+
   const showCustomAction = !!customActionIconName && !!onCustomActionPress;
+
+  const isDiscoverProfilePage = pathname.includes("/discover/view-profile/");
+  const isFeedProfilePage = pathname === "/feed/profile";
+  const logoVariant = isDiscoverProfilePage || isFeedProfilePage ? "secondary" : "main";
 
   return (
     <View
       className={cn("absolute left-0 right-0 top-0 z-10 w-full", cls)}
       style={{
-        height: (top || 20) + 80,
+        height: headerHeight,
       }}
     >
       {Platform.OS === "ios" && (
-        <AnimatedBlurView className="absolute h-full w-full" intensity={blurIntensity} tint="dark" style={{ opacity: opacity }} />
+        <AnimatedBlurView className="absolute h-full w-full" tint="dark" style={animatedStyle} animatedProps={animatedProps} />
       )}
 
       {Platform.OS !== "ios" && <View className="absolute h-full w-full bg-black/40" style={{ opacity: blurred ? 1 : 0 }} />}
 
-      <View style={{ paddingTop: top }} className="absolute z-10 flex h-full w-full flex-row items-center justify-between px-4 pb-4 pt-2">
-        {showBackButton ? <IconButton onPress={handleGoBack} iconName="arrow-left" size="base" /> : <View className="w-10" />}
-        <Logo width={200} height={60} />
+      <View style={{ paddingTop: top }} className="absolute z-10 flex h-full w-full flex-row items-center justify-between px-4 md:px-6 lg:px-8  pt-2">
+        {showBackButton ? <IconButton onPress={handleGoBack} iconName="arrow-left" size="sm" /> : <View className="w-10 md:w-12 lg:w-14" />}
+        <Logo width={logoSize.width} height={logoSize.height} variant={logoVariant} />
 
         {showCustomAction && <IconButton onPress={onCustomActionPress} iconName={customActionIconName} />}
 
         {!showCustomAction && (
           <>
             {!showProfileButton && !showProfileSettingsButton ? (
-              <View className="w-10" />
+              <View className="w-10 md:w-12 lg:w-14" />
             ) : (
               <IconButton
                 iconName={me?.verified ? (pathname.includes("/profile") ? "settings" : "user") : "settings"}
-                size="base"
+                size="sm"
                 onPress={me?.verified ? handleGoToProfile : handleGoToSettings}
               />
             )}

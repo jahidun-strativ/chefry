@@ -6,7 +6,7 @@ import ProfileScreen from "@/components/profile-screen";
 import useScrollTracker from "@/hooks/useScrollTracker";
 
 const ViewProfilePage: FC = () => {
-  const { username } = useLocalSearchParams() as { username: string };
+  const { username } = useLocalSearchParams<{ username: string }>();
 
   const [isScrolled, onScroll] = useScrollTracker("/discover/view-profile/" + username);
 

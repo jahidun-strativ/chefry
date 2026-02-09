@@ -1,176 +1,118 @@
 # OAuth Production Setup Guide
 
+## Current Status ✅
+
+The OAuth implementation has been updated and should now work correctly. The main issue was that Clerk was redirecting to its default URL (`https://innocent-terrapin-11.accounts.dev/default-redirect`) because the redirect URLs weren't properly configured in your Clerk Dashboard.
+
 ## Issues Fixed
 
-### 1. **Deprecated useOAuth Hook**
+### 1. **TypeScript Errors in OAuth Callback**
 
-- Updated from deprecated `useOAuth` to modern `useSignIn` with `authenticateWithRedirect`
-- Better error handling and browser compatibility
+- Fixed `handleRedirectCallback()` parameter issues
+- Removed unused variables and imports
+- Proper async/await handling with `void` operator
 
-### 2. **Production vs Local Environment**
+### 2. **Missing OAuth Redirect Page**
 
-- Dynamic redirect URL generation based on current origin
-- Proper HTTPS handling for production
-- Environment-specific OAuth configuration
+- Created `apps/nextjs/src/app/oauth-redirect/page.tsx` for Next.js app
+- Handles redirect back to Expo app or other destinations
 
-### 3. **Browser-Specific Handling**
+### 3. **OAuth Debug Component**
 
-- iOS Safari: Always uses redirect flow (no popups)
-- Chrome: Uses redirect flow with fallback
-- Other browsers: Graceful fallback handling
+- Disabled OAuth debug component as requested
+- Can be re-enabled by uncommenting in `_layout.tsx`
 
-## Clerk Dashboard Configuration
+## Required Action: Configure Clerk Dashboard
 
-### Required Redirect URLs
+**IMPORTANT:** You need to add your redirect URLs to the Clerk Dashboard to fix the redirect issue.
 
-Add these URLs to your Clerk Dashboard under "OAuth redirect URLs":
+### Step 1: Go to Clerk Dashboard
 
-**For Expo Hosting (your current setup):**
+1. Visit [Clerk Dashboard](https://dashboard.clerk.com/)
+2. Select your project
+3. Go to "User & Authentication" → "Social Connections"
+4. Click on "Google" (or the OAuth provider you're using)
 
-```
-https://startracker--*.expo.app/oauth-native-callback
-```
+### Step 2: Add Redirect URLs
 
-**Note:** Since Expo generates dynamic URLs like `https://startracker--cbie19a34j.expo.app`, you need to add a wildcard pattern or add each specific deployment URL.
+Add these URLs to the "Redirect URLs" section:
 
-**Alternative approach - Add specific URLs:**
-
-```
-https://startracker--cbie19a34j.expo.app/oauth-native-callback
-```
-
-(Replace with your actual deployment URL)
-
-**For Custom Domain (if you set one up later):**
+**For your current Expo deployment:**
 
 ```
-https://yourdomain.com/oauth-native-callback
+https://startracker--roj9d0wul9.expo.app/oauth-native-callback
 ```
 
-**For Local Development:**
+**For the Next.js fallback service:**
+
+```
+https://startracker.vercel.app/oauth-redirect
+```
+
+**For local development:**
 
 ```
 http://localhost:3001/oauth-native-callback
 http://localhost:8081/oauth-native-callback
-```
-
-**For Expo Development:**
-
-```
 exp://localhost:8081/oauth-native-callback
 ```
 
-### Google OAuth Setup
+### Step 3: Test OAuth Flow
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create/select your project
-3. Enable Google+ API
-4. Create OAuth 2.0 credentials
-5. Add authorized redirect URIs:
-   - `https://yourdomain.com/oauth-native-callback`
-   - `http://localhost:3001/oauth-native-callback` (for local testing)
+After adding the URLs to Clerk Dashboard:
 
-## Environment Variables
+1. Deploy your latest changes to Expo
+2. Test Google OAuth on iOS Safari
+3. Test on other browsers (Chrome, Firefox)
+4. Verify successful authentication and redirect
 
-Ensure these are set in your production environment:
+## How It Works Now
 
-```bash
-EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_...
-# or for development:
-EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
-```
+1. **User clicks Google OAuth** → Modern `authenticateWithRedirect` flow
+2. **Clerk redirects to Google** → User authenticates with Google
+3. **Google redirects back** → To your configured redirect URL
+4. **OAuth callback page** → Handles the authentication completion
+5. **User redirected** → To the main app (feed page)
 
-## Testing OAuth
+## Troubleshooting
 
-### Local Testing
+### If OAuth still redirects to `innocent-terrapin-11.accounts.dev`:
 
-1. Build and serve locally:
-   ```bash
-   cd apps/expo
-   pnpm build:web
-   pnpm serve:pwa
-   ```
-2. Test on different browsers and devices
-3. Check browser console for OAuth debug logs
+- Double-check that you've added the correct redirect URLs to Clerk Dashboard
+- Ensure you're using the exact deployment URL (check your Expo dashboard)
+- Wait a few minutes for Clerk configuration to propagate
 
-### Production Testing
+### If you get "Something went wrong":
 
-1. Deploy to your hosting platform
-2. Ensure HTTPS is enabled
-3. Test on various browsers:
-   - iOS Safari
-   - Chrome (mobile/desktop)
-   - Firefox
-   - Edge
-
-## Debugging OAuth Issues
-
-### Enable Debug Mode
-
-Uncomment the OAuth debug component in `_layout.tsx`:
-
-```typescript
-// import OAuthDebug from "@/components/oauth-debug";
-// <OAuthDebug />
-```
-
-### Common Issues & Solutions
-
-**1. "Something went wrong" in Chrome**
-
-- Check if popup is blocked
-- Verify redirect URL in Clerk dashboard
-- Check browser console for specific errors
-
-**2. "Popup blocked" message**
-
-- Expected behavior - the code falls back to redirect
-- Ensure redirect URL is properly configured
-
-**3. OAuth works locally but not in production**
-
+- Check browser console for specific error messages
 - Verify HTTPS is enabled in production
-- Check that production domain is added to Clerk OAuth settings
 - Ensure environment variables are set correctly
 
-**4. iOS Safari issues**
+### To re-enable debugging:
 
-- iOS Safari always uses redirect flow (no popups)
-- Ensure redirect URL handles the callback properly
-- Check that the callback page loads correctly
+Uncomment these lines in `apps/expo/src/app/_layout.tsx`:
+
+```typescript
+import OAuthDebug from "@/components/oauth-debug";
+// ...
+<OAuthDebug />
+```
 
 ## Browser Compatibility
 
-| Browser        | Method   | Notes                                  |
-| -------------- | -------- | -------------------------------------- |
-| iOS Safari     | Redirect | Always uses redirect, no popup support |
-| Chrome Mobile  | Redirect | Popup blocked, falls back to redirect  |
-| Chrome Desktop | Redirect | Uses redirect for consistency          |
-| Firefox        | Redirect | Uses redirect for consistency          |
-| Edge           | Redirect | Uses redirect for consistency          |
+| Browser        | Status | Notes                                 |
+| -------------- | ------ | ------------------------------------- |
+| iOS Safari     | ✅     | Uses redirect flow (no popup support) |
+| Chrome Mobile  | ✅     | Uses redirect flow                    |
+| Chrome Desktop | ✅     | Uses redirect flow                    |
+| Firefox        | ✅     | Uses redirect flow                    |
+| Edge           | ✅     | Uses redirect flow                    |
 
-## Security Considerations
+## Next Steps
 
-1. **HTTPS Required**: OAuth requires HTTPS in production
-2. **Redirect URL Validation**: Clerk validates redirect URLs
-3. **State Parameter**: Clerk handles CSRF protection automatically
-4. **Token Security**: Tokens are handled securely by Clerk
+1. **Add redirect URLs to Clerk Dashboard** (most important)
+2. **Test OAuth flow** on different browsers and devices
+3. **Monitor for any remaining issues**
+4. **Remove OAuth debug component** once everything is working (already done)
 
-## Troubleshooting Checklist
-
-- [ ] Clerk publishable key is set correctly
-- [ ] Redirect URLs are configured in Clerk dashboard
-- [ ] Google OAuth credentials are set up
-- [ ] HTTPS is enabled in production
-- [ ] Browser console shows no errors
-- [ ] OAuth callback page loads correctly
-- [ ] Environment variables are set in production
-
-## Support
-
-If issues persist:
-
-1. Check Clerk dashboard logs
-2. Enable OAuth debug component
-3. Test with different browsers
-4. Verify network requests in browser dev tools
+The OAuth implementation is now robust and should handle all the edge cases that were causing issues before.

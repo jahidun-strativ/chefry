@@ -7,7 +7,6 @@ import type { INTEREST } from "@/utils/models";
 import { interestsMap } from "@/utils/models";
 import { Image } from "./image";
 import BlurView from "./ui/blur-view";
-import ButtonBase from "./ui/button-base";
 import Typography from "./ui/typography";
 
 interface Props {
@@ -25,14 +24,14 @@ const InterestCard: FC<Props> = ({ interest, isSelected, onToggleSelect }) => {
           <View className="overflow-hidden rounded-full border border-[#938DFB] bg-black/30">
             <BlurView intensity={20} cls={cn("flex flex-row items-center px-3 py-1.5")}>
               <Icon name="heart" size={16} color={isSelected ? "red" : "white"} />
-              <Typography variant="h2" cls="text-base ml-2">
+              <Typography variant="h2" cls="text-xs md:text-sm lg:text-md ml-2">
                 {interestsMap[interest]?.label}
               </Typography>
             </BlurView>
           </View>
         </View>
         <View className="rounded-lg bg-[#2C2C2C] p-2">
-          <Typography variant="p" cls="text-xs">
+          <Typography variant="p" cls="text-xs md:text-sm lg:text-md">
             {interestsMap[interest]?.description}
           </Typography>
         </View>

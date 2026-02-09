@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { useUser } from "@clerk/clerk-expo";
 
 import { api } from "@/utils/api";
+import { useResponsive } from "@/hooks/useResponsive";
 import createToast from "@/utils/createToast";
 import type { INTEREST } from "@/utils/models";
 import ChangeProfileImageButton from "@/components/change-profile-image-button";
@@ -58,6 +59,8 @@ const EditProfilePage: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [me]);
 
+  const { isMobile, isTablet } = useResponsive();
+
   return (
     <MainLayout
       showBackButton
@@ -65,63 +68,74 @@ const EditProfilePage: FC = () => {
       title="Edit profile"
       isLoading={!me}
       floatingButton={
-        <Button
-          variant="gradient"
-          cls="w-full"
-          isLoading={isLoading}
-          onPress={() => {
-            if (!/^[a-z0-9_-]+$/.test(username)) {
-              createToast({
-                type: "error",
-                message: "Username can only contain lowercase (a-z) letters,underscores (_) and hyphens (-)",
-              });
-              return;
-            }
-            mutate({ bio, username, tags: tag ? [tag] : null });
-          }}
-        >
-          Save
-        </Button>
+        <View className=" mx-auto w-8/12 px-2">
+          <Button
+            variant="gradient"
+            size={'xs'}
+            // cls="w-full"
+            className="mx-auto py-2"
+            isLoading={isLoading}
+            onPress={() => {
+              if (!/^[a-z0-9_-]+$/.test(username)) {
+                createToast({
+                  type: "error",
+                  message: "Username can only contain lowercase (a-z) letters,underscores (_) and hyphens (-)",
+                });
+                return;
+              }
+              mutate({ bio, username, tags: tag ? [tag] : null });
+            }}
+          >
+            Save
+          </Button>
+        </View>
       }
     >
-      <View className="h-2" />
+      <View className="h-1 md:h-2 lg:h-3" />
 
-      <View className="flex items-center justify-center py-4">
-        <ChangeProfileImageButton />
+      <View className="max-w-md lg:max-w-lg mx-auto w-full px-4 md:px-6 lg:px-8">
+        <View className="flex items-center justify-center py-2 md:py-3 lg:py-4">
+          <ChangeProfileImageButton />
+        </View>
+
+        <Input
+          label="Username"
+          autoCorrect={false}
+          autoCapitalize="none"
+          placeholder="Enter your name..."
+          classes={{ root: "mb-3 md:mb-4 lg:mb-5" }}
+          value={username}
+          onChangeText={setUsername}
+          // style={{borderWidth:9,borderColor:'red'}}
+        />
+        <Input
+          label="Email address"
+          value={user?.emailAddresses?.[0]?.emailAddress ?? ""}
+          editable={false}
+          classes={{ root: "opacity-50 mb-3 md:mb-4 lg:mb-5" }}
+          onPressIn={() => {
+            createToast({
+              type: "error",
+              message: "You cannot change your email address",
+            });
+          }}
+        />
+        <Input
+          multiline
+          label="Bio"
+          placeholder="Enter your bio..."
+          numberOfLines={6}
+          value={bio}
+          onChangeText={setBio}
+          classes={{ 
+            root: "mb-3 md:mb-4 lg:mb-5",
+            inputWrapper: isMobile ? "h-28" : isTablet ? "h-30" : "h-32 rounded-2xl", 
+            input: "px-4 md:px-5 lg:px-6 py-3 md:py-4 lg:py-5 text-sm md:text-base lg:text-lg" 
+          }}
+        />
+
+        <TagsEditor tag={tag} onChange={setTag} />
       </View>
-
-      <Input
-        label="Username"
-        autoCorrect={false}
-        autoCapitalize="none"
-        placeholder="Enter your name..."
-        classes={{ root: "mb-4" }}
-        value={username}
-        onChangeText={setUsername}
-      />
-      <Input
-        label="Email address"
-        value={user?.emailAddresses?.[0]?.emailAddress ?? ""}
-        editable={false}
-        classes={{ root: "opacity-50 mb-4" }}
-        onPressIn={() => {
-          createToast({
-            type: "error",
-            message: "You cannot change your email address",
-          });
-        }}
-      />
-      <Input
-        multiline
-        label="Bio"
-        placeholder="Enter your bio..."
-        numberOfLines={6}
-        value={bio}
-        onChangeText={setBio}
-        classes={{ inputWrapper: "h-32 rounded-2xl", input: "px-4 py-3" }}
-      />
-
-      <TagsEditor tag={tag} onChange={setTag} />
     </MainLayout>
   );
 };

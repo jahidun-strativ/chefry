@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { FC } from "react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Platform, View } from "react-native";
 
 import type { INTEREST } from "@startracker/db";
 
 import { api } from "@/utils/api";
 import { cn } from "@/utils/cn";
+import { useResponsive } from "@/hooks/useResponsive";
 import createToast from "@/utils/createToast";
 import { INTERESTS } from "@/utils/models";
 import InterestCard from "@/components/interest-card";
@@ -15,19 +16,21 @@ import MainLayout from "@/components/main-layout";
 import BlurView from "@/components/ui/blur-view";
 import { Button } from "@/components/ui/button";
 
-const interestPairs = INTERESTS.reduce<INTEREST[][]>((acc, curr, i) => {
-  if (i % 2 === 0) {
-    acc.push([curr]);
-  } else {
-    acc[acc.length - 1]?.push(curr);
-  }
-  return acc;
-}, []);
-
 const SelectInterestsPage: FC = () => {
   const { data: user } = api.auth.user.me.useQuery();
+  const { isMobile, isTablet, isDesktop } = useResponsive();
 
   const [selectedInterests, setSelectedInterests] = useState<INTEREST[]>([]);
+  
+  const numColumns = isMobile ? 2 : isTablet ? 3 : 4;
+  
+  const interestRows = useMemo(() => {
+    const rows: INTEREST[][] = [];
+    for (let i = 0; i < INTERESTS.length; i += numColumns) {
+      rows.push(INTERESTS.slice(i, i + numColumns));
+    }
+    return rows;
+  }, [numColumns]);
   const handleToggleSelect = (interest: INTEREST) => {
     setSelectedInterests((prev) => (prev.includes(interest) ? prev.filter((i) => i !== interest) : [...prev, interest]));
   };
@@ -84,13 +87,16 @@ const SelectInterestsPage: FC = () => {
       {/* <Button size="sm" onPress={handleSignOut} variant="outline" isLoading={isSigningOut}>
         Logout
       </Button> */}
-      <View className="mt-6 flex h-full flex-col gap-3 pb-32">
-        {interestPairs.map((pair, i) => (
-          <View key={i} className="flex flex-row gap-3">
-            {pair.map((interest) => (
-              <View className="flex-1 " key={interest}>
+      <View className="mt-6 md:mt-8 lg:mt-10 flex h-full flex-col gap-3 md:gap-4 lg:gap-5 pb-32 max-w-4xl lg:max-w-6xl mx-auto w-full">
+        {interestRows.map((row, i) => (
+          <View key={i} className="flex flex-row gap-3 md:gap-4 lg:gap-5">
+            {row.map((interest) => (
+              <View className="flex-1" key={interest}>
                 <InterestCard interest={interest} isSelected={selectedInterests.includes(interest)} onToggleSelect={handleToggleSelect} />
               </View>
+            ))}
+            {row.length < numColumns && Array.from({ length: numColumns - row.length }).map((_, idx) => (
+              <View key={`empty-${idx}`} className="flex-1" />
             ))}
           </View>
         ))}
