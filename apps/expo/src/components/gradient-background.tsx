@@ -1,15 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { FC, PropsWithChildren } from "react";
-import { ImageBackground } from "react-native";
-
-import bg from "@/assets/bg.jpg";
+import { LinearGradient } from "expo-linear-gradient";
 
 const GradientBackground: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <ImageBackground source={bg as any} className="absolute h-full w-full">
+    <LinearGradient
+      colors={["#1a0a2e", "#3d1142", "#16213e"]}
+      start={[0.0, 0.0]}
+      end={[1.0, 1.0]}
+      className="absolute h-full w-full"
+    >
       {children}
-    </ImageBackground>
+    </LinearGradient>
   );
 };
 

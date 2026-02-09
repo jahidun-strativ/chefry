@@ -91,12 +91,13 @@ const InterestsFilterPanel: FC<Props> = ({ interestsFilter, useStartPadding, set
           const isSelected = interestsFilter === "ALL" ? item.id === "ALL" : interestsFilter.includes(item.id as INTEREST);
           return (
             <ButtonBase
+            
               onPress={handleSelectInterest(item.id as INTEREST | "ALL")}
               key={item.id}
-              cls={cn("ml-2 flex h-10 flex-row items-center rounded-full border border-white px-3", isSelected && "bg-white")}
+              cls={cn("ml-2 flex h-8 flex-row items-center rounded-full border border-white px-3", isSelected && "bg-white")}
             >
-              <MaterialIcon name="heart" size={16} color={isSelected ? "black" : "white"} />
-              <Typography cls={cn("text-2xl ml-2 text-base", isSelected ? "!text-black" : "!text-white")}>{item.name}</Typography>
+              <MaterialIcon name="heart" size={14} color={isSelected ? "black" : "white"} />
+              <Typography cls={cn(" ml-2 text-xs md:text-sm lg:text-base", isSelected ? "!text-black" : "!text-white")}>{item.name}</Typography>
             </ButtonBase>
           );
         }}

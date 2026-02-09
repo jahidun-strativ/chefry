@@ -1,22 +1,26 @@
 import type { FC } from "react";
-import type { ImageSourcePropType } from "react-native";
-import { ImageBackground, View } from "react-native";
+import { View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Logo } from "@/components/logo";
 import { useResponsive } from "@/hooks/useResponsive";
 import { Button } from "@/components/ui/button";
 import StartPageCarousel from "@/components/ui/start-page-carousel";
-import start_bg from "@/assets/start_bg.jpg";
 
 const StartPage: FC = () => {
   const { isMobile, isTablet, isDesktop } = useResponsive();
   const logoSize = isMobile ? { width: 240, height: 82 } : isTablet ? { width: 280, height: 96 } : { width: 320, height: 110 };
 
   return (
-    <ImageBackground source={start_bg as ImageSourcePropType} className="h-full w-full" resizeMode="cover">
-      <SafeAreaView>
-        <View className="flex h-full w-full flex-col">
+    <LinearGradient
+      colors={["#1a0a2e", "#3d1142", "#16213e"]}
+      start={[0.0, 0.0]}
+      end={[1.0, 1.0]}
+      className="h-full w-full"
+    >
+      <SafeAreaView style={{ flex: 1 }}>
+        <View className="flex flex-1 w-full flex-col">
           <View className="flex items-center justify-center px-12 md:px-16 lg:px-20">
             <Logo width={logoSize.width} height={logoSize.height} />
           </View>
@@ -35,7 +39,7 @@ const StartPage: FC = () => {
           </View>
         </View>
       </SafeAreaView>
-    </ImageBackground>
+    </LinearGradient>
   );
 };
 

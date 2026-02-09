@@ -21,11 +21,11 @@ const DiscoverPage: FC = () => {
   function renderHeader() {
     return (
       <View key="header" className={cn("flex flex-col pb-2 md:pb-3 lg:pb-4", Platform.OS === "ios" ? "pt-8 md:pt-10 lg:pt-12" : "pt-8 md:pt-10 lg:pt-12")}>
-        <View className="px-2 md:px-4 lg:px-6">
+        <View className="px-2 md:px-4 lg:px-6 mt-3">
           <Link asChild href="/discover/search">
-            <ButtonBase className="flex h-14 md:h-16 lg:h-18 flex-row items-center rounded-full border border-white bg-white/10 px-6 md:px-8 lg:px-10 max-w-2xl lg:max-w-3xl mx-auto w-full">
-              <Icon name="search" size={24} color="white" />
-              <Typography cls="text-base md:text-lg lg:text-xl ml-4 md:ml-5 lg:ml-6">Search...</Typography>
+            <ButtonBase className="flex h-12 md:h-14 lg:h-16 flex-row items-center rounded-full border border-white bg-white/10 px-4 md:px-6 lg:px-8 max-w-2xl lg:max-w-3xl mx-auto w-full">
+              <Icon name="search" size={16} color="white" />
+              <Typography cls="text-sm md:text-lg lg:text-xl ml-4 md:ml-5 lg:ml-6">Search...</Typography>
             </ButtonBase>
           </Link>
         </View>
